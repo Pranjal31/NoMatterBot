@@ -65,12 +65,14 @@ Storyboard represents a flow in the different sections of a software. Here are t
 	<br>Note: Welcome message sent to the user when added to a repository
 </div>
 
-<figure width="300">
-	<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png" width="300">
-	<figcaption> 
-		Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore
-	</figcaption>
-</figure>
+<div width="300">
+	<figure>
+		<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png" width="300">
+		<figcaption> 
+			Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore
+		</figcaption>
+	</figure>
+</div>
 
 <div class="row">
   <div class="column">
