@@ -35,5 +35,30 @@ NoMatterBot can respond to occurence of events like creation of an issue, merge 
 
 "NoMatterBot" can respond to events and can have limited conversations with user (conversations can only be started by "NoMatterBot"). It is a Chat-Dev Bot because it mediates as well as performs software engineering tasks.
 
+# Use Cases
+
+# Design Sketches
+
+## Wireframe Mockups
+### Welcome
+![welcome](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Welcome.png)
+
+### Stale Issues
+![stale issues closed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Stale%20Issues%20-%20Close.png) 
+
+![stale issues ignored](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Stale%20Issues%20-%20Ignore.png)
+
+### Status Change Notifications
+![status change notification](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Status%20Change%20Notifications.png)
+
+### Assignee Recommendations
+![assignee recommendation accepted](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Assignee%20Recommendations%20-%20Assigned.png) 
+
+![assignee recommendation ignored](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Assignee%20Recommendations%20-%20Ignored.png)
+
+## Storyboard
+
+# Architecture Design
+
 **Tagline:**
 I will manage your issues no matter what!
