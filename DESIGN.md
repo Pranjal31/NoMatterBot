@@ -53,7 +53,7 @@ Sub-flows:\
 
 ## Use Case: Change Issue Status
 
-Preconditions: \ 
+Preconditions: \
 Bot must have GitHub API token. Pull Requests (PR) must include GitHub Issue number at the start of PR title Issue.
 
 Main Flow: \
@@ -186,7 +186,7 @@ NoMatterBot uses both GitHub Events and User Input on Mattermost as triggers to 
 \
 Two of the use cases (Assignee recommendation and Change in Issue Status) discussed above start with an Event in GitHub which it posts to the server running in Bot software as an HTTP POST message. The server parses this raw message data and passes it onto the Event Handler, which is the heart of our Bot. The third use case (deleting stale Issues) involves directly invoking Event Handler once every day via system timers. Event Handler is responsible to identify the trigger and call appropriate modules to respond to it.\
 \
-Assignee recommender implements logic needed to come up with a list of potential assignees to a newly created Issue based on their current work-load and return it to the Event handler. REST client is used to get details related to GitHub issues and Pull Requests which is used by the handler to update Issue status and also to update the local database containing Issue data.\
+Assignee recommender implements logic needed to come up with a list of potential assignees to a newly created Issue based on their current work-load and return it to the Event handler.\
 \
 One other major component relates to handling Mattermost Events. Mattermost provides websockets to send and receive real-time data using HTTP GET and POST. So, when the Event Handler receives the list of potential assignees from Assignee Recommender, it uses HTTP message composer and Mattermost client to send the list as a private message to Issue creator.  When the user responds to this message, the handler uses parsed data from message parser and forwards it to the REST client which then updates the Assignee field on GitHub using a REST call. After this, the Bot notifies the Issue creator about successful status change.\
 \
