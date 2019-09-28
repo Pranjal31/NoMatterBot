@@ -136,7 +136,7 @@ Use case to close stale issues:
 | Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore | Note: Note: If the user selects some issues and clicks on "close issues", an acknowledgement will be send to the user | Note: If the user selects ignore, an acknowledgement will be sent.|
 
 \
-Use case to recommend assignees for newly created issue:\
+Use case to recommend assignees for newly created issue:
 
 
 | Scene-Assignee Recommendation| Scene-Select and Assign | Scene-Ignore |
@@ -145,7 +145,7 @@ Use case to recommend assignees for newly created issue:\
 | Note: Every time a new issue is created, NoMatterBot will recommend a list of assignees with options to assign or ignore | Note:If the user selects some assignee and clicks on "assign", an acknowledgement will be send to the user| Note: If the user selects ignore, an acknowledgement will be sent.|
 
 \
-Use case to get notifications based on event on issues:\
+Use case to get notifications based on event on issues:
 
 
 | Scene-Status change on github| Scene-Getting notification | 
