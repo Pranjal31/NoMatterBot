@@ -79,7 +79,7 @@ Any change in GitHub issue status would create an event. The Bot captures the ev
 Sub-flows: \
 [S1] Bot identifies the issue status change event\
 [S2] Bot identifies the assignee of the issue\
-[S3] Bot notifies the assignee of the status change on Mattermost\
+[S3] Bot notifies the assignee of the status change on Mattermost
 
 ## Use Case: Assignee Recommendation
 
