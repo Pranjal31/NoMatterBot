@@ -65,6 +65,12 @@ Storyboard represents a flow in the different sections of a software. Here are t
 	<br>Note: Welcome message sent to the user when added to a repository
 </div>
 
+| Scenes | Notes |
+| --- | --- |
+| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png) | Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore |
+| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue_done.png) | Note: Note: If the user selects some issues and clicks on "close issues", an acknowledgement will be send to the user|
+| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Ignore_stale_issues.png) | Note: If the user selects ignore, an acknowledgement will be sent.|
+
 <figure>
 	<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png" width="300">
 	<figcaption> 
