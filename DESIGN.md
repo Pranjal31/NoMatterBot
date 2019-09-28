@@ -192,7 +192,12 @@ One other major component relates to handling Mattermost Events. Mattermost prov
 \
 For clarity, we show the work-flow of our design for all three test cases below. We have numbered the interactions so that if you follow the arrows in numerical order you can see the pieces of the puzzle coming together!
 
-**************************Use-case pictures go here*************************************
+![Arch1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Architecture.png)
+
+![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%201.png)
+![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%202.png)
+![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%203.png)
+![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%204.png)
 
 There are several constraints and feature dependencies that we stick to, to be in-line with the working of our design. We assume that there can be a single assignee per Issue to simplify Mattermost message interaction. We also create several custom status labels that our Bot uses to track Issue progress. NoMatterBot cannot open or close an Issue. They are done by a team member and a tester respectively.
 
