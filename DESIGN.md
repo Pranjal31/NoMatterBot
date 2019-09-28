@@ -59,7 +59,7 @@ NoMatterBot can respond to occurence of events like creation of an issue, merge 
 ## Storyboard
 Storyboard represents a flow in the different sections of a software. Here are the different primary tasks user undergoes with NoMatterBot:
 
-<div> 
+<div float="left", width="300"> 
 	<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/mattermost_welcome.png" width="300">
 	Note: Welcome message sent to the user when added to a repository
 </div>
