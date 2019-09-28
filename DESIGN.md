@@ -128,7 +128,7 @@ Storyboard represents a flow in the different sections of a software. Here are t
 </div>
 
 \
-Use case to close stale issues:\
+Use case to close stale issues:
 
 | Scene-Stale Issues | Scene-Close Issues | Scene-Ignore |
 | --- | --- | -- |
@@ -137,7 +137,7 @@ Use case to close stale issues:\
 
 \
 Use case to recommend assignees for newly created issue:\
-\
+
 
 | Scene-Assignee Recommendation| Scene-Select and Assign | Scene-Ignore |
 | --- | --- | -- |
@@ -146,11 +146,11 @@ Use case to recommend assignees for newly created issue:\
 
 \
 Use case to get notifications based on event on issues:\
-\
+
 
 | Scene-Status change on github| Scene-Getting notification | 
 | --- | --- | 
-| ![ ]() | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/status_change_github.png) | 
+| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/status_change_github.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/review_update.png) | 
 | Note: When the status or label of the issue is changed, a notification will be sent to the user | Note: A notification should contain the status details| 
 | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/github_closed.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/closed_update.png) | 
 | Note: When an issue is closed a notification will be sent to the assignee| Note: A notification should contain the status details| 
