@@ -59,17 +59,39 @@ NoMatterBot can respond to occurence of events like creation of an issue, merge 
 ## Storyboard
 Storyboard represents a flow in the different sections of a software. Here are the different primary tasks user undergoes with NoMatterBot:
 
+
 <div style = "float: left, width: 300"> 
 	<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/mattermost_welcome.png" width="300">
 	<br>Note: Welcome message sent to the user when added to a repository
 </div>
 
-| ![welcome](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/mattermost_welcome.png) | 
-&#8594&#8594&#8594&#8594&#8594
-| ![welcome](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/mattermost_welcome.png) | 
-|:--:| 
-| *Note: Welcome message sent to the user when added to a repository* |
-| *Note: Welcome message sent to the user when added to a repository* |
+<div class="row">
+  <div class="column">
+  	<figure>
+  		<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png" alt="Stale issues" style="width:100%">
+	    <figcaption> 
+	    	Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore
+		</figcaption>
+  	</figure>
+  </div>
+  <div class="column">
+  	<figure>
+  		<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue_done.png" alt="Close stale issues" style="width:100%">
+    	<figcaption> 
+	    	Note: Note: If the user selects some issues and clicks on "close issues", an acknowledgement will be send to the user
+		</figcaption>
+  	</figure>
+  </div>
+  <div class="column">
+  	<figure>
+  		<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Ignore_stale_issues.png" alt="Close stale issues" style="width:100%">
+    	<figcaption> 
+	    	Note: If the user selects ignore, an acknowledgement will be sent.
+		</figcaption>
+  	</figure>
+  </div>
+</div>
+
 
 # Architecture Design
 NoMatterBot uses both GitHub Events and User Input on Mattermost as triggers to spring into action and do its thing. To this end, it uses Mattermost websocket and GitHub webhook + REST APIs. We have designed the architecture and Component Interaction keeping this in mind and it goes as follows.\
