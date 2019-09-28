@@ -127,10 +127,15 @@ Storyboard represents a flow in the different sections of a software. Here are t
 	<br>Note: Welcome message sent to the user when added to a repository
 </div>
 
-| Scene1 | Scene-Close Issues | Scene-Ignore
-| --- | --- |
+| Scene-Stale Issues | Scene-Close Issues | Scene-Ignore |
+| --- | --- | -- |
 | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue_done.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Ignore_stale_issues.png)|
 | Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore | Note: Note: If the user selects some issues and clicks on "close issues", an acknowledgement will be send to the user | Note: If the user selects ignore, an acknowledgement will be sent.|
+
+| Scene-Assignee Recommendation| Scene-Select and Assign | Scene-Ignore |
+| --- | --- | -- |
+| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Suggest_assignee.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/assigned.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/assignee_ignored.png)|
+| Note: Every time a new issue is created, NoMatterBot will recommend a list of assignees with options to assign or ignore | Note:If the user selects some assignee and clicks on "assign", an acknowledgement will be send to the user| Note: If the user selects ignore, an acknowledgement will be sent.|
 
 <figure>
 	<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png" width="300">
