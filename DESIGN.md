@@ -127,63 +127,33 @@ Storyboard represents a flow in the different sections of a software. Here are t
 	<br>Note: Welcome message sent to the user when added to a repository
 </div>
 
+Use case to close stale issues:
+
 | Scene-Stale Issues | Scene-Close Issues | Scene-Ignore |
 | --- | --- | -- |
 | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue_done.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Ignore_stale_issues.png)|
 | Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore | Note: Note: If the user selects some issues and clicks on "close issues", an acknowledgement will be send to the user | Note: If the user selects ignore, an acknowledgement will be sent.|
+
+
+Use case to recommend assignees for newly created issue:
+
 
 | Scene-Assignee Recommendation| Scene-Select and Assign | Scene-Ignore |
 | --- | --- | -- |
 | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Suggest_assignee.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/assigned.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/assignee_ignored.png)|
 | Note: Every time a new issue is created, NoMatterBot will recommend a list of assignees with options to assign or ignore | Note:If the user selects some assignee and clicks on "assign", an acknowledgement will be send to the user| Note: If the user selects ignore, an acknowledgement will be sent.|
 
-<figure>
-	<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png" width="300">
-	<figcaption> 
-		Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore
-	</figcaption>
-</figure>
 
-<figure>
-	<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue_done.png" width="300">
-	<figcaption> 
-		Note: Note: If the user selects some issues and clicks on "close issues", an acknowledgement will be send to the user
-	</figcaption>
-</figure>
+Use case to get notifications based on event on issues:
 
-<figure>
-	<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Ignore_stale_issues.png" width="300">
-	<figcaption> 
-		Note: If the user selects ignore, an acknowledgement will be sent.
-	</figcaption>
-</figure>
 
-<div class="row">
-  <div class="column">
-  	<figure>
-  		<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png" alt="Stale issues" style="width:300">
-	    <figcaption> 
-	    	Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore
-		</figcaption>
-  	</figure>
-  </div>
-  <div class="column">
-  	<figure>
-  		<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue_done.png" alt="Close stale issues" style="width:300">
-    	<figcaption> 
-	    	Note: Note: If the user selects some issues and clicks on "close issues", an acknowledgement will be send to the user
-		</figcaption>
-  	</figure>
-  </div>
-  <div class="column">
-  	<figure>
-  		<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Ignore_stale_issues.png" alt="Close stale issues" style="width:300">
-    	<figcaption> 
-	    	Note: If the user selects ignore, an acknowledgement will be sent.
-		</figcaption>
-  	</figure>
-  </div>
-</div>
+| Scene-Status change on github| Scene-Getting notification | 
+| --- | --- | 
+| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/github_closed.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/review_update.png) | 
+| Note: When the status or label of the issue is changed, a notification will be sent to the user | Note: A notification should contain the status details| 
+| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/status_change_github.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/closed_update.png) | 
+| Note: When an issue is closed a notification will be sent to the assignee| Note: A notification should contain the status details| 
+
 
 
 # Architecture Design
