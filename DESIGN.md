@@ -57,6 +57,9 @@ NoMatterBot can respond to occurence of events like creation of an issue, merge 
 ![assignee recommendation ignored](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Assignee%20Recommendations%20-%20Ignored.png)
 
 ## Storyboard
+Storyboard represents a flow in the different sections of a software. Here are the different primary tasks user undergoes with NoMatterBot:
+
+![welcome](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/mattermost_welcome.png =100x20)
 
 # Architecture Design
 NoMatterBot uses both GitHub Events and User Input on Mattermost as triggers to spring into action and do its thing. To this end, it uses Mattermost websocket and GitHub webhook + REST APIs. We have designed the architecture and Component Interaction keeping this in mind and it goes as follows.\
