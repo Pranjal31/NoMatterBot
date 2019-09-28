@@ -6,36 +6,98 @@ Issue Tracking Software like JIRA and Github Issues allow users to create issues
 
 Some of the problems that are prevalent with issue management are:
 
-+ **Closing stale issues:**
++ **Closing Stale Issues:**
 Some issues are created and kept on hold because of lack of resources among other things. Over time, these issues become stale and continue to remain in the open issues list. Manually closing the issues can prove to be burdensome. 
 
-+ **Changing issue status:**
-An assignee / manager / scrum master has to manually change an issue’s status from one state to another. For example, if a the merge request related to an issue has been approved and merged, the status must be changed from "In Development" to "Test". 
++ **Changing Issue Status:**
+An assignee / manager / scrum master has to manually change an issue’s status from one state to another. For example, if a the pull request related to an issue has been approved, merged, and closed, the status must be changed from "In Review" to "In Test". 
 
-+ **Status change notifications:**
++ **Status Change Notifications:**
 Most of the issue tracking systems either do not notify watchers about changes in issue status or send it over email which is not always convenient
  
-+ **Issue Assignment:**
++ **Assignee Recommendation:**
  For assigning a new issue to someone, one has to manually go through potential assignees' current load (e.g. number of issues currently being worked upon) or talk to them directly to get some idea about their current workload. It tends to takes up a lot of time to figure out who could be the best fit for the new issue. 
 
  # Bot Description
 
-A bot is an ideal solution to the above described problem because the tasks listed in the problem statement are mundane and repetitive, and hence could easily be offloaded to a bot. This would allow Manager/Scrum master to spend their time on more important things. Furthermore, the bot can be easily integrated with collaboration tools like Mattermost and Slack, which makes it a lot more convenient to use, as the these tools are already being used for chats, file transfers etc.
+A bot is an ideal solution to the above described problem because the tasks listed in the problem statement are mundane and repetitive, and hence could easily be offloaded to a bot. This would allow Manager/Scrum master to spend their time on more important things. Furthermore, the bot can be easily integrated with collaboration tools like Mattermost and Slack, which makes it a lot more convenient to use, as these tools are already being used for chats, file transfers etc.
 
 The "NoMatterBot" performs the following tasks:
 
-+ It cleans up the stale issues (issues which have had no activity on them for a long time). The bot asks the assignee if the stale issue can be closed. After getting confirmation from assignee, it deletes the stale issue. 
++ It cleans up the stale issues (issues which have had no activity on them for a long time). The bot asks the assignee if the stale issue can be closed. After getting confirmation from assignee, it closes the stale issue. 
 
-+ It changes the status of an issue based on triggers (For example, as soon as a Pull Request(PR) is approved and merged, the bot automatically changes the status of the issue to "Test". If the PR is rejected then the bot does not change the status).
++ It changes the status of an issue based on triggers (For example, as soon as a Pull Request (PR) is approved, merged, and closed the bot automatically changes the status of the issue to "In Test". If the PR is rejected then the bot does not change the status).
 
 + It notifies the assignee about the status change of an Issue.
-NoMatterBot can respond to occurence of events like creation of an issue, merge of a pull request for the issue etc by messaging the watchers on Mattermost/Slack
+NoMatterBot can respond to occurence of events like creation of PR, merge of PR for the issue etc by messaging the assignee on Mattermost/Slack
 
 + It provides possible suggestions regarding whom to assign the issue based on bandwidth/load for each team member. To make a good call, the bot looks at open issue count for each team member. On receiving a response with an assignee's name, it will assign the issue to the requested assignee.
 
 "NoMatterBot" can respond to events and can have limited conversations with user (conversations can only be started by "NoMatterBot"). It is a Chat-Dev Bot because it mediates as well as performs software engineering tasks.
 
 # Use Cases
+
+## Use case: Closing Stale Issues
+Preconditions: \
+Bot must have GitHub API token and a Mattermost access token. GithHub users must also have an account on Mattermost
+
+Main flow: \
+Once every day, the bot will scan through all the open issues and ping assignees if they have any stale issues (issues which have had no activity in six months). The bot asks if assignee wants to close the stale issues. Assignee can select the issues to be closed or choose to ignore the request.
+
+Sub-flows:\
+[S1] Bot scans through all the open issues\
+[S2] Bot filters out stale issues and simultaneously groups them by assignee\
+[S3] Bot pings the assignees to ask if their stale issues can be closed\
+[S4] Assignees can select the issues they want to close and hit 'Close Issue(s)' button. Bot closes the issues and acknowledges\
+[S5] Otherwise assignees can hit 'Ignore' button to ignore the issues for a day. Bot acknowledges it\
+
+## Use Case: Change Issue Status
+
+Preconditions: \ 
+Bot must have GitHub API token. Pull Requests (PR) must include GitHub Issue number at the start of PR title Issue.
+
+Main Flow: \
+User will create a PR (or close an approved PR). It would change the issue’s status from "In Progress" to "In Review" (if closing PR, from "In Review" to "In Test").
+
+Sub-flows: \
+[S1] Bot identifies the triggered event (PR creation / PR closure)\
+[S2] Bot identifies the corresponding issue from the issue ID embedded in PR title\
+[S3] If the identified event is PR creation, Bot changes the issue status from "In Progress" to "In Review"\
+[S4] If the identified event is PR closure, Bot changes the issue status from "In Review" to "In Test"\
+
+Alternative Flows: \
+PR is not approved. Bot doesn't take any action.
+			
+## Use Case: Notify Change in Issue Status
+
+Preconditions: \
+Bot must have a Mattermost access token. GithHub users must also have an account on Mattermost
+
+Main Flow: \
+Any change in GitHub issue status would create an event. The Bot captures the event and notifies the assignee about the change on Mattermost 
+
+Sub-flows: \
+[S1] Bot identifies the issue status change event\
+[S2] Bot identifies the assignee of the issue\
+[S3] Bot notifies the assignee of the status change on Mattermost\
+
+## Use Case: Assignee Recommendation
+
+Preconditions: \
+Bot must have GitHub API token, Mattermost access token and the permissions to set assignees for GitHub Issues.
+
+Main flow:\
+A user creates an issue. Bot analyses developer workloads and recommends top three potential assignees to the issue creator on Mattermost. The user can select an assignee or ignore the message altogether. The bot sets an assignee, if one is chosen.
+
+Sub-flows:\
+[S1] User creates an issue with no assignee set\
+[S2] The bot compares the workload of different developers based on their number of open issues\
+[S3] Based on previous analysis, the bot suggests top three potential assignees to issue creator on Mattermost\
+[S3] Issue creator selects an assignee. The bot sets the chosen assignee for the issue and confirms it to issue creator\
+[S4] Otherwise, issue creator can ignore the recommendation. The bot would acknowledge it.\
+
+Alternative flows:\
+If more than three developers have the same workload, a tie-breaking mechanism would be used to decide the top three.
 
 # Design Sketches
 
