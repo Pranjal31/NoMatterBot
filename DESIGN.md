@@ -61,8 +61,15 @@ Storyboard represents a flow in the different sections of a software. Here are t
 
 <div style = "float: left, width: 300"> 
 	<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/mattermost_welcome.png" width="300">
-	Note: Welcome message sent to the user when added to a repository
+	<br>Note: Welcome message sent to the user when added to a repository
 </div>
+
+| ![welcome](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/mattermost_welcome.png) | 
+&#8594&#8594&#8594&#8594&#8594
+| ![welcome](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/mattermost_welcome.png) | 
+|:--:| 
+| *Note: Welcome message sent to the user when added to a repository* |
+| *Note: Welcome message sent to the user when added to a repository* |
 
 # Architecture Design
 NoMatterBot uses both GitHub Events and User Input on Mattermost as triggers to spring into action and do its thing. To this end, it uses Mattermost websocket and GitHub webhook + REST APIs. We have designed the architecture and Component Interaction keeping this in mind and it goes as follows.\
