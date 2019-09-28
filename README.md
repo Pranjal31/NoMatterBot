@@ -1,4 +1,4 @@
-# IssueBot
+# NoMatterBot
 
 ## Contributors
 
