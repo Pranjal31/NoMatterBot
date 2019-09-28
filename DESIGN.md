@@ -127,31 +127,32 @@ Storyboard represents a flow in the different sections of a software. Here are t
 	<br>Note: Welcome message sent to the user when added to a repository
 </div>
 
-Use case to close stale issues:
-
+\
+Use case to close stale issues:\
+\
 | Scene-Stale Issues | Scene-Close Issues | Scene-Ignore |
 | --- | --- | -- |
 | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue_done.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Ignore_stale_issues.png)|
 | Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore | Note: Note: If the user selects some issues and clicks on "close issues", an acknowledgement will be send to the user | Note: If the user selects ignore, an acknowledgement will be sent.|
 
-
-Use case to recommend assignees for newly created issue:
-
+\
+Use case to recommend assignees for newly created issue:\
+\
 
 | Scene-Assignee Recommendation| Scene-Select and Assign | Scene-Ignore |
 | --- | --- | -- |
 | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Suggest_assignee.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/assigned.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/assignee_ignored.png)|
 | Note: Every time a new issue is created, NoMatterBot will recommend a list of assignees with options to assign or ignore | Note:If the user selects some assignee and clicks on "assign", an acknowledgement will be send to the user| Note: If the user selects ignore, an acknowledgement will be sent.|
 
-
-Use case to get notifications based on event on issues:
-
+\
+Use case to get notifications based on event on issues:\
+\
 
 | Scene-Status change on github| Scene-Getting notification | 
 | --- | --- | 
-| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/github_closed.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/review_update.png) | 
+| ![ ]() | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/status_change_github.png) | 
 | Note: When the status or label of the issue is changed, a notification will be sent to the user | Note: A notification should contain the status details| 
-| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/status_change_github.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/closed_update.png) | 
+| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/github_closed.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/closed_update.png) | 
 | Note: When an issue is closed a notification will be sent to the assignee| Note: A notification should contain the status details| 
 
 
