@@ -35,6 +35,9 @@ NoMatterBot can respond to occurence of events like creation of PR, merge of PR 
 
 "NoMatterBot" can respond to events and can have limited conversations with user (conversations can only be started by "NoMatterBot"). It is a Chat-Dev Bot because it mediates as well as performs software engineering tasks.
 
+**Tagline:**
+I will manage your issues no matter what!
+
 # Use Cases
 
 ## Use case: Closing Stale Issues
@@ -161,21 +164,20 @@ NoMatterBot uses both GitHub Events and User Input on Mattermost as triggers to 
 \
 Two of the use cases (Assignee recommendation and Change in Issue Status) discussed above start with an Event in GitHub which it posts to the server running in Bot software as an HTTP POST message. The server parses this raw message data and passes it onto the Event Handler, which is the heart of our Bot. The third use case (deleting stale Issues) involves directly invoking Event Handler once every day via system timers. Event Handler is responsible to identify the trigger and call appropriate modules to respond to it.\
 \
-Assignee recommender implements logic needed to come up with a list of potential assignees to a newly created Issue based on their current work-load and return it to the Event handler.\
+Assignee recommender implements the logic needed to come up with a list of potential assignees to a newly created Issue based on their current work-load. We also maintain a local database that holds Issue details and work-load details on each user. The handler talks to Stale Issue processor that in-turn uses this DB to identify stale issues of every assignee and send it in a message on Mattermost to that assignee. Event Handler uses the REST client which posts changes in Issue status and Issue assignee details to GitHub whenever there are appropriate events.\
 \
 One other major component relates to handling Mattermost Events. Mattermost provides websockets to send and receive real-time data using HTTP GET and POST. So, when the Event Handler receives the list of potential assignees from Assignee Recommender, it uses HTTP message composer and Mattermost client to send the list as a private message to Issue creator.  When the user responds to this message, the handler uses parsed data from message parser and forwards it to the REST client which then updates the Assignee field on GitHub using a REST call. After this, the Bot notifies the Issue creator about successful status change.\
 \
-For clarity, we show the work-flow of our design for all three test cases below. We have numbered the interactions so that if you follow the arrows in numerical order you can see the pieces of the puzzle coming together!
-
+Following image shows architecture of the system.
 ![Arch1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Architecture.png)
+
+For clarity, we show the work-flow of our design for all three test cases below. We have numbered the interactions so that if you follow the arrows in numerical order you can see the pieces of the puzzle coming together!
 
 ![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%201.png)
 ![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%202.png)
 ![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%203.png)
 ![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%204.png)
 
-There are several constraints and feature dependencies that we stick to, to be in-line with the working of our design. We assume that there can be a single assignee per Issue to simplify Mattermost message interaction. We also create several custom status labels that our Bot uses to track Issue progress. NoMatterBot cannot open or close an Issue. They are done by a team member and a tester respectively.
-
-
-**Tagline:**
-I will manage your issues no matter what!
+There are several constraints and feature dependencies that we stick to, to be in-line with the working of our design. We assume that there can be a single assignee per Issue to simplify Mattermost message interaction. We also create several custom status labels that our Bot uses to track Issue progress. NoMatterBot cannot open or close an Issue. They are done by a team member and a tester respectively.\
+\
+The Bot follows **Event System** architecture pattern.  
