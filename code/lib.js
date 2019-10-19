@@ -21,10 +21,10 @@ function sendResponse(method, data) {
 		url: config.mmurl + "/api/v4/posts",
 		method: method,
 		headers: {
-			"content-type": "application/json",
-			"Authorization": "Bearer ${config.botaccess}"
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${config.botaccess}`
 		},
-		data : data
+		json : data
 	};
 
 	request(options, function (error, response, body) {
