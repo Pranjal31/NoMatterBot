@@ -45,11 +45,11 @@ Main flow: \
 Once every day, the bot will scan through all the open issues and ping assignees if they have any stale issues (issues which have had no activity in six months). The bot asks if assignee wants to close the stale issues. Assignee can select the issues to be closed or choose to ignore the request.
 
 Sub-flows:\
-[S1] Bot scans through all the open issues\
+[S1] Bot scans through all the open issues \
 [S2] Bot filters out stale issues and simultaneously groups them by assignee\
 [S3] Bot pings the assignees to ask if their stale issues can be closed\
 [S4] Assignees can select the issues they want to close and hit 'Close Issue(s)' button. Bot closes the issues and acknowledges\
-[S5] Otherwise assignees can hit 'Ignore' button to ignore the issues for a day. Bot acknowledges it\
+[S5] Otherwise assignees can hit 'Ignore' button to ignore the issues for a day. Bot acknowledges it
 
 ## Use Case: Change Issue Status
 
@@ -63,7 +63,7 @@ Sub-flows: \
 [S1] Bot identifies the triggered event (PR creation / PR closure)\
 [S2] Bot identifies the corresponding issue from the issue ID embedded in PR title\
 [S3] If the identified event is PR creation, Bot changes the issue status from "In Progress" to "In Review"\
-[S4] If the identified event is PR closure, Bot changes the issue status from "In Review" to "In Test"\
+[S4] If the identified event is PR closure, Bot changes the issue status from "In Review" to "In Test"
 
 Alternative Flows: \
 PR is not approved. Bot doesn't take any action.
@@ -79,7 +79,7 @@ Any change in GitHub issue status would create an event. The Bot captures the ev
 Sub-flows: \
 [S1] Bot identifies the issue status change event\
 [S2] Bot identifies the assignee of the issue\
-[S3] Bot notifies the assignee of the status change on Mattermost\
+[S3] Bot notifies the assignee of the status change on Mattermost
 
 ## Use Case: Assignee Recommendation
 
@@ -94,7 +94,7 @@ Sub-flows:\
 [S2] The bot compares the workload of different developers based on their number of open issues\
 [S3] Based on previous analysis, the bot suggests top three potential assignees to issue creator on Mattermost\
 [S3] Issue creator selects an assignee. The bot sets the chosen assignee for the issue and confirms it to issue creator\
-[S4] Otherwise, issue creator can ignore the recommendation. The bot would acknowledge it.\
+[S4] Otherwise, issue creator can ignore the recommendation. The bot would acknowledge it.
 
 Alternative flows:\
 If more than three developers have the same workload, a tie-breaking mechanism would be used to decide the top three.
@@ -136,7 +136,7 @@ Use case to close stale issues:
 | Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore | Note: Note: If the user selects some issues and clicks on "close issues", an acknowledgement will be send to the user | Note: If the user selects ignore, an acknowledgement will be sent.|
 
 \
-Use case to recommend assignees for newly created issue:\
+Use case to recommend assignees for newly created issue:
 
 
 | Scene-Assignee Recommendation| Scene-Select and Assign | Scene-Ignore |
@@ -145,7 +145,7 @@ Use case to recommend assignees for newly created issue:\
 | Note: Every time a new issue is created, NoMatterBot will recommend a list of assignees with options to assign or ignore | Note:If the user selects some assignee and clicks on "assign", an acknowledgement will be send to the user| Note: If the user selects ignore, an acknowledgement will be sent.|
 
 \
-Use case to get notifications based on event on issues:\
+Use case to get notifications based on event on issues:
 
 
 | Scene-Status change on github| Scene-Getting notification | 
@@ -169,6 +169,7 @@ One other major component relates to handling Mattermost Events. Mattermost prov
 For clarity, we show the work-flow of our design for all three test cases below. We have numbered the interactions so that if you follow the arrows in numerical order you can see the pieces of the puzzle coming together!
 
 ![Arch1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Architecture.png)
+![Arch1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Basic.png)
 
 ![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%201.png)
 ![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%202.png)
