@@ -1,0 +1,12 @@
+{
+  "name": "nomatterbot-server",
+  "version": "1.0.0",
+  "description": "nomatterbot-server",
+  "main": "statuschange.js",
+  "keywords": [
+    "status change"
+  ],
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
