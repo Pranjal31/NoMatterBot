@@ -110,6 +110,8 @@ async function openInteractiveDialog(data)
 	});
 }
 module.exports.openInteractiveDialog = openInteractiveDialog;
+module.exports.deleteLabelsForIssue = deleteLabelsForIssue;
+module.exports.addLabelToIssue = addLabelToIssue;
 module.exports.updateLabelForIssue = updateLabelForIssue;
 
 
