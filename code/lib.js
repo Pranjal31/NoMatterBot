@@ -2,7 +2,7 @@ var request = require('request');
 const got  = require('got');
 var storage_lib = require('./storage_lib.js');
 
-const githubUrl = "https://api.github.com";
+const githubUrl = "https://api.github.ncsu.edu";
 
 const chalk  = require('chalk');
 
@@ -12,7 +12,7 @@ var config = {};
 config.channel = process.env.CHANNELID;
 config.botaccess = process.env.BOTACCESSTOKEN;
 config.mmurl = process.env.MATTERMOSTURL;
-config.token = process.env.GITHUBTOKEN;
+config.gh_token = process.env.GITHUBTOKEN;
 
 if( !config.channel || !config.mmurl || !config.botaccess )
 {
@@ -21,10 +21,12 @@ if( !config.channel || !config.mmurl || !config.botaccess )
 	process.exit(1);
 }
 
-function sendResponse(method, data) {
+
+// send response to the front end
+function sendResponse(data) {
 	var options = {
 		url: config.mmurl + "/api/v4/posts",
-		method: method,
+		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 			"Authorization": `Bearer ${config.botaccess}`
@@ -38,19 +40,25 @@ function sendResponse(method, data) {
 	});
 }
 
-async function getIssues(owner, repo) {
-	console.log(config.token)
-	const url = urlRoot + "/repos/" + owner + "/" + repo + "/issues";
-	const options = {
-		url: urlRoot,
-		method: 'GET',
+function getDefaultOptions(endpoint, method)
+{
+	var options = {
+		url: githubUrl + endpoint,
+		method: method,
 		headers: {
-			"User-Agent": "CSC510-REST-WORKSHOP",
+			"User-Agent": "NoMatterBot",
 			"content-type": "application/json",
-			"Authorization": `token ${config.token}`
-		},
-		json: true
+			"Authorization": `token ${config.gh_token}`
+		}
 	};
+	return options;
+}
+
+// get issues for a given repo
+async function getIssues(owner, repo) {
+	var options = getDefaultOptions("/repos/" + owner + "/" + repo + "/issues", "GET");
+
+	options.json = true;
 
 	return new Promise(function(resolve, reject)
 	{
@@ -63,7 +71,29 @@ async function getIssues(owner, repo) {
 				return; // Terminate execution.
 			}
 
-			console.log(response)
+			resolve(response.body);
+		});
+	});
+}
+
+// get collaborators for a given repo
+async function getCollaborators(owner, repo) {
+	var options = getDefaultOptions("/repos/" + owner + "/" + repo + "/collaborators", "GET")
+
+	options.json = true;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
 		});
 	});
 }
@@ -75,12 +105,31 @@ function createChannel(githubUser) {
 	return config.channel;
 }
 
-function assignToIssue(owner, repo, issue_id) {
 
-	return 301;
+// assign the issue to an assignee 
+function assignToIssue(owner, repo, issue_id, assignee) {
+	var options = getDefaultOptions("/repos/" + owner + "/" + repo + "/issues/" + issue_id, "PATCH")
+
+	options.body = `{"assignees":["${assignee}"]`;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.statusCode);
+		});
+	});
 }
 
 module.exports.sendResponse = sendResponse;
 module.exports.getIssues = getIssues;
 module.exports.createChannel = createChannel;
 module.exports.assignToIssue = assignToIssue;
+module.exports.getCollaborators = getCollaborators;

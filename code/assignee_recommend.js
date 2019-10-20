@@ -25,11 +25,24 @@ if( !config.channel || !config.mmurl || !config.botaccess )
 	process.exit(1);
 }
 
-function recommendAssignee(owner, repo, creator) {
+async function recommendAssignee(owner, repo, creator) {
 
-	// var issueList = lib.getIssues(owner, repo);
-	var issueList = data;
-	var workLoad = getWorkLoad(issueList);
+	// get issues for all users
+	var issueList = await lib.getIssues(owner, repo);
+
+	//get all users
+	var userList = await lib.getCollaborators(owner, repo);
+
+	var collaborators = {}
+
+	for (var index in userList) {
+		collaborators[userList[index].login] = 0;
+	}
+
+	// get work load for each user
+	var workLoad = getWorkLoad(issueList, collaborators);
+
+	console.log(workLoad);
 	// send to front end
 	var channel_id = lib.createChannel(creator);
 
@@ -46,13 +59,11 @@ function recommendAssignee(owner, repo, creator) {
 		}
 	}
 
-	lib.sendResponse("POST", data);
+	// lib.sendResponse("POST", data);
 
 }
 
-function getWorkLoad(issueList) {
-
-	var workLoad = {};
+function getWorkLoad(issueList, collaborators) {
 
 	for (var index in issueList) {
  
@@ -60,17 +71,17 @@ function getWorkLoad(issueList) {
 			var assignees_list = issueList[index].assignees;
 			for (var assignee_index in assignees_list) {
 				var assignee = assignees_list[assignee_index].login;
-				if (!(assignee in workLoad)) {
-					workLoad[assignee] = 0;
+				if (!(assignee in collaborators)) {
+					collaborators[assignee] = 0;
 				}
-				workLoad[assignee] += 1;
+				collaborators[assignee] += 1;
 			}
 		}
 	}
 
 	var sorted_workLoad = [];
-	for (var assignee in workLoad) {
-	    sorted_workLoad.push([assignee, workLoad[assignee]]);
+	for (var assignee in collaborators) {
+	    sorted_workLoad.push([assignee, collaborators[assignee]]);
 	}
 
 	sorted_workLoad.sort(function(a, b) {
@@ -80,11 +91,11 @@ function getWorkLoad(issueList) {
 	return sorted_workLoad;
 }
 
-function assign(owner, repo, issue_id, creator) {
+async function assign(owner, repo, issue_id, creator, assignee) {
 
 	var channel_id = lib.createChannel(creator);
 
-	var status = lib.assignToIssue(owner, repo, issue_id);
+	var status = await lib.assignToIssue(owner, repo, issue_id, assignee);
 
 	if(status == 200) {
 
@@ -93,7 +104,9 @@ function assign(owner, repo, issue_id, creator) {
 		 	"message": "Assignee recommendation success"
 		}
 
-		lib.sendResponse("POST", data);
+		console.log(data);
+
+		// lib.sendResponse("POST", data);
 
 	} else {
 
@@ -102,7 +115,9 @@ function assign(owner, repo, issue_id, creator) {
 		 	"message": "Assignee recommendation failure"
 		}
 
-		lib.sendResponse("POST", data);
+		console.log(data);
+
+		// lib.sendResponse("POST", data);
 	}
 
 }
@@ -120,4 +135,5 @@ function ignoreRecommendations(creator) {
 	lib.sendResponse("POST", data);
 }
 
-assign("anjali", "repo", "issue_id", "creator")
+recommendAssignee("asmalunj", "test_repo", "asmalunj");
+assign("asmalunj", "test_repo", 6, "asmalunj", "vbbhadra");
