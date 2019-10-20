@@ -2,7 +2,8 @@ var request = require('request');
 const chalk  = require('chalk');
 
 // NCSU Enterprise endpoint:
-var urlRoot = "https://api.github.ncsu.edu";
+var ghRoot = "https://api.github.ncsu.edu";
+var botRoot = "http://10.152.26.23:8065";
 var config = {};
 
 // Retrieve our api token from the environment variables.
@@ -18,7 +19,7 @@ if( !config.gh_token )
 
 console.log(chalk.green(`Your token is: ${config.gh_token.substring(0,4)}...`));
 
-function getDefaultOptions(endpoint, method)
+function getDefaultOptions(urlRoot, endpoint, method)
 {
 	var options = {
 		url: urlRoot + endpoint,
@@ -43,7 +44,7 @@ async function deleteLabelsForIssue(owner,repo, issue)
 {
 	console.log(chalk.green("\nDelete Issue Labels"));
 
-    let options = getDefaultOptions("/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "DELETE");
+    let options = getDefaultOptions(ghRoot, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "DELETE");
 
 	// Send a http request to url and specify a callback that will be called upon its return.
 	return new Promise(function(resolve, reject)
@@ -66,8 +67,8 @@ async function addLabelToIssue(owner,repo, issue, label)
 {
 	console.log(chalk.green("\nAdd Label to Issue"));
 
-    let options = getDefaultOptions("/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "POST");
-    options.body = `{"labels":["${label}"]`;
+    let options = getDefaultOptions(ghRoot, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "POST");
+    options.body = `{"labels":["${label}"]}`;
 
 	// Send a http request to url and specify a callback that will be called upon its return.
 	return new Promise(function(resolve, reject)
@@ -85,6 +86,30 @@ async function addLabelToIssue(owner,repo, issue, label)
 	});
 }
 
+// open interactive dialog
+async function openInteractiveDialog(data)
+{
+	console.log(chalk.green("\nOpen Interactive Dialog"));
+
+	let options = getDefaultOptions(botRoot, "/api/v4/actions/dialogs/open", "POST");
+    options.body = JSON.stringify(data);
+
+	// Send a http request to url and specify a callback that will be called upon its return.
+	return new Promise(function(resolve, reject)
+	{
+		request.post(options, function(error, response, body){
+			if(error){
+				console.log(chalk.red(error));
+				reject(error);
+				return; // Terminate execution
+            }
+            console.log(response.body);
+			console.log(`Response Status Code ${response.statusCode}`);
+			resolve(response.statusCode);
+		});
+	});
+}
+module.exports.openInteractiveDialog = openInteractiveDialog;
 module.exports.updateLabelForIssue = updateLabelForIssue;
 
 
