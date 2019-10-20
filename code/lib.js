@@ -2,7 +2,6 @@ var request = require('request');
 const got  = require('got');
 var storage_lib = require('./storage_lib.js');
 
-const token = "token " + "YOUR TOKEN";
 const githubUrl = "https://api.github.com";
 
 const chalk  = require('chalk');
@@ -78,7 +77,7 @@ function createChannel(githubUser) {
 
 function assignToIssue(owner, repo, issue_id) {
 
-	return response.statusCode;
+	return 301;
 }
 
 module.exports.sendResponse = sendResponse;

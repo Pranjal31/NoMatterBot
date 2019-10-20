@@ -80,11 +80,13 @@ function getWorkLoad(issueList) {
 	return sorted_workLoad;
 }
 
-async function assign(owner, repo, issue_id, creator) {
+function assign(owner, repo, issue_id, creator) {
 
 	var channel_id = lib.createChannel(creator);
 
-	if(lib.assignToIssue(owner, repo, issue_id) == 200) {
+	var status = lib.assignToIssue(owner, repo, issue_id);
+
+	if(status == 200) {
 
 		var data = {
 			"channel_id": channel_id,
@@ -117,3 +119,5 @@ function ignoreRecommendations(creator) {
 
 	lib.sendResponse("POST", data);
 }
+
+assign("anjali", "repo", "issue_id", "creator")
