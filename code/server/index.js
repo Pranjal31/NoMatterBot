@@ -1,6 +1,10 @@
 const express = require('express')
+const status_change = require('../statuschange')
 const app = express()
 const port = 3000
+
+var label_ir = "in review";
+var label_test = "test";
 
 // express configuration
 app.use(express.json({type: '*/*'}));
@@ -8,23 +12,20 @@ app.use(express.json({type: '*/*'}));
 // set routes
 app.post('/events/', function (req, res) {
     var req_body = req.body
-    //console.log(JSON.stringify(req.body))
-    //console.log(req.body.repository.owner)
 
     if (req_body.pull_request) {
-        var repo_name = req_body.pull_request.head.repo.name
-        var issue_num = req_body.pull_request.title.split('-')[0]
+        var userId = req_body.pull_request.user.login
+
+        var repo = req_body.pull_request.head.repo.name;
+        var issue = req_body.pull_request.title.split('-')[0].trim()
 
         if (req_body.action === 'opened'){
-            // delete existing labels
-
+            status_change.updateLabelForIssue(userId, repo, issue, label_ir);
         } else if(req_body.action === 'closed') {
-
+            status_change.updateLabelForIssue(userId, repo, issue, label_test);
         }
-
     }
 
-    //console.log(req_body)
     res.send(`Received event. ${JSON.stringify(req.body)}`);
 });
 
