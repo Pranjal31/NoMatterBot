@@ -4,31 +4,10 @@ const got  = require('got');
 
 var lib = require('./lib');
 
-const token = "token " + "YOUR TOKEN";
-const githubUrl = "https://api.github.com";
-
-const chalk  = require('chalk');
-
-var config = {};
-
-const data = require("./mockIssues.json");
-
-// Retrieve our api token from the environment variables.
-config.channel = process.env.CHANNELID;
-config.botaccess = process.env.BOTACCESSTOKEN;
-config.mmurl = process.env.MATTERMOSTURL;
-
-if( !config.channel || !config.mmurl || !config.botaccess )
-{
-	console.log(`Please set your environment variables with appropriate token.`);
-	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);
-	process.exit(1);
-}
-
 async function recommendAssignee(owner, repo, creator) {
 
 	// get issues for all users
-	var issueList = await lib.getIssues(owner, repo);
+	var issueList = await lib.getOpenIssues(owner, repo);
 
 	//get all users
 	var userList = await lib.getCollaborators(owner, repo);
@@ -42,25 +21,48 @@ async function recommendAssignee(owner, repo, creator) {
 	// get work load for each user
 	var workLoad = getWorkLoad(issueList, collaborators);
 
-	console.log(workLoad);
+	var recommendations = [];
+
+	for (var index in workLoad) {
+		if (index < 3) {
+			var json_data = {
+				"text": workLoad[index][0] ,
+				"value": workLoad[index][0]
+			}
+			recommendations[index] = json_data; 
+		}
+	}
+
 	// send to front end
-	var channel_id = lib.createChannel(creator);
+	var channel_id = await lib.createChannel(creator);
 
 	var data = {
 		"channel_id": channel_id,
-	 	"message": "Assignee recommendation",
+	 	"message": "Hey! I saw you created an issue, want to assign to somebody?",
 	 	"props": {
 			"attachments": [
 		     	{
-					"pretext": "Look some text",
-					"text": "This is text"
+					"pretext": "I suggest these people based on the work load:",
+					"text": "Assignee recommendations",
+					"actions": [
+				        {
+							"name": "Select an option...",
+							"integration": {
+								"url": "http://127.0.0.1:7357/action_options",
+								"context": {
+									"action": "do_something"
+								}
+							},
+							"type": "select",
+							"options" : recommendations
+						}
+					]
 				}
 			]
 		}
 	}
 
-	// lib.sendResponse("POST", data);
-
+	lib.sendResponse(data);
 }
 
 function getWorkLoad(issueList, collaborators) {
@@ -93,7 +95,7 @@ function getWorkLoad(issueList, collaborators) {
 
 async function assign(owner, repo, issue_id, creator, assignee) {
 
-	var channel_id = lib.createChannel(creator);
+	var channel_id = await lib.createChannel(creator);
 
 	var status = await lib.assignToIssue(owner, repo, issue_id, assignee);
 
@@ -106,7 +108,7 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 		console.log(data);
 
-		// lib.sendResponse("POST", data);
+		// lib.sendResponse(data);
 
 	} else {
 
@@ -117,14 +119,14 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 		console.log(data);
 
-		// lib.sendResponse("POST", data);
+		// lib.sendResponse(data);
 	}
 
 }
 
-function ignoreRecommendations(creator) {
+async function ignoreRecommendations(creator) {
 
-	var channel_id = lib.createChannel(creator);
+	var channel_id = await lib.createChannel(creator);
 
 	var data = {
 		"channel_id": channel_id,
@@ -132,7 +134,7 @@ function ignoreRecommendations(creator) {
 
 	}
 
-	lib.sendResponse("POST", data);
+	lib.sendResponse(data);
 }
 
 recommendAssignee("asmalunj", "test_repo", "asmalunj");

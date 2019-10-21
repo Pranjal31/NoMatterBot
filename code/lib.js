@@ -8,7 +8,7 @@ const chalk  = require('chalk');
 
 var config = {};
 
-// Retrieve our api token from the environment variables.
+// Retrieve our api tokens from the environment variables.
 config.channel = process.env.CHANNELID;
 config.botaccess = process.env.BOTACCESSTOKEN;
 config.mmurl = process.env.MATTERMOSTURL;
@@ -23,7 +23,7 @@ if( !config.channel || !config.mmurl || !config.botaccess )
 
 
 // send response to the front end
-function sendResponse(data) {
+async function sendResponse(data) {
 	var options = {
 		url: config.mmurl + "/api/v4/posts",
 		method: "POST",
@@ -34,9 +34,19 @@ function sendResponse(data) {
 		json : data
 	};
 
-	request(options, function (error, response, body) {
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
 
-		console.log((response.body)) ;
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
 	});
 }
 
@@ -55,7 +65,8 @@ function getDefaultOptions(endpoint, method)
 }
 
 // get issues for a given repo
-async function getIssues(owner, repo) {
+async function getOpenIssues(owner, repo) {
+
 	var options = getDefaultOptions("/repos/" + owner + "/" + repo + "/issues", "GET");
 
 	options.json = true;
@@ -78,6 +89,7 @@ async function getIssues(owner, repo) {
 
 // get collaborators for a given repo
 async function getCollaborators(owner, repo) {
+
 	var options = getDefaultOptions("/repos/" + owner + "/" + repo + "/collaborators", "GET")
 
 	options.json = true;
@@ -98,16 +110,41 @@ async function getCollaborators(owner, repo) {
 	});
 }
 
-function createChannel(githubUser) {
+async function createChannel(githubUser) {
 
 	var mmuserid = storage_lib.get("tblGitMatter", githubUser);
 
-	return config.channel;
+	var options = {
+		url: config.mmurl + "/api/v4/channels/direct",
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${config.botaccess}`
+		},
+		json : [
+		  "zonbwmqtxtdmtp9b79owgid3ny",
+		  "yuut455cftdrp87mdtmyt1yu8h"
+		]
+	};
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+			resolve(response.body.id);
+		});
+	});
 }
 
 
 // assign the issue to an assignee 
-function assignToIssue(owner, repo, issue_id, assignee) {
+async function assignToIssue(owner, repo, issue_id, assignee) {
 	var options = getDefaultOptions("/repos/" + owner + "/" + repo + "/issues/" + issue_id, "PATCH")
 
 	options.body = `{"assignees":["${assignee}"]`;
@@ -129,7 +166,7 @@ function assignToIssue(owner, repo, issue_id, assignee) {
 }
 
 module.exports.sendResponse = sendResponse;
-module.exports.getIssues = getIssues;
+module.exports.getOpenIssues = getOpenIssues;
 module.exports.createChannel = createChannel;
 module.exports.assignToIssue = assignToIssue;
 module.exports.getCollaborators = getCollaborators;

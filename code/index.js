@@ -18,4 +18,4 @@ var data = {
 	}
 }
 
-lib.sendResponse("POST", data)
+lib.sendResponse(data)
