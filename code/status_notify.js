@@ -31,7 +31,7 @@ function notify_change(post_body)
     }
 
     data.message = msg;
-    lib.sendResponse("POST", data)
+    lib.sendResponse(data)
 }
 
 module.exports.notify_change = notify_change;

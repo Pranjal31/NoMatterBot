@@ -8,7 +8,7 @@ config.mmurl = process.env.MATTERMOSTURL;
 config.channelid = process.env.CHANNELID;
 
 
-function async function login(browser, url) {
+async function login(browser, url) {
     const page = await browser.newPage();
   
     await page.goto(url, {waitUntil: 'networkidle0'});
@@ -23,15 +23,27 @@ function async function login(browser, url) {
     return page;
   }
 
-  function async function navigate_to(browser, url) {
+  async function navigate_to(page, channelid) {
+    await page.waitForSelector(`[data-channelid=${channelid}]`)
+    await page.click(`[data-channelid=${channelid}`)
+  }
+
+  async function hasMsgId(page, msgId)
+  {
+    try
+    {
+      await page.waitForXPath()
+  }
 
   (async () => {
 
-    await notifier.notify_change(test_json)
+    msgId = await notifier.notify_change(test_json);
 
     const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
     let page = await login( browser, `${config.mmurl}/login` );
-    await navigate_to(page, config.channeName)
+    await navigateTo(page, config.channelid);
+    await hasMsgId(page, msgId)
+    
     //await postMessage(page, "Hello world from browser automation" );
   
     // const html = await page.content(); // serialized HTML of page DOM.
