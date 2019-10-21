@@ -23,7 +23,7 @@ if( !config.channel || !config.mmurl || !config.botaccess )
 
 
 // send response to the front end
-function sendResponse(data) {
+async function sendResponse(data) {
 	var options = {
 		url: config.mmurl + "/api/v4/posts",
 		method: "POST",
@@ -34,9 +34,19 @@ function sendResponse(data) {
 		json : data
 	};
 
-	request(options, function (error, response, body) {
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
 
-		console.log((response.body)) ;
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
 	});
 }
 
@@ -56,6 +66,7 @@ function getDefaultOptions(endpoint, method)
 
 // get issues for a given repo
 async function getOpenIssues(owner, repo) {
+
 	var options = getDefaultOptions("/repos/" + owner + "/" + repo + "/issues", "GET");
 
 	options.json = true;
@@ -78,6 +89,7 @@ async function getOpenIssues(owner, repo) {
 
 // get collaborators for a given repo
 async function getCollaborators(owner, repo) {
+
 	var options = getDefaultOptions("/repos/" + owner + "/" + repo + "/collaborators", "GET")
 
 	options.json = true;
