@@ -123,7 +123,7 @@ async function createChannel(githubUser) {
 		},
 		json : [
 		  "zonbwmqtxtdmtp9b79owgid3ny",
-		  "yuut455cftdrp87mdtmyt1yu8h"
+		  "3e43uuy41ir4jm7dqzu189knbw"
 		]
 	};
 

@@ -1,25 +1,12 @@
 var request = require('request');
-var HashMap = require('HashMap');
 const got  = require('got');
 
 var lib = require('./lib');
 
-async function recommendAssignee(owner, repo, creator) {
-
-	// get issues for all users
-	var issueList = await lib.getOpenIssues(owner, repo);
-
-	//get all users
-	var userList = await lib.getCollaborators(owner, repo);
-
-	var collaborators = {}
-
-	for (var index in userList) {
-		collaborators[userList[index].login] = 0;
-	}
+async function recommendAssignee(data) {
 
 	// get work load for each user
-	var workLoad = getWorkLoad(issueList, collaborators);
+	var workLoad = await getWorkLoad(data.owner, data.repo);
 
 	var recommendations = [];
 
@@ -32,13 +19,14 @@ async function recommendAssignee(owner, repo, creator) {
 			recommendations[index] = json_data; 
 		}
 	}
-
 	// send to front end
-	var channel_id = await lib.createChannel(creator);
+	var channel_id = await lib.createChannel(data.creator);
 
-	var data = {
+	// var channel_id = "xyz";
+
+	var data_assignee = {
 		"channel_id": channel_id,
-	 	"message": "Hey! I saw you created an issue, want to assign to somebody?",
+	 	"message": "Hey! I saw you created an issue, want to assign it to somebody?",
 	 	"props": {
 			"attachments": [
 		     	{
@@ -48,13 +36,27 @@ async function recommendAssignee(owner, repo, creator) {
 				        {
 							"name": "Select an option...",
 							"integration": {
-								"url": "http://127.0.0.1:7357/action_options",
+								"url": "http://de305d48.ngrok.io/triggers/",
 								"context": {
-									"action": "do_something"
+									"action": "ASSIGN",
+									"owner": data.owner,
+									"creator": data.creator,
+									"issue_id": data.issue_id,
+									"repo": data.repo
 								}
 							},
 							"type": "select",
 							"options" : recommendations
+						}, 
+						{
+							"name": "Ignore",
+							"integration": {
+								"url": "http://de305d48.ngrok.io/triggers/",
+								"context": {
+									"action": "IGNORE_ASSIGN",
+									"creator": data.creator
+								}
+							}
 						}
 					]
 				}
@@ -62,10 +64,25 @@ async function recommendAssignee(owner, repo, creator) {
 		}
 	}
 
-	lib.sendResponse(data);
+	console.log(data_assignee);
+
+	lib.sendResponse(data_assignee);
 }
 
-function getWorkLoad(issueList, collaborators) {
+async function getWorkLoad(owner, repo) {
+
+	// get issues for all users
+	var issueList = await lib.getOpenIssues(owner, repo);
+	// console.log(issueList);
+
+	//get all users
+	var userList = await lib.getCollaborators(owner, repo);
+
+	var collaborators = {}
+
+	for (var index in userList) {
+		collaborators[userList[index].login] = 0;
+	}	
 
 	for (var index in issueList) {
  
@@ -106,20 +123,20 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 		 	"message": "Assignee recommendation success"
 		}
 
-		console.log(data);
+		// console.log(data);
 
-		// lib.sendResponse(data);
+		lib.sendResponse(data);
 
 	} else {
 
 		var data = {
 			"channel_id": channel_id,
-		 	"message": "Assignee recommendation failure"
+		 	"message": "Assigned successfully!"
 		}
 
-		console.log(data);
+		// console.log(data);
 
-		// lib.sendResponse(data);
+		lib.sendResponse(data);
 	}
 
 }
@@ -130,12 +147,17 @@ async function ignoreRecommendations(creator) {
 
 	var data = {
 		"channel_id": channel_id,
-	 	"message": "Assignee recommendation ignored",
+	 	"message": "All those CPU cycles for nothing! Okay :(",
 
 	}
 
 	lib.sendResponse(data);
 }
 
-recommendAssignee("asmalunj", "test_repo", "asmalunj");
-assign("asmalunj", "test_repo", 6, "asmalunj", "vbbhadra");
+// recommendAssignee("asmalunj", "test_repo", "asmalunj");
+// assign("asmalunj", "test_repo", 6, "asmalunj", "vbbhadra");
+
+module.exports.recommendAssignee = recommendAssignee;
+module.exports.getWorkLoad = getWorkLoad;
+module.exports.assign = assign;
+module.exports.ignoreRecommendations = ignoreRecommendations;

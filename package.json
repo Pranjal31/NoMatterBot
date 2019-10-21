@@ -23,6 +23,8 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.2.2",
-    "sinon": "^7.5.0"
+    "sinon": "^7.5.0",
+    "nock": "^11.1.0",
+    "underscore": "^1.6.0"
   }
 }

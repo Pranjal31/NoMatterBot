@@ -5,13 +5,14 @@ const nock = require("nock");
 const assignee_recommend = require("../assignee_recommend.js");
 
 // Load mock data
-const issueList = require("../mockIssues.json")
+const issueList = require("../mockIssues.json");
+const userList = require("../mockUsers.json");
 
 ///////////////////////////
 // TEST SUITE FOR MOCHA
 ///////////////////////////
 
-describe('test_assignee_recommender', function () {
+describe('test_assignee_recommender_getWorkLoad', function () {
 
     // MOCK SERVICE
   var mockService = nock("https://api.github.ncsu.edu")
@@ -19,22 +20,20 @@ describe('test_assignee_recommender', function () {
     .get("/repos/asmalunj/test_repo/issues")
     .reply(200, JSON.stringify(issueList) );
 
-    describe('#recommendAssignee()', function () {
+  var mockService = nock("https://api.github.ncsu.edu")
+    .persist() // This will persist mock interception for lifetime of program.
+    .get("/repos/asmalunj/test_repo/collaborators")
+    .reply(200, JSON.stringify(userList) );
+
+    describe('#getWorkLoad()', function () {
     // TEST CASE
-    it('should return top three assignees to recommend', function(done) {
+    it('should return workload of assignees to recommend', async function() {
 
-      main.recommendAssignee("asmalunj", "test_repo", "asmalunj").then(function (results) 
-      {
-        expect(results).to.have.property("userName");
-        expect(results).to.have.property("count");
-
-        let userName = results.userName;
-        let count    = results.count;
-
-        // Call back to let mocha know that test case is done. Need this for asychronous operations.
-        done();
-      });
+      let workLoad = await assignee_recommend.getWorkLoad("asmalunj", "test_repo");
+      expect(workLoad.length).to.equal(4);
 
     });
+
+  });
 
 });
