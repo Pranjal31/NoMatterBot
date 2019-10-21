@@ -1,5 +1,5 @@
 var lib = require('./lib');
-var server = require('./server/index.js')
+//var server = require('./server/index.js')
 
 var config = {};
 
@@ -9,8 +9,9 @@ config.channel = process.env.CHANNELID;
 var data = {}
 data.channel_id = config.channel;
 
-function notify_change(post_body)
+async function notify_change(post_body)
 {
+    console.log("in notify");
     var msg = ""
 
     if (post_body.action === 'opened')
@@ -31,7 +32,13 @@ function notify_change(post_body)
     }
 
     data.message = msg;
-    lib.sendResponse(data)
+    let promise = lib.sendResponse(data)
+
+    var msgId = promise.then(function(result){
+        return result.id;
+    });
+
+    return msgId;
 }
 
 module.exports.notify_change = notify_change;
