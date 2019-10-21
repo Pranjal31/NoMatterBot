@@ -45,15 +45,14 @@ app.post('/events/', function (req, res) {
 
     }
 
-    // console.log(JSON.stringify(req_body));
-    // res.send(`Received event. ${JSON.stringify(req.body)}`);
+    console.log(JSON.stringify(req_body));
+    res.send(`Received event. ${JSON.stringify(req.body)}`);
 });
 
 app.post('/triggers/', function (req, res) {
     var req_body = req.body
 
     if (req_body.trigger_id) {
-      console.log(req.body);
 
       if (req_body.context.action == "ASSIGN") {
 

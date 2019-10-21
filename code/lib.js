@@ -1,22 +1,23 @@
 var request = require('request');
 const got  = require('got');
-var storage_lib = require('./storage_lib.js');
-
-const githubUrl = "https://api.github.ncsu.edu";
-
 const chalk  = require('chalk');
+
+var storage_lib = require('./storage_lib.js');
 
 var config = {};
 
 // Retrieve our api tokens from the environment variables.
-config.channel = process.env.CHANNELID;
+config.githubUrl = process.env.GITHUBURL;
+config.userchannelid = process.env.CHANNELUSERID;
 config.botaccess = process.env.BOTACCESSTOKEN;
 config.mmurl = process.env.MATTERMOSTURL;
 config.gh_token = process.env.GITHUBTOKEN;
+config.botuserid = process.env.BOTUSERID;
+config.server = process.env.SERVERURL;
 
-if( !config.channel || !config.mmurl || !config.botaccess )
+if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || !config.gh_token || !config.botuserid || !config.server)
 {
-	console.log(`Please set your environment variables with appropriate token.`);
+	console.log(`Please set your environment variables with appropriate values.`);
 	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);
 	process.exit(1);
 }
@@ -53,7 +54,7 @@ async function sendResponse(data) {
 function getDefaultOptions(endpoint, method)
 {
 	var options = {
-		url: githubUrl + endpoint,
+		url: config.githubUrl + endpoint,
 		method: method,
 		headers: {
 			"User-Agent": "NoMatterBot",
@@ -122,8 +123,8 @@ async function createChannel(githubUser) {
 			"Authorization": `Bearer ${config.botaccess}`
 		},
 		json : [
-		  "zonbwmqtxtdmtp9b79owgid3ny",
-		  "3e43uuy41ir4jm7dqzu189knbw"
+		  config.botuserid,
+		  mmuserid
 		]
 	};
 

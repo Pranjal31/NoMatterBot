@@ -3,6 +3,10 @@ const got  = require('got');
 
 var lib = require('./lib');
 
+var config = {}
+
+config.server = process.env.SERVERURL;
+
 async function recommendAssignee(data) {
 
 	// get work load for each user
@@ -26,17 +30,17 @@ async function recommendAssignee(data) {
 
 	var data_assignee = {
 		"channel_id": channel_id,
-	 	"message": "Hey! I saw you created an issue, want to assign it to somebody?",
+	 	"message": "Ciao! I see that you recently created an issue " + data.issue_id,
 	 	"props": {
 			"attachments": [
 		     	{
-					"pretext": "I suggest these people based on the work load:",
+					"pretext": "Here are some assignee recommendations based on current workload:",
 					"text": "Assignee recommendations",
 					"actions": [
 				        {
 							"name": "Select an option...",
 							"integration": {
-								"url": "http://de305d48.ngrok.io/triggers/",
+								"url": config.server + "/triggers/",
 								"context": {
 									"action": "ASSIGN",
 									"owner": data.owner,
@@ -51,7 +55,7 @@ async function recommendAssignee(data) {
 						{
 							"name": "Ignore",
 							"integration": {
-								"url": "http://de305d48.ngrok.io/triggers/",
+								"url": config.server + "/triggers/",
 								"context": {
 									"action": "IGNORE_ASSIGN",
 									"creator": data.creator
@@ -64,7 +68,7 @@ async function recommendAssignee(data) {
 		}
 	}
 
-	console.log(data_assignee);
+	// console.log(data_assignee);
 
 	lib.sendResponse(data_assignee);
 }
@@ -120,7 +124,7 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 		var data = {
 			"channel_id": channel_id,
-		 	"message": "Assignee recommendation success"
+		 	"message": "Done and dusted!"
 		}
 
 		// console.log(data);
@@ -131,7 +135,7 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 		var data = {
 			"channel_id": channel_id,
-		 	"message": "Assigned successfully!"
+		 	"message": "Sorry, something went wrong."
 		}
 
 		// console.log(data);
@@ -147,15 +151,12 @@ async function ignoreRecommendations(creator) {
 
 	var data = {
 		"channel_id": channel_id,
-	 	"message": "All those CPU cycles for nothing! Okay :(",
+	 	"message": "All those CPU cycles for nothing? Okay :(",
 
 	}
 
 	lib.sendResponse(data);
 }
-
-// recommendAssignee("asmalunj", "test_repo", "asmalunj");
-// assign("asmalunj", "test_repo", 6, "asmalunj", "vbbhadra");
 
 module.exports.recommendAssignee = recommendAssignee;
 module.exports.getWorkLoad = getWorkLoad;
