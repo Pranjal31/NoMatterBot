@@ -1,14 +1,13 @@
-const express = require('express')
-const status_change = require('../statuschange')
-const lib = require('../lib')
+const express = require('express');
+const status_change = require('../statuschange');
 const recommend_assignee = require('../assignee_recommend.js');
 const stale_issues = require('../stale');
 
 const app = express()
 const port = 3000;
 
-// var label_ir = "in review";
-// var label_test = "test";
+var label_ir = "in review";
+var label_test = "test";
 
 // express configuration
 app.use(express.json({type: '*/*'}));
@@ -53,6 +52,7 @@ app.post('/events/', function (req, res) {
 app.post('/triggers/', function (req, res) {
     var req_body = req.body
 
+    
     if (req_body.trigger_id) {
 
       if (req_body.context.action == "ASSIGN") {
@@ -67,19 +67,20 @@ app.post('/triggers/', function (req, res) {
           recommend_assignee.ignoreRecommendations(req_body.context.creator);
       }
 
-        // var data = {
-        //     "trigger_id": req_body.trigger_id,
-        //     "url": "http://808a9ed1.ngrok.io/triggers/",
-        //     "dialog": {
-        //       "callback_id": "1",
-        //       "title": "Lol",
-        //       "elements": [{ "display_name": "Email", "name": "email", "type": "text", "subtype": "email", "placeholder": "placeholder@example.com" }],
-        //       "submit_label": "submit",
-        //       "notify_on_cancel": false,
-        //       "state": "test"
-        //     }
-        //   }
-        //   status_change.openInteractiveDialog(data)
+        // not used in this milestone because of existing issue with Mattermost (https://forum.mattermost.org/t/cannot-open-dialog/7842)
+         /* var data = {
+             "trigger_id": req_body.trigger_id,
+             "url": "http://808a9ed1.ngrok.io/triggers/",
+             "dialog": {
+               "callback_id": "1",
+               "title": "Lol",
+               "elements": [{ "display_name": "Email", "name": "email", "type": "text", "subtype": "email", "placeholder": "placeholder@example.com" }],
+               "submit_label": "submit",
+               "notify_on_cancel": false,
+               "state": "test"
+             }
+           }
+           status_change.openInteractiveDialog(data) */
     }
 
     console.log(JSON.stringify(req_body));

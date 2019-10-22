@@ -24,7 +24,7 @@ if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchann
 
 
 // send response to the front end
-async function sendResponse(data) {
+async function postMessage(data) {
 	var options = {
 		url: config.mmurl + "/api/v4/posts",
 		method: "POST",
@@ -51,10 +51,10 @@ async function sendResponse(data) {
 	});
 }
 
-function getDefaultOptions(endpoint, method)
+function getDefaultOptions(urlRoot, endpoint, method)
 {
 	var options = {
-		url: config.githubUrl + endpoint,
+		url: urlRoot + endpoint,
 		method: method,
 		headers: {
 			"User-Agent": "NoMatterBot",
@@ -68,7 +68,7 @@ function getDefaultOptions(endpoint, method)
 // get issues for a given repo
 async function getOpenIssues(owner, repo) {
 
-	var options = getDefaultOptions("/repos/" + owner + "/" + repo + "/issues", "GET");
+	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/issues", "GET");
 
 	options.json = true;
 
@@ -91,7 +91,7 @@ async function getOpenIssues(owner, repo) {
 // get collaborators for a given repo
 async function getCollaborators(owner, repo) {
 
-	var options = getDefaultOptions("/repos/" + owner + "/" + repo + "/collaborators", "GET")
+	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/collaborators", "GET")
 
 	options.json = true;
 
@@ -128,6 +128,7 @@ async function createChannel(githubUser) {
 		]
 	};
 
+
 	return new Promise(function(resolve, reject)
 	{
 		request(options, function (error, response, body) {
@@ -146,7 +147,7 @@ async function createChannel(githubUser) {
 
 // assign the issue to an assignee 
 async function assignToIssue(owner, repo, issue_id, assignee) {
-	var options = getDefaultOptions("/repos/" + owner + "/" + repo + "/issues/" + issue_id, "PATCH")
+	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issue_id, "PATCH")
 
 	options.body = `{"assignees":["${assignee}"]`;
 
@@ -166,8 +167,35 @@ async function assignToIssue(owner, repo, issue_id, assignee) {
 	});
 }
 
-module.exports.sendResponse = sendResponse;
+// open interactive dialog
+async function openInteractiveDialog(data)
+{
+	console.log(chalk.green("\nOpen Interactive Dialog"));
+
+	let options = getDefaultOptions(config.server, "/api/v4/actions/dialogs/open", "POST");
+    options.body = JSON.stringify(data);
+
+	// Send a http request to url and specify a callback that will be called upon its return.
+	return new Promise(function(resolve, reject)
+	{
+		request.post(options, function(error, response, body){
+			if(error){
+				console.log(chalk.red(error));
+				reject(error);
+				return; // Terminate execution
+            }
+			console.log(`Response Status Code ${response.statusCode}`);
+			resolve(response.statusCode);
+		});
+	});
+}
+
+module.exports.postMessage = postMessage;
 module.exports.getOpenIssues = getOpenIssues;
 module.exports.createChannel = createChannel;
 module.exports.assignToIssue = assignToIssue;
 module.exports.getCollaborators = getCollaborators;
+module.exports.openInteractiveDialog = openInteractiveDialog;
+module.exports.getDefaultOptions = getDefaultOptions;
+module.exports.config = config;
+

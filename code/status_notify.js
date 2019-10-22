@@ -1,18 +1,13 @@
 var lib = require('./lib');
-//var server = require('./server/index.js')
-
-var config = {};
-
-// Retrieve our api token from the environment variables.
-config.channel = process.env.CHANNELID;
 
 var data = {}
-data.channel_id = config.channel;
 
 async function notify_change(post_body)
 {
-    console.log("in notify");
-    var msg = ""
+    var msg = "";
+
+    var chId = await lib.createChannel("abcd");
+    data.channel_id = chId;
 
     if (post_body.action === 'opened')
     {
@@ -32,7 +27,7 @@ async function notify_change(post_body)
     }
 
     data.message = msg;
-    let promise = lib.sendResponse(data)
+    let promise = lib.postMessage(data)
 
     var msgId = promise.then(function(result){
         return result.id;
