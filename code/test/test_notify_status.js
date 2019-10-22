@@ -7,7 +7,8 @@ var config = {};
 
 // retrieve api tokens
 config.mmurl = process.env.MATTERMOSTURL;
-config.channelName = process.env.CHANNELNAME;
+config.userchannel = process.env.CHANNELUSERID;
+config.botchannel = process.env.BOTUSERID;
 config.loginEmail = process.env.MATTERMOST_EMAIL;
 config.loginPassword = process.env.MATTERMOST_PWD;
 
@@ -58,6 +59,8 @@ async function login(browser, url) {
       var msgId = await notifier.notify_change(mockStatChange);
 
       var expectedMsg = "Issue: #24 ahahah is now in progress";
+
+      var channelName = config.userchannel+"__"+config.botchannel;
       
       //console.log(msgId);
 
