@@ -36,7 +36,7 @@ async function login(browser, url) {
     var postId = "postMessageText_" + msgId;
     try
     {
-      await page.waitForSelector('#postMessageText_'+msgId);
+      await page.waitForSelector('#'+postId);
       const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
       const text = await (await textEle[0].getProperty('textContent')).jsonValue();
       
@@ -76,5 +76,5 @@ async function login(browser, url) {
     // //await postMessage(page, "Hello world from browser automation" );
   
     //  const html = await page.content(); // serialized HTML of page DOM.
-    // browser.close();
+     browser.close();
   })()

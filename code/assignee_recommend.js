@@ -125,7 +125,7 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 		// console.log(data);
 
-		lib.postMessage(data);
+		response_body = lib.postMessage(data);
 
 	} else {
 
@@ -136,8 +136,10 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 		// console.log(data);
 
-		lib.postMessage(data);
+		response_body = lib.postMessage(data);
 	}
+
+	return response_body.id;
 
 }
 
@@ -147,11 +149,12 @@ async function ignoreRecommendations(creator) {
 
 	var data = {
 		"channel_id": channel_id,
-	 	"message": "All those CPU cycles for nothing? Okay :(",
+	 	"message": "All those CPU cycles for nothing? Okay :("
 
 	}
 
-	lib.postMessage(data);
+	response_body = lib.postMessage(data);
+	return response_body.id;
 }
 
 module.exports.recommendAssignee = recommendAssignee;

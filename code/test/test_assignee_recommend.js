@@ -11,6 +11,7 @@ const nock = require("nock");
 const mockIssues = require('../mockIssues.json');
 const mockUsers = require('../mockUsers.json');
 const mockNewIssue = require('../mockNewIssue.json');
+const mockAssignee = "asmalunj";
 
 // var lib.config = {};
 
@@ -29,6 +30,11 @@ lib.config.loginPassword = process.env.MATTERMOST_PWD;
   var mockUserService = nock("https://api.github.ncsu.edu")
     .persist() // This will persist mock interception for lifetime of program.
     .get("/repos/asmalunj/test_repo/collaborators")
+    .reply(200, JSON.stringify(mockUsers) );
+
+  var mockAssignService = nock("https://api.github.ncsu.edu")
+    .persist() // This will persist mock interception for lifetime of program.
+    .patch("/repos/asmalunj/test_repo/issues/" + mockNewIssue.issue_id)
     .reply(200, JSON.stringify(mockUsers) );
 
 
@@ -72,20 +78,60 @@ async function login(browser, url) {
     }
   }
 
+  async function hasInteractiveMsg(page, msgId, expectedMsg)
+  {
+    var postId = "postMessageText_" + msgId;
+    try
+    {
+      await page.waitForSelector('#'+postId);
+      const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
+      const text = await (await textEle[0].getProperty('textContent')).jsonValue();
+      
+      if (!(text === expectedMsg))
+      {
+        throw "Message did not match!!";
+      }
+
+      await page.setRequestInterception(true);
+      respBody = {}
+
+      await page.on('request', request => {
+        if (request.url().endsWith('/triggers/'))
+        {
+            respBody = request.body();
+        }
+            request.continue();
+      });
+
+      console.log(JSON.stringify(respBody));
+      return respBody;
+    }
+    catch(err)
+    {
+      throw err;
+    }
+  }
+
   (async () => {
 
     try
     {
-      var msgId = await notifier.recommendAssignee(mockNewIssue);
+      var msgId = await assignee_recommend.recommendAssignee(mockNewIssue);
 
-      var expectedMsg = "Ciao! I see that you recently created an issue " + mockNewIssue.issue_id;
+      var expectedMsg1 = "Ciao! I see that you recently created an issue " + mockNewIssue.issue_id;
+      var expectedMsg2 = "Done and dusted!";
+      //var expectedMsg3 = "All those CPU cycles for nothing? Okay :(";
       
       //console.log(msgId);
 
       const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
       let page = await login( browser, `${lib.config.mmurl}/login` );
       await navigateTo(page, lib.config.channelName);
-      await hasMsg(page, msgId, expectedMsg);
+      var respBody = await hasInteractiveMsg(page, msgId, expectedMsg1);
+
+      var msgId = await assignee_recommend.assign(mockNewIssue.owner, mockNewIssue.repo, mockNewIssue.issue_id, mockNewIssue.creator, mockAssignee);
+      await hasMsg(page, msgId, expectedMsg2);
+
       console.log(chalk.green('Test Case Assignee Recommend Successful!'));
      }
      catch(err)
