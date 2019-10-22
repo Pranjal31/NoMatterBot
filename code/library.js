@@ -134,8 +134,52 @@ async function close_stale(owner,repo,issue_number)
 
 }
 
+async function ignore()
+{
+    var channel_id = await createChannel();
+    var data = {
+		"channel_id": channel_id,
+	 	"message": "All those CPU cycles for nothing? Okay :(",
+
+    }
+	await sendResponse(data);
+
+}
+
+async function assign()
+{
+    var channel_id = await createChannel();
+
+    var status = await close_stale();
+
+    if(status == 200)
+    {
+        var data = {
+            "channel_id": channel_id,
+            "message": "Mischeif Managed"
+        }
+
+        await sendResponse(data);
+    }
+    else
+    {
+        var data ={
+            "channel_id": channel_id,
+            "message": "Sorry, Unable to complete task"
+        }
+	   await 
+	   
+	   sendResponse(data);
+    }
+
+    
+
+}
+
 module.exports.close_stale = close_stale;
 module.exports.getDefaultOptions = getDefaultOptions;
 module.exports.sendResponse = sendResponse;
 module.exports.createChannel = createChannel;
 module.exports.config = config;
+module.exports.assign = assign;
+module.exports.ignore = ignore;

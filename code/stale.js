@@ -32,8 +32,8 @@ if( !config.token )
 	process.exit(1);
 }
 
-console.log(chalk.green(`Your token is: ${config.token.substring(0,4)}...`));
-console.log("Calling main");
+//console.log(chalk.green(`Your token is: ${config.token.substring(0,4)}...`));
+//console.log("Calling main");
 //main();
 
 if (process.env.NODE_ENV != 'test')
@@ -146,8 +146,8 @@ async function Stale_Issues()
                 }
             }
 
-            console.log("Complete list of stale issues")
-            console.log(list);
+            //console.log("Complete list of stale issues")
+            //console.log(list);
             var map;
 
             object = {};
@@ -158,17 +158,17 @@ async function Stale_Issues()
                 keys.reduce((r, a) => r[a] = r[a] || {}, object)[last] = value;
             });
             object1 = JSON.stringify(object);
-            console.log(object1);
+            //console.log(object1);
 
 
 
            map2 = JSON.stringify(map1);
-           console.log(map1);
+           //console.log(map1);
            map = JSON.stringify(list);
 
             var channel_id = await library.createChannel();
             
-            console.log(channel_id);
+            //console.log(channel_id);
             
             var payload = {
                 "channel_id": channel_id,
@@ -221,51 +221,13 @@ async function Stale_Issues()
 
 }
 
-async function assign()
-{
-    var channel_id = await library.createChannel();
 
-    var status = await library.close_stale();
 
-    if(status == 200)
-    {
-        var data = {
-            "channel_id": channel_id,
-            "message": "Mischeif Managed"
-        }
 
-        await library.sendResponse(data);
-    }
-    else
-    {
-        var data ={
-            "channel_id": channel_id,
-            "message": "Sorry, Unable to complete task"
-        }
-       await library.sendResponse(data);
-    }
-
-    
-
-}
-
-async function ignore()
-{
-    var channel_id = await library.createChannel();
-    var data = {
-		"channel_id": channel_id,
-	 	"message": "All those CPU cycles for nothing? Okay :(",
-
-    }
-    await library.sendResponse(data);
-
-}
 
 
 
 module.exports.Stale_Issues = Stale_Issues;
-module.exports.assign = assign;
-module.exports.ignore = ignore;
 module.exports.getIssues = getIssues;
 
 

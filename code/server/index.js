@@ -1,7 +1,8 @@
 const express = require('express');
 const status_change = require('../statuschange');
 const recommend_assignee = require('../assignee_recommend.js');
-const stale_issues = require('../stale');
+const library  = require('../library.js');
+const stale = require('../stale.js');
 
 const app = express()
 const port = 3000;
@@ -81,6 +82,19 @@ app.post('/triggers/', function (req, res) {
              }
            }
            status_change.openInteractiveDialog(data) */
+
+           if (req_body.context.action == "STALE_CLOSE")
+           {
+             var data = req_body.context;
+             console.log("In assign");
+            library.assign();
+           }
+ 
+           if(req_body.context.action == "STALE_IGNORE")
+           {
+             console.log("In ignore");
+             library.ignore();
+            }
     }
 
     console.log(JSON.stringify(req_body));
@@ -88,24 +102,6 @@ app.post('/triggers/', function (req, res) {
 
 });
 
-app.post('/triggers/',function(req,res){
 
-        var req_body = req.body;
-        if(req_body.trigger_id){
-          if (req_body.context.action == "STALE_CLOSE")
-          {
-            var data = req_body.context;
-            stale.assign();
-          }
-
-          if(req_body.context.action == "STALE_IGNORE")
-          {
-            stale.ignore();
-          }
-        }
-
-        console.log(JSON.stringify(req_body));
-        res.send(`Received trigger. ${JSON.stringify(req.body)}`);
-})
 
 app.listen(port, () => console.log(`NoMatterBot server listening on port ${port}!\n`))
