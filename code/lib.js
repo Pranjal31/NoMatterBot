@@ -24,13 +24,13 @@ if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchann
 
 
 // send response to the front end
-async function sendResponse(data) {
+async function postMessage(data) {
 	var options = {
 		url: config.mmurl + "/api/v4/posts",
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			"Authorization": `Bearer ${config.botaccess}`
+			"Authorizationge": `Bearer ${config.botaccess}`
 		},
 		json : data
 	};
@@ -190,7 +190,7 @@ async function openInteractiveDialog(data)
 	});
 }
 
-module.exports.sendResponse = sendResponse;
+module.exports.postMessage = postMessage;
 module.exports.getOpenIssues = getOpenIssues;
 module.exports.createChannel = createChannel;
 module.exports.assignToIssue = assignToIssue;

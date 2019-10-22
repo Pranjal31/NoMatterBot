@@ -32,7 +32,7 @@ async function notify_change(post_body)
     }
 
     data.message = msg;
-    let promise = lib.sendResponse(data)
+    let promise = lib.postMessage(data)
 
     var msgId = promise.then(function(result){
         return result.id;
