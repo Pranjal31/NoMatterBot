@@ -36,6 +36,7 @@ if( !config.token )
 //console.log("Calling main");
 //main();
 
+//In full Implementation, a timer based event will call Stale_Issues() periodically for every 24 hours.
 if (process.env.NODE_ENV != 'test')
 {
 	(async () => {
