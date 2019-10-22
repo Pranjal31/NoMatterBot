@@ -201,7 +201,7 @@ async function Stale_Issues()
                                      "integration": {
                                          "url":"http://3f4a49b2.ngrok.io/triggers/",
                                          "context": {
-                                            "action": "close",
+                                            "action": "STALE_CLOSE",
                                             "issue_ids": list
                                           }
 
@@ -212,7 +212,7 @@ async function Stale_Issues()
                                      "integration":{
                                          "url":"http://3f4a49b2.ngrok.io/triggers/",
                                          "context":{
-                                             "action":"ignore"
+                                             "action":"STALE_IGNORE"
                                          }
                                      }
                                  }

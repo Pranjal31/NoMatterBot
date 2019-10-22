@@ -95,12 +95,12 @@ app.post('/triggers/',function(req,res){
           if (req_body.context.action == "STALE_CLOSE")
           {
             var data = req_body.context;
-            stale_issues.assign();
+            stale.assign();
           }
 
           if(req_body.context.action == "STALE_IGNORE")
           {
-            stale_issues.ignore();
+            stale.ignore();
           }
         }
 
