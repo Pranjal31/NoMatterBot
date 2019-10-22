@@ -139,7 +139,7 @@ async function ignore()
     var channel_id = await createChannel();
     var data = {
 		"channel_id": channel_id,
-	 	"message": "All those CPU cycles for nothing? Okay :(",
+	 	"message": "Alright! These issues(s) have been ignored for a day.",
 
     }
 	await sendResponse(data);
@@ -156,7 +156,7 @@ async function assign()
     {
         var data = {
             "channel_id": channel_id,
-            "message": "Mischeif Managed"
+            "message": "Cool. It's done!"
         }
 
         await sendResponse(data);

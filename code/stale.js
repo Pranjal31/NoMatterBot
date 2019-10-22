@@ -114,6 +114,11 @@ async function Stale_Issues()
             //console.log(formatDate(sixMonthsPrior(present)));
 
             var map1 = new Map();
+            var str = "";          
+
+
+
+            //console.log(user)
             
             //var map1 = new Map(["Issue Number","Title"]);
 
@@ -143,48 +148,66 @@ async function Stale_Issues()
                     list.push(obj[i].title);
                     map1.set(obj[i].title,obj[i].number);
                     //console.log(obj[i].title);
-
+                    //console.log(obj[i].title);
+                   // str.concat(obj[i].title)
+                    //str.concat(":")
+                    //str.concat(obj[i].number)
+                    //str.concat("\n")
+                    //console.log(typeof(obj[i].title));
+                    str += obj[i].title + "\t: " + obj[i].number + '\n'
                 }
             }
-
+            //console.log(str);
             //console.log("Complete list of stale issues")
             //console.log(list);
             var map;
 
             object = {};
             object1 = {};
+
+            var fin=map1;
+
             map1.forEach((value, key) => {
                 var keys = key.split('.'),
                     last = keys.pop();
                 keys.reduce((r, a) => r[a] = r[a] || {}, object)[last] = value;
             });
+
+            var info = "";
+
+
             object1 = JSON.stringify(object);
             //console.log(object1);
 
-
-
+           
            map2 = JSON.stringify(map1);
            //console.log(map1);
            map = JSON.stringify(list);
 
             var channel_id = await library.createChannel();
+
+            
+        
+            
+
+            //console.log(user);
             
             //console.log(channel_id);
             
             var payload = {
                 "channel_id": channel_id,
-                 "message": "Hola, The following issue have no activity on them from 6 months ",
+                 "message": "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.",
                  //"elements": "list", 
                  //"body":"map",
                  "props": {
                      "attachments": [
                          {
-                             "pretext": "Here is the list",
-                             "text": object1,
+                             "pretext": "Do you want to close them?",
+                             "text": str,   //str
                              
                              "actions": [
                                  {
-                                     "name": "Close All these Issues",
+                                     "name": "Close All Issues",
                                      "integration": {
                                          "url":library.config.server + "/triggers/",
                                          "context": {
@@ -195,7 +218,7 @@ async function Stale_Issues()
                                      }
                                  },
                                  {
-                                     "name": "Ignore All",
+                                     "name": "Ignore",
                                      "integration":{
                                          "url":library.config.server + "/triggers/",
                                          "context":{
