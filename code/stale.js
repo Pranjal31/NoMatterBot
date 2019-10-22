@@ -34,6 +34,8 @@ var request = require('request');
 
 const chalk  = require('chalk');
 
+
+
 //var data = require("./mock.json")
 
 var library = require('./library');
@@ -64,10 +66,16 @@ if (process.env.NODE_ENV != 'test')
 {
 	(async () => {
 
+
+        var userId = "vbbhadra";
+        var newrepo = "bfs";
+        var issue_number = "19"
+
 		
 				
-		await Stale_Issues();
-
+		//await Stale_Issues();
+       var status = await library.close_stale(userId,newrepo,issue_number);
+       console.log(status);
 
 	})()
 }
@@ -271,5 +279,9 @@ async function ignore()
 module.exports.Stale_Issues = Stale_Issues;
 module.exports.assign = assign;
 module.exports.ignore = ignore;
+module.exports.getIssues = getIssues;
+
+
+
 
 

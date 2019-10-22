@@ -1,5 +1,6 @@
 var request = require('request');
 const got  = require('got');
+const nock = require("nock");
 
 //const githubUrl = "https://api.github.ncsu.edu";
 const chalk  = require('chalk');
@@ -19,6 +20,16 @@ config.githubUrl = process.env.GITHUBURL;
 	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);
 	process.exit(1);
 }*/
+
+
+   var mockService = nock("https://api.github.ncsu.edu")
+  .persist() // This will persist mock interception for lifetime of program.
+  .filteringPath(function(path){
+	  return "/";
+  })
+  .patch("/")
+  .reply(200, JSON.stringify("done"));
+
 
 async function createChannel() {
 
@@ -98,7 +109,7 @@ function getDefaultOptions(urlRoot, endpoint, method)
 
 async function close_stale(owner,repo,issue_number)
 {
-	var options = getDefaultOptions(config.githubUrl, "/repos/"+ owner + "/" + repo + "/issues/" + issue_number, "PATCH");
+	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issue_number, "PATCH");
 
 	options.body = `{"state": "closed"}`;
 
@@ -119,7 +130,7 @@ async function close_stale(owner,repo,issue_number)
 
 }
 
-
-module.export.getDefaultOptions = getDefaultOptions;
+module.exports.close_stale = close_stale;
+module.exports.getDefaultOptions = getDefaultOptions;
 module.exports.sendResponse = sendResponse;
 module.exports.createChannel = createChannel;
