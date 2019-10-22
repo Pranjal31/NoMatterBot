@@ -33,15 +33,16 @@ async function login(browser, url) {
 
   async function hasMsg(page, msgId, expectedMsg)
   {
+    var postId = "postMessageText_" + msgId;
     try
     {
       await page.waitForSelector('#postMessageText_'+msgId);
-      const textEle = await page.$x('//*[contains(@id, "postMessageText_jr5tr5q6mtb1zrz66mon98q98r")]/p');
+      const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
       const text = await (await textEle[0].getProperty('textContent')).jsonValue();
       
       if (!(text === expectedMsg))
       {
-        throw "You Lose!";
+        throw "Message did not match!!";
       }
     }
     catch(err)
