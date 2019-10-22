@@ -116,23 +116,23 @@ async function login(browser, url) {
 
     try
     {
-      var msgId = await assignee_recommend.recommendAssignee(mockNewIssue);
+      // var msgId = await assignee_recommend.recommendAssignee(mockNewIssue);
 
-      var expectedMsg1 = "Ciao! I see that you recently created an issue " + mockNewIssue.issue_id;
-      var expectedMsg2 = "Done and dusted!";
-      //var expectedMsg3 = "All those CPU cycles for nothing? Okay :(";
+      // var expectedMsg1 = "Ciao! I see that you recently created an issue " + mockNewIssue.issue_id;
+      // var expectedMsg2 = "Done and dusted!";
+      // //var expectedMsg3 = "All those CPU cycles for nothing? Okay :(";
       
-      //console.log(msgId);
+      // //console.log(msgId);
 
-      const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
-      let page = await login( browser, `${lib.config.mmurl}/login` );
-      await navigateTo(page, lib.config.channelName);
-      var respBody = await hasInteractiveMsg(page, msgId, expectedMsg1);
+      // const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
+      // let page = await login( browser, `${lib.config.mmurl}/login` );
+      // await navigateTo(page, lib.config.channelName);
+      // var respBody = await hasInteractiveMsg(page, msgId, expectedMsg1);
 
-      // var msgId = await assignee_recommend.assign(mockNewIssue.owner, mockNewIssue.repo, mockNewIssue.issue_id, mockNewIssue.creator, mockAssignee);
-      // await hasMsg(page, msgId, expectedMsg2);
+      // // var msgId = await assignee_recommend.assign(mockNewIssue.owner, mockNewIssue.repo, mockNewIssue.issue_id, mockNewIssue.creator, mockAssignee);
+      // // await hasMsg(page, msgId, expectedMsg2);
 
-      console.log(chalk.green('Test Case Assignee Recommend Successful!'));
+      // console.log(chalk.green('Test Case Assignee Recommend Successful!'));
      }
      catch(err)
      {

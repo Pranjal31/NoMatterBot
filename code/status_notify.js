@@ -27,13 +27,9 @@ async function notify_change(post_body)
     }
 
     data.message = msg;
-    let promise = lib.postMessage(data)
+    var respBody = await lib.postMessage(data);
 
-    var msgId = promise.then(function(result){
-        return result.id;
-    });
-
-    return msgId;
+    return respBody.id;
 }
 
 module.exports.notify_change = notify_change;
