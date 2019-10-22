@@ -1,9 +1,5 @@
 var lib = require('./lib');
 
-// var config = {}
-
-// config.userchannelid = process.env.CHANNELUSERID;
-
 function insert() {
 
 }
@@ -21,8 +17,6 @@ function getAll() {
 }
 
 function get(tbl_name, key) {
-
-	console.log(lib.config.userchannelid);
 
 	return lib.config.userchannelid;
 }

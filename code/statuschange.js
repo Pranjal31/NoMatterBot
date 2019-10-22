@@ -2,13 +2,6 @@ var request = require('request');
 const chalk  = require('chalk');
 var lib = require('./lib');
 
-// NCSU Enterprise endpoint:
-//var ghRoot = "https://api.github.ncsu.edu";
-//var config = {};
-
-// Retrieve our api token from the environment variables.
-//config.gh_token = process.env.GITHUBTOKEN;
-
 if( !lib.config.gh_token )
 {
 	console.log(chalk`{red.bold GITHUBTOKEN is not defined!}`);
