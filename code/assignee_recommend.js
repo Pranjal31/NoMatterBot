@@ -3,10 +3,6 @@ const got  = require('got');
 
 var lib = require('./lib');
 
-// var config = {}
-
-// config.server = process.env.SERVERURL;
-
 async function recommendAssignee(data) {
 
 	// get work load for each user
