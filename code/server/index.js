@@ -2,6 +2,7 @@ const express = require('express')
 const status_change = require('../statuschange')
 const lib = require('../lib')
 const recommend_assignee = require('../assignee_recommend.js');
+const stale_issues = require('../stale');
 
 const app = express()
 const port = 3000;
@@ -85,5 +86,25 @@ app.post('/triggers/', function (req, res) {
     res.send(`Received trigger. ${JSON.stringify(req.body)}`);
 
 });
+
+app.post('/triggers/',function(req,res){
+
+        var req_body = req.body;
+        if(req_body.trigger_id){
+          if (req_body.context.action == "STALE_CLOSE")
+          {
+            var data = req_body.context;
+            stale_issues.assign();
+          }
+
+          if(req_body.context.action == "STALE_IGNORE")
+          {
+            stale_issues.ignore();
+          }
+        }
+
+        console.log(JSON.stringify(req_body));
+        res.send(`Received trigger. ${JSON.stringify(req.body)}`);
+})
 
 app.listen(port, () => console.log(`NoMatterBot server listening on port ${port}!\n`))
