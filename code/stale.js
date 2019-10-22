@@ -14,7 +14,7 @@ function getStaleIssues(){
 
 function getIssues(){
 
-    const data = require("../code/mockIssues.json");
+    const data = require("../code/mockStaleIssues.json");
     return data;
 }
 
@@ -73,9 +73,9 @@ if (process.env.NODE_ENV != 'test')
 
 		
 				
-		//await Stale_Issues();
-       var status = await library.close_stale(userId,newrepo,issue_number);
-       console.log(status);
+	await Stale_Issues();
+    //var status = await library.close_stale();
+    //console.log(status);
 
 	})()
 }
@@ -131,8 +131,8 @@ async function Stale_Issues()
 
             present = Date();                 //Todays date
 
-            //old = sixMonthsPrior(present);                                   //Use this function to calculate 6 months old date from present date
-            old = Date.parse('2019-10-20T16:51:17.000Z');                  //Put the old date here beyond which we need to calculate stale issues
+            old = sixMonthsPrior(present);                                   //Use this function to calculate 6 months old date from present date
+            //old = Date.parse('2019-10-20T16:51:17.000Z');                  //Put the old date here beyond which we need to calculate stale issues
             //console.log(present);                                         //Log present date
             //console.log(old);                                              //log old date
             //console.log(typeof(sixMonthsPrior(present)));
@@ -176,8 +176,20 @@ async function Stale_Issues()
             console.log(list);
             var map;
 
-           //map1 = JSON.stringify(list);
-           //console.log(map1);
+            object = {};
+            object1 = {};
+            map1.forEach((value, key) => {
+                var keys = key.split('.'),
+                    last = keys.pop();
+                keys.reduce((r, a) => r[a] = r[a] || {}, object)[last] = value;
+            });
+            object1 = JSON.stringify(object);
+            console.log(object1);
+
+
+
+           map2 = JSON.stringify(map1);
+           console.log(map1);
            map = JSON.stringify(list);
 
             var channel_id = await library.createChannel();
