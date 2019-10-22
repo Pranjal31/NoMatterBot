@@ -85,13 +85,33 @@ Alternative flows:\
 [A2] If more than three developers have the same workload, a lexograhic tie-breaking mechanism is used to decide the top three.
 
 ## Mocking infrastructure
+Mocking infrastructure consists of different mock json files to abstract away different functionalities/services. The details are as follows:
 
++ mock_statChange.json: Used to abstract away issue status change events when testing status change notifications
++ mockIssues.json: Used to abstract getting all issues for a repository when integration testing assignee recommendations
++ mockNewIssue.json: Used to abstract away new issue creation event when testing assignee recommendations
++ mockStaleIssues.json: Used to abstract away finding stale issues. This is used both for implementation and testing of stale issues use case
++ mockUsers.json: Used to abstract away getting collaborators for a repository used for testing assignee recommendations
 
+## Selenium/Puppeteer testing of each use case
 
+Puppeteer has been used to test our three primary usecases.
 
++ Use case - Status Change Notification: 
 
-## Selenium testing of each use case
+The test starts by mocking the status change event and launching Mattermost to post the corresponding message to the assignee. The test passes if the expected message has been posted on assignee's mattermost channel.
 
++ Use case - Assignee Recommendation: 
 
+The test suite consists of three tests.
+1. First test starts by mocking the new issue created event and launching Mattermost to post the corresponding assignee recommendations to the creator. If the posted message is the same as expected, the test passes. 
+2. Second test starts by mocking the "assign button clicked" event. If the posted message is the same as expected, the test passes. 
+3. Third test starts by mocking the "ignore button clicked" event. If the posted message is the same as expected, the test passes. 
+
++ Use case - Stale Issues: 
+
+The test starts by mocking the timer expiry event (24 hours) and launching Mattermost to post the a message to assignee with list of stale issues. The test passes if the expected message has been posted on assignee's mattermost channel.
 
 ## Screencast
+
+The screencast demonstrating the bot performing three primary use cases and running puppeteer tests is [here](https://drive.google.com/file/d/15n_SM9txz6F33M2rl9Ue6fcT-8oWFE3h/view)
