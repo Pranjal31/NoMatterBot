@@ -1,4 +1,4 @@
-function main(){
+/*function main(){
 
     getStaleIssues();
 
@@ -10,12 +10,12 @@ function getStaleIssues(){
     console.log("Getting stale Issues")
     getIssues();
 
-}
+}*/
 
 function getIssues(){
 
-
-
+    const data = require("../code/mockIssues.json");
+    return data;
 }
 
 
@@ -58,7 +58,7 @@ if( !config.token )
 
 console.log(chalk.green(`Your token is: ${config.token.substring(0,4)}...`));
 console.log("Calling main");
-main();
+//main();
 
 if (process.env.NODE_ENV != 'test')
 {
@@ -66,7 +66,7 @@ if (process.env.NODE_ENV != 'test')
 
 		
 				
-		await ListIssues();
+		await Stale_Issues();
 
 
 	})()
@@ -101,35 +101,32 @@ function sixMonthsPrior(date) {
     return d;
   }
 
-  function formatDate(d) {
-    return d.toLocaleString(undefined, {day:'2-digit', month:'short', year:'numeric'});
-  }
 
-async function ListIssues()
+async function Stale_Issues()
 {
-    let options = getDefaultOptions("/issues", "GET");
+    //let options = getDefaultOptions("/issues", "GET");
 
-    var list = [];
+    var list = [];                                        // To capture list of Stale Issues
     
 	// Send a http request to url and specify a callback that will be called upon its return.
-	return new Promise(function(resolve, reject)
-	{
-		request(options, async function (error, response, body) 
-		{
-			if( error )
-			{
-				console.log( chalk.red( error ));
-				reject(error);
-				return; // Terminate execution.
-			}
+	//return new Promise(function(resolve, reject)
+	//{
+	//	request(options, async function (error, response, body) 
+	//	{
+	//		if( error )
+	//		{
+	//			console.log( chalk.red( error ));
+	//			reject(error);
+	//			return; // Terminate execution.
+	//		}
 
 
-            present = Date();
+            present = Date();                 //Todays date
 
-            //old = sixMonthsPrior(present);
-            old = Date.parse('2019-10-20T16:51:17.000Z');
-            console.log(present);
-            console.log(old);
+            //old = sixMonthsPrior(present);                                   //Use this function to calculate 6 months old date from present date
+            old = Date.parse('2019-10-20T16:51:17.000Z');                  //Put the old date here beyond which we need to calculate stale issues
+            //console.log(present);                                         //Log present date
+            //console.log(old);                                              //log old date
             //console.log(typeof(sixMonthsPrior(present)));
             //console.log(formatDate(sixMonthsPrior(present)));
 
@@ -137,46 +134,43 @@ async function ListIssues()
             
             //var map1 = new Map(["Issue Number","Title"]);
 
-			var obj = JSON.parse(body);
-			console.log("List of Repositories for user are as follows:")
+        //	var obj = JSON.parse(body);
+            var obj = getIssues();                          //Get Issues currently reading from mockIssues.json
+		//	console.log("List of Repositories for user are as follows:")
 			for( var i = 0; i < obj.length; i++ )
 			{
                 var title = obj[i].title;
                 var updated = obj[i].updated_at;
                 var state =  obj[i].state;
 
-                lm = Date.parse(updated);
+                lm = Date.parse(updated);             //last_modified date of Git hub issue
                // th = Date.parse(old);
-                th=old;
-                console.log("last modified:");
-                console.log(lm);
+                th=old;                              //Threshold /6 months/ date set
+                //console.log("last modified:");
+                //console.log(lm);
 
-                console.log("Threshold 6 months date");
-                console.log(th);
+                //console.log("Threshold 6 months date");
+                //console.log(th);
             
-                if(th>lm)
+                if(th>lm)                               //compare threshold and last modified
                 {
-                    console.log("yup");
-                    console.log(title);
+                //    console.log("yup");
+                    //console.log(title);
                     
                     list.push(obj[i].title);
                     map1.set(obj[i].title,obj[i].number);
-                    console.log(obj[i].number);
+                    //console.log(obj[i].title);
 
                 }
             }
 
-            console.log("Here");
-            //console.log(list);
+            console.log("Complete list of stale issues")
+            console.log(list);
             var map;
 
            //map1 = JSON.stringify(list);
-           console.log(map1);
+           //console.log(map1);
            map = JSON.stringify(list);
-
-           
-
-            
 
             var channel_id = await library.createChannel();
             
@@ -227,13 +221,13 @@ async function ListIssues()
 
 			// Return object for people calling our method.
 			resolve( obj );
-		});
-	});
+//		});
+//	});
 
 }
 
 
 
-module.exports.ListIssues = ListIssues;
+module.exports.Stale_Issues = Stale_Issues;
 
 
