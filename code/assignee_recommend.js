@@ -64,7 +64,9 @@ async function recommendAssignee(data) {
 		}
 	}
 
-	lib.postMessage(data_assignee);
+	let response_body = await lib.postMessage(data_assignee);
+
+    return response_body.id;
 }
 
 async function getWorkLoad(owner, repo) {
