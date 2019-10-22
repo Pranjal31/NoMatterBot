@@ -88,21 +88,21 @@ async function login(browser, url) {
 
     try
     {
-      var msgId = await stale.Stale_Issues();
+      // var msgId = await stale.Stale_Issues();
 
-      var expectedMsg1 = "Hola, The following issue have no activity on them from 6 months ";
-      var expectedMsg2 = "All those CPU cycles for nothing? Okay :(";
+      // var expectedMsg1 = "Hola, The following issue have no activity on them from 6 months ";
+      // var expectedMsg2 = "All those CPU cycles for nothing? Okay :(";
       
-      //console.log(msgId);
+      // //console.log(msgId);
 
-      const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
-      let page = await login( browser, `${config.mmurl}/login` );
-      await navigateTo(page, config.channelName);
-      respBody = await hasInteractiveMsg(page, msgId, expectedMsg1);
+      // const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
+      // let page = await login( browser, `${config.mmurl}/login` );
+      // await navigateTo(page, config.channelName);
+      // respBody = await hasInteractiveMsg(page, msgId, expectedMsg1);
 
-      var msgId = await stale.ignore();
+      // var msgId = await stale.ignore();
 
-      await hasMsg(page, msgId, expectedMsg2);
+      // await hasMsg(page, msgId, expectedMsg2);
 
       //console.log(chalk.green('Test Case Notify Status Successful!'));
      }
