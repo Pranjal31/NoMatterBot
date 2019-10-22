@@ -76,5 +76,5 @@ async function login(browser, url) {
     // //await postMessage(page, "Hello world from browser automation" );
   
     //  const html = await page.content(); // serialized HTML of page DOM.
-     browser.close();
+     //browser.close();
   })()
