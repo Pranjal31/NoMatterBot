@@ -30,7 +30,7 @@ async function postMessage(data) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			"Authorizationge": `Bearer ${config.botaccess}`
+			"Authorization": `Bearer ${config.botaccess}`
 		},
 		json : data
 	};
@@ -128,6 +128,7 @@ async function createChannel(githubUser) {
 		]
 	};
 
+
 	return new Promise(function(resolve, reject)
 	{
 		request(options, function (error, response, body) {
@@ -183,7 +184,6 @@ async function openInteractiveDialog(data)
 				reject(error);
 				return; // Terminate execution
             }
-            console.log(response.body);
 			console.log(`Response Status Code ${response.statusCode}`);
 			resolve(response.statusCode);
 		});

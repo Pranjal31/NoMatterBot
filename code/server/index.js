@@ -1,6 +1,5 @@
-const express = require('express')
-const status_change = require('../statuschange')
-const lib = require('../lib')
+const express = require('express');
+const status_change = require('../statuschange');
 const recommend_assignee = require('../assignee_recommend.js');
 
 const app = express()
