@@ -1,13 +1,10 @@
 var lib = require('./lib');
 //var server = require('./server/index.js')
 
-var config = {};
+// var lib.config = {};
 
 // Retrieve our api token from the environment variables.
-//config.channel = process.env.CHANNELID;
-
 var data = {}
-//data.channel_id = config.channel;
 
 async function notify_change(post_body)
 {

@@ -3,9 +3,9 @@ const got  = require('got');
 
 var lib = require('./lib');
 
-var config = {}
+// var config = {}
 
-config.server = process.env.SERVERURL;
+// config.server = process.env.SERVERURL;
 
 async function recommendAssignee(data) {
 
@@ -40,7 +40,7 @@ async function recommendAssignee(data) {
 				        {
 							"name": "Select an option...",
 							"integration": {
-								"url": config.server + "/triggers/",
+								"url": lib.config.server + "/triggers/",
 								"context": {
 									"action": "ASSIGN",
 									"owner": data.owner,
@@ -55,7 +55,7 @@ async function recommendAssignee(data) {
 						{
 							"name": "Ignore",
 							"integration": {
-								"url": config.server + "/triggers/",
+								"url": lib.config.server + "/triggers/",
 								"context": {
 									"action": "IGNORE_ASSIGN",
 									"creator": data.creator
@@ -68,9 +68,7 @@ async function recommendAssignee(data) {
 		}
 	}
 
-	// console.log(data_assignee);
-
-	lib.sendResponse(data_assignee);
+	lib.postMessage(data_assignee);
 }
 
 async function getWorkLoad(owner, repo) {
@@ -129,7 +127,7 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 		// console.log(data);
 
-		lib.sendResponse(data);
+		lib.postMessage(data);
 
 	} else {
 
@@ -140,7 +138,7 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 		// console.log(data);
 
-		lib.sendResponse(data);
+		lib.postMessage(data);
 	}
 
 }
@@ -155,7 +153,7 @@ async function ignoreRecommendations(creator) {
 
 	}
 
-	lib.sendResponse(data);
+	lib.postMessage(data);
 }
 
 module.exports.recommendAssignee = recommendAssignee;

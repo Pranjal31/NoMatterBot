@@ -1,5 +1,6 @@
 var request = require('request');
 const chalk  = require('chalk');
+var lib = require('./lib');
 
 // NCSU Enterprise endpoint:
 //var ghRoot = "https://api.github.ncsu.edu";
@@ -8,7 +9,7 @@ const chalk  = require('chalk');
 // Retrieve our api token from the environment variables.
 //config.gh_token = process.env.GITHUBTOKEN;
 
-if( !config.gh_token )
+if( !lib.config.gh_token )
 {
 	console.log(chalk`{red.bold GITHUBTOKEN is not defined!}`);
 	console.log(`Please set your environment variables with appropriate token.`);
@@ -16,7 +17,7 @@ if( !config.gh_token )
 	process.exit(1);
 }
 
-console.log(chalk.green(`Your token is: ${config.gh_token.substring(0,4)}...`));
+console.log(chalk.green(`Your token is: ${lib.config.gh_token.substring(0,4)}...`));
 
 // Delete all labels and add a new label
 async function updateLabelForIssue(userId, repo, issue, label){
@@ -29,7 +30,7 @@ async function deleteLabelsForIssue(owner,repo, issue)
 {
 	console.log(chalk.green("\nDelete Issue Labels"));
 
-    let options = getDefaultOptions(config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "DELETE");
+    let options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "DELETE");
 
 	// Send a http request to url and specify a callback that will be called upon its return.
 	return new Promise(function(resolve, reject)
@@ -52,7 +53,7 @@ async function addLabelToIssue(owner,repo, issue, label)
 {
 	console.log(chalk.green("\nAdd Label to Issue"));
 
-    let options = getDefaultOptions(config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "POST");
+    let options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "POST");
     options.body = `{"labels":["${label}"]}`;
 
 	// Send a http request to url and specify a callback that will be called upon its return.
