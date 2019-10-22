@@ -4,15 +4,18 @@ var lib = require('./lib');
 var config = {};
 
 // Retrieve our api token from the environment variables.
-config.channel = process.env.CHANNELID;
+//config.channel = process.env.CHANNELID;
 
 var data = {}
-data.channel_id = config.channel;
+//data.channel_id = config.channel;
 
 async function notify_change(post_body)
 {
     console.log("in notify");
-    var msg = ""
+    var msg = "";
+
+    var chId = lib.createChannel("abcd");
+    data.channel_id = chId;
 
     if (post_body.action === 'opened')
     {
