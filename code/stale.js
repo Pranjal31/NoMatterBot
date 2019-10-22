@@ -226,8 +226,50 @@ async function Stale_Issues()
 
 }
 
+async function assign()
+{
+    var channel_id = await library.createChannel();
+
+    var status = await library.close_stale();
+
+    if(status == 200)
+    {
+        var data = {
+            "channel_id": channel_id,
+            "message": "Mischeif Managed"
+        }
+
+        library.sendResponse(data);
+    }
+    else
+    {
+        var data ={
+            "channel_id": channel_id,
+            "message": "Sorry, Unable to complete task"
+        }
+        library.sendResponse(data);
+    }
+
+    
+
+}
+
+async function ignore()
+{
+    var channel_id = await library.createChannel();
+    var data = {
+		"channel_id": channel_id,
+	 	"message": "All those CPU cycles for nothing? Okay :(",
+
+    }
+    library.sendResponse(data);
+
+}
+
 
 
 module.exports.Stale_Issues = Stale_Issues;
+module.exports.assign = assign;
+module.exports.ignore = ignore;
 
 

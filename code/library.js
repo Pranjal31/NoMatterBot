@@ -1,7 +1,7 @@
 var request = require('request');
 const got  = require('got');
 
-const githubUrl = "https://api.github.ncsu.edu";
+//const githubUrl = "https://api.github.ncsu.edu";
 const chalk  = require('chalk');
 
 var config = {};
@@ -11,6 +11,7 @@ config.channel = process.env.CHANNELID;
 config.botaccess = process.env.BOTACCESSTOKEN;
 config.mmurl = process.env.MATTERMOSTURL;
 config.gh_token = process.env.GITHUBTOKEN;
+config.githubUrl = process.env.GITHUBURL;
 
 /*if( config.mmurl || !config.botaccess )
 {
@@ -80,6 +81,45 @@ async function sendResponse(data) {
 }
 
 
+function getDefaultOptions(urlRoot, endpoint, method)
+{
+	var options = {
+		url: urlRoot + endpoint,
+		method: method,
+		headers: {
+			"User-Agent": "NoMatterBot",
+			"content-type": "application/json",
+			"Authorization": `token ${config.gh_token}`
+		}
+	};
+	return options;
+}
 
+
+async function close_stale(owner,repo,issue_number)
+{
+	var options = getDefaultOptions(config.githubUrl, "/repos/"+ owner + "/" + repo + "/issues/" + issue_number, "PATCH");
+
+	options.body = `{"state": "closed"}`;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.statusCode);
+		});
+	});
+
+}
+
+
+module.export.getDefaultOptions = getDefaultOptions;
 module.exports.sendResponse = sendResponse;
 module.exports.createChannel = createChannel;
