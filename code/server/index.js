@@ -1,8 +1,7 @@
 const express = require('express');
 const status_change = require('../statuschange');
 const recommend_assignee = require('../assignee_recommend.js');
-const library  = require('../library.js');
-//const stale = require('../stale.js');
+const stale = require('../stale.js');
 
 const app = express()
 const port = 3000;
@@ -87,13 +86,13 @@ app.post('/triggers/', function (req, res) {
            {
              var data = req_body.context;
              console.log("In assign");
-            library.assign();
+            stale.assign();
            }
  
            if(req_body.context.action == "STALE_IGNORE")
            {
              console.log("In ignore");
-             library.ignore();
+             stale.ignore();
             }
     }
 

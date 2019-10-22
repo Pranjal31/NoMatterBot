@@ -1,30 +1,18 @@
-function getIssues(){
-
-    const data = require("../code/mockStaleIssues.json");
-    return data;
-}
-
 var request = require('request');
-
 const chalk  = require('chalk');
+var lib = require('./lib');
+const nock = require("nock");
+
+var mockService = nock("https://api.github.ncsu.edu")
+.persist() // This will persist mock interception for lifetime of program.
+.filteringPath(function(path){
+    return "/";
+})
+.patch("/")
+.reply(200, JSON.stringify("done"));
 
 
-
-//var data = require("./mock.json")
-
-var library = require('./library');
-
-//console.log(data);
-
-var urlRoot = "https://api.github.ncsu.edu";
-// NCSU Enterprise endpoint:
-//var urlRoot = "https://api.github.ncsu.edu";
-
-var config = {};
-// Retrieve our api token from the environment variables.
-config.token = process.env.GITHUBTOKEN;
-
-if( !config.token )
+if( !lib.config.gh_token )
 {
 	console.log(chalk`{red.bold GITHUBTOKEN is not defined!}`);
 	console.log(`Please set your environment variables with appropriate token.`);
@@ -32,41 +20,14 @@ if( !config.token )
 	process.exit(1);
 }
 
-//console.log(chalk.green(`Your token is: ${config.token.substring(0,4)}...`));
-//console.log("Calling main");
-//main();
 
 //In full Implementation, a timer based event will call Stale_Issues() periodically for every 24 hours.
 if (process.env.NODE_ENV != 'test')
 {
-	(async () => {
-
-
-        //var userId = "vbbhadra";
-        //var newrepo = "bfs";
-        //var issue_number = "19"
-
-		
-				
+	(async () => {			
 	await Stale_Issues();
-    //var status = await library.close_stale();
-    //console.log(status);
 
 	})()
-}
-
-function getDefaultOptions(endpoint, method)
-{
-	var options = {
-		url: urlRoot + endpoint,
-		method: method,
-		headers: {
-			"User-Agent": "CSC510-REST-WORKSHOP",
-			"content-type": "application/json",
-			"Authorization": `token ${config.token}`
-		}
-	};
-	return options;
 }
 
 function sixMonthsPrior(date) {
@@ -100,10 +61,8 @@ async function Stale_Issues()
 		
 	for( var i = 0; i < obj.length; i++ )
 	{
-        var title = obj[i].title;
         var updated = obj[i].updated_at;
-        var state =  obj[i].state;
-
+        
         lm = Date.parse(updated);             //last_modified date of Git hub issue
                
         th=old;                              //Threshold /6 months/ date set
@@ -117,7 +76,7 @@ async function Stale_Issues()
         }
     }
  
-        var channel_id = await library.createChannel();
+        var channel_id = await lib.createChannel();
     
         var payload = {
                 "channel_id": channel_id,
@@ -132,7 +91,7 @@ async function Stale_Issues()
                                  {
                                      "name": "Close All Issues",
                                      "integration": {
-                                         "url":library.config.server + "/triggers/",
+                                         "url":lib.config.server + "/triggers/",
                                          "context": {
                                             "action": "STALE_CLOSE",
                                             "issue_ids": list
@@ -143,7 +102,7 @@ async function Stale_Issues()
                                  {
                                      "name": "Ignore",
                                      "integration":{
-                                         "url":library.config.server + "/triggers/",
+                                         "url":lib.config.server + "/triggers/",
                                          "context":{
                                              "action":"STALE_IGNORE"
                                          }
@@ -155,12 +114,84 @@ async function Stale_Issues()
                  }
             }
 
-            respBody = await library.sendResponse(payload);
+            respBody = await lib.postMessage(payload);
             
             return respBody.id;
             
 }
 
+function getIssues(){
+
+    const data = require("../code/mockStaleIssues.json");
+    return data;
+}
+
+async function close_stale(owner,repo,issue_number)
+{
+	var options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issue_number, "PATCH");
+
+	options.body = `{"state": "closed"}`;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.statusCode);
+		});
+	});
+
+}
+
+async function ignore()
+{
+    var channel_id = await lib.createChannel();
+    var data = {
+		"channel_id": channel_id,
+	 	"message": "Alright! These issues(s) have been ignored for a day.",
+
+    }
+	await lib.postMessage(data);
+
+}
+
+async function close_all()
+{
+    var channel_id = await lib.createChannel();
+
+    var status = await close_stale();
+
+    if(status == 200)
+    {
+        var data = {
+            "channel_id": channel_id,
+            "message": "Cool. It's done!"
+        }
+
+        await lib.postMessage(data);
+    }
+    else
+    {
+        var data ={
+            "channel_id": channel_id,
+            "message": "Sorry, Unable to complete task"
+        }
+	   await lib.postMessage(data);
+    }
+
+    
+
+}
+
+module.exports.close_all = close_all;
+module.exports.ignore = ignore;
+module.exports.close_stale = close_stale;
 module.exports.Stale_Issues = Stale_Issues;
 module.exports.getIssues = getIssues;
 
