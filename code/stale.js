@@ -1,33 +1,7 @@
-/*function main(){
-
-    getStaleIssues();
-
-}
-
-
-function getStaleIssues(){
-
-    console.log("Getting stale Issues")
-    getIssues();
-
-}*/
-
 function getIssues(){
 
     const data = require("../code/mockStaleIssues.json");
     return data;
-}
-
-
-function close(){
-
-
-}
-
-function Ignore(){
-
-
-
 }
 
 var request = require('request');
@@ -67,9 +41,9 @@ if (process.env.NODE_ENV != 'test')
 	(async () => {
 
 
-        var userId = "vbbhadra";
-        var newrepo = "bfs";
-        var issue_number = "19"
+        //var userId = "vbbhadra";
+        //var newrepo = "bfs";
+        //var issue_number = "19"
 
 		
 				
@@ -205,13 +179,13 @@ async function Stale_Issues()
                      "attachments": [
                          {
                              "pretext": "Here is the list",
-                             "text": map,
+                             "text": object1,
                              
                              "actions": [
                                  {
                                      "name": "Close All these Issues",
                                      "integration": {
-                                         "url":"http://3f4a49b2.ngrok.io/triggers/",
+                                         "url":library.config.server + "/triggers/",
                                          "context": {
                                             "action": "STALE_CLOSE",
                                             "issue_ids": list
@@ -222,7 +196,7 @@ async function Stale_Issues()
                                  {
                                      "name": "Ignore All",
                                      "integration":{
-                                         "url":"http://3f4a49b2.ngrok.io/triggers/",
+                                         "url":library.config.server + "/triggers/",
                                          "context":{
                                              "action":"STALE_IGNORE"
                                          }
@@ -234,13 +208,14 @@ async function Stale_Issues()
                  }
             }
 
-            library.sendResponse(payload);
+            respBody = await library.sendResponse(payload);
             
+            return respBody.id;
             
             
 
 			// Return object for people calling our method.
-			resolve( obj );
+			//resolve( obj );
 //		});
 //	});
 
@@ -259,7 +234,7 @@ async function assign()
             "message": "Mischeif Managed"
         }
 
-        library.sendResponse(data);
+        await library.sendResponse(data);
     }
     else
     {
@@ -267,7 +242,7 @@ async function assign()
             "channel_id": channel_id,
             "message": "Sorry, Unable to complete task"
         }
-        library.sendResponse(data);
+       await library.sendResponse(data);
     }
 
     
@@ -282,7 +257,7 @@ async function ignore()
 	 	"message": "All those CPU cycles for nothing? Okay :(",
 
     }
-    library.sendResponse(data);
+    await library.sendResponse(data);
 
 }
 

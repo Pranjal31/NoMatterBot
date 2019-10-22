@@ -8,18 +8,21 @@ const chalk  = require('chalk');
 var config = {};
 
 // Retrieve our api tokens from the environment variables.
-config.channel = process.env.CHANNELID;
+//config.channel = process.env.CHANNELID;
 config.botaccess = process.env.BOTACCESSTOKEN;
 config.mmurl = process.env.MATTERMOSTURL;
 config.gh_token = process.env.GITHUBTOKEN;
 config.githubUrl = process.env.GITHUBURL;
+config.server = process.env.SERVERURL;
+config.userchannelid = process.env.CHANNELUSERID;
+config.botuserid = process.env.BOTUSERID;
 
-/*if( config.mmurl || !config.botaccess )
+if( !config.mmurl || !config.botaccess || !config.botuserid || !config.gh_token || !config.server || !config.userchannelid || !config.githubUrl )
 {
 	console.log(`Please set your environment variables with appropriate token.`);
 	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);
 	process.exit(1);
-}*/
+}
 
 
    var mockService = nock("https://api.github.ncsu.edu")
@@ -34,6 +37,7 @@ config.githubUrl = process.env.GITHUBURL;
 async function createChannel() {
 
 	//var mmuserid = storage_lib.get("tblGitMatter", githubUser);
+	var mmuserid = config.userchannelid;
 
 	var options = {
 		url: config.mmurl + "/api/v4/channels/direct",
@@ -43,8 +47,8 @@ async function createChannel() {
 			"Authorization": `Bearer ${config.botaccess}`
 		},
 		json : [
-		  "zonbwmqtxtdmtp9b79owgid3ny",
-		  "xzxmyqd5n7ya8fqqayyiqhsq3y"
+		  config.botuserid,
+		  mmuserid
 		]
 	};
 
@@ -134,3 +138,4 @@ module.exports.close_stale = close_stale;
 module.exports.getDefaultOptions = getDefaultOptions;
 module.exports.sendResponse = sendResponse;
 module.exports.createChannel = createChannel;
+module.exports.config = config;
