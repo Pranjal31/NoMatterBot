@@ -1,15 +1,36 @@
 const puppeteer = require('puppeteer')
-const notifier = require('../status_notify.js')
+const assignee_recommend = require('../assignee_recommend.js')
+const lib = require('../lib.js');
 const mockStatChange = require('../mock_statChange.json')
-const chalk = require('chalk')
+const chalk = require('chalk');
 
-var config = {};
+const chai = require("chai");
+const expect = chai.expect;
+const nock = require("nock");
 
-// retrieve api tokens
-config.mmurl = process.env.MATTERMOSTURL;
-config.channelName = process.env.CHANNELNAME;
-config.loginEmail = process.env.MATTERMOST_EMAIL;
-config.loginPassword = process.env.MATTERMOST_PWD;
+const mockIssues = require('../mockIssues.json');
+const mockUsers = require('../mockUsers.json');
+const mockNewIssue = require('../mockNewIssue.json');
+
+// var lib.config = {};
+
+// // retrieve api tokens
+// lib.config.mmurl = process.env.MATTERMOSTURL;
+lib.config.channelName = lib.config.BOTUSERID + "_" + lib.config.CHANNELUSERID
+lib.config.loginEmail = process.env.MATTERMOST_EMAIL;
+lib.config.loginPassword = process.env.MATTERMOST_PWD;
+
+// MOCK SERVICE
+  var mockIssueService = nock("https://api.github.ncsu.edu")
+    .persist() // This will persist mock interception for lifetime of program.
+    .get("/repos/asmalunj/test_repo/issues")
+    .reply(200, JSON.stringify(mockIssues) );
+
+  var mockUserService = nock("https://api.github.ncsu.edu")
+    .persist() // This will persist mock interception for lifetime of program.
+    .get("/repos/asmalunj/test_repo/collaborators")
+    .reply(200, JSON.stringify(mockUsers) );
+
 
 async function login(browser, url) {
     const page = await browser.newPage();
@@ -17,8 +38,8 @@ async function login(browser, url) {
     await page.goto(url, {waitUntil: 'networkidle0'});
   
     // Login
-    await page.type('input[id=loginId]', config.loginEmail);
-    await page.type('input[id=loginPassword]', config.loginPassword);
+    await page.type('input[id=loginId]', lib.config.loginEmail);
+    await page.type('input[id=loginPassword]', lib.config.loginPassword);
     await page.click('button[id=loginButton]');
   
     // Wait for redirect
@@ -36,7 +57,7 @@ async function login(browser, url) {
     var postId = "postMessageText_" + msgId;
     try
     {
-      await page.waitForSelector('#postMessageText_'+msgId);
+      await page.waitForSelector('#postMessageText_' + msgId);
       const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
       const text = await (await textEle[0].getProperty('textContent')).jsonValue();
       
@@ -55,26 +76,22 @@ async function login(browser, url) {
 
     try
     {
-      var msgId = await notifier.notify_change(mockStatChange);
+      var msgId = await notifier.recommendAssignee(mockNewIssue);
 
-      var expectedMsg = "Issue: #24 ahahah is now in progress";
+      var expectedMsg = "Ciao! I see that you recently created an issue " + mockNewIssue.issue_id;
       
       //console.log(msgId);
 
       const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
-      let page = await login( browser, `${config.mmurl}/login` );
-      await navigateTo(page, config.channelName);
+      let page = await login( browser, `${lib.config.mmurl}/login` );
+      await navigateTo(page, lib.config.channelName);
       await hasMsg(page, msgId, expectedMsg);
-      console.log(chalk.green('Test Case Notify Status Successful!'));
+      console.log(chalk.green('Test Case Assignee Recommend Successful!'));
      }
      catch(err)
      {
         console.log(err);
-        console.log(chalk.red('Test Case Notify Status Failed!!!'));
+        console.log(chalk.red('Test Case Assignee Recommend Failed!!!'));
      }
     
-    // //await postMessage(page, "Hello world from browser automation" );
-  
-    //  const html = await page.content(); // serialized HTML of page DOM.
-    // browser.close();
   })()

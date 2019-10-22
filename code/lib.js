@@ -127,8 +127,6 @@ async function createChannel(githubUser) {
 		  mmuserid
 		]
 	};
-
-
 	return new Promise(function(resolve, reject)
 	{
 		request(options, function (error, response, body) {
