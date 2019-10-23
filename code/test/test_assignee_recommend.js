@@ -8,8 +8,6 @@ const chai = require("chai");
 const expect = chai.expect;
 const nock = require("nock");
 
-// const { puppeteer_util } = Apify.utils;
-
 const mockIssues = require('../mockIssues.json');
 const mockUsers = require('../mockUsers.json');
 const mockNewIssue = require('../mockNewIssue.json');
@@ -86,142 +84,33 @@ describe('Recommend assignee using puppeteer', function () {
 
   it('Should ignore assignee recommendations', async () => {
 
-    var expectedMsg3 = "All those CPU cycles for nothing? Okay :(";
+    var expectedMsg3 = "All those CPU cycles for nothing? Okay ";
 
     var postId = "messageAttachmentList_" + msgId;
 
     await page.waitForSelector('#sidebarItem_'+ config.channelName);
     await page.click('#sidebarItem_'+ config.channelName);
 
-    await page.waitForSelector('#messageAttachmentList_' + msgId);
-
     let selector = `#${postId} > div > div.attachment__content > div > div > div.attachment__body.attachment__body--no_thumb > div.attachment-actions > button`;
 
-    await page.evaluate((selector) => document.querySelector(selector).click(), selector);
+    await page.waitForSelector(selector);
+
+    await page.click(selector);
+
+    // await page.evaluate((selector) => document.querySelector(selector).click(), selector);
+
+    var ignore_msgId = await assignee_recommend.ignoreRecommendations(mockNewIssue.creator);
+
+    var ignore_post = "postMessageText_" + ignore_msgId;
+
+    console.log(ignore_post);
+
+    const textEle = await page.$x(`//*[contains(@id, "${ignore_post}")]/p`);
+    const text = await (await textEle[0].getProperty('textContent')).jsonValue();
+
+    expect(text).to.eql(expectedMsg3);
 
     await browser.close();
   });
 
 });
-
-// it('Should assign the selected assignee', async () => {
-
-//     var expectedMsg3 = "All those CPU cycles for nothing? Okay :(";
-
-//     var postId = "messageAttachmentList_" + msgId;
-
-//     await page.waitForSelector('#sidebarItem_'+ config.channelName);
-//     await page.click('#sidebarItem_'+ config.channelName);
-
-//     await page.waitForSelector('#messageAttachmentList_' + msgId);
-
-//     var text = await page.evaluate( () => document.querySelectorAll(`#${postId} > div > div[class="attachment__content"] > div > div > div > div[class = "attachment-actions"] > div > div > div > input`).textContent )[1];
-//     console.log('text = ' + text);
-
-//     await browser.close();
-// });
-
-
-// async function login(browser, url) {
-//     const page = await browser.newPage();
-  
-//     await page.goto(url, {waitUntil: 'networkidle0'});
-  
-//     // Login
-//     await page.type('input[id=loginId]', lib.config.loginEmail);
-//     await page.type('input[id=loginPassword]', lib.config.loginPassword);
-//     await page.click('button[id=loginButton]');
-  
-//     // Wait for redirect
-//     await page.waitForNavigation();
-//     return page;
-//   }
-
-//   async function navigateTo(page, channelName) {
-//     await page.waitForSelector('#sidebarItem_'+channelName)
-//     await page.click('#sidebarItem_'+channelName)
-//   }
-
-//   async function hasMsg(page, msgId, expectedMsg)
-//   {
-//     var postId = "postMessageText_" + msgId;
-//     try
-//     {
-//       await page.waitForSelector('#postMessageText_' + msgId);
-//       const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
-//       const text = await (await textEle[0].getProperty('textContent')).jsonValue();
-      
-//       if (!(text === expectedMsg))
-//       {
-//         throw "Message did not match!!";
-//       }
-//     }
-//     catch(err)
-//     {
-//       throw err;
-//     }
-//   }
-
-//   async function hasInteractiveMsg(page, msgId, expectedMsg)
-//   {
-//     var postId = "postMessageText_" + msgId;
-//     try
-//     {
-//       await page.waitForSelector('#'+postId);
-//       const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
-//       const text = await (await textEle[0].getProperty('textContent')).jsonValue();
-      
-//       if (!(text === expectedMsg))
-//       {
-//         throw "Message did not match!!";
-//       }
-
-//       respBody = {}
-
-//       // await page.setRequestInterception(true);
-//       // await page.on('request', request => {
-//       //   if (request.url().endsWith('/triggers/'))
-//       //   {
-//       //       respBody = request.body();
-//       //   }
-//       //       request.continue();
-//       // });
-
-//       // console.log(JSON.stringify(respBody));
-//       return respBody;
-//     }
-//     catch(err)
-//     {
-//       throw err;
-//     }
-//   }
-
-//   (async () => {
-
-//     try
-//     {
-//       var msgId = await assignee_recommend.recommendAssignee(mockNewIssue);
-
-//       var expectedMsg1 = "Ciao! I see that you recently created an issue " + mockNewIssue.issue_id;
-//       var expectedMsg2 = "Done and dusted!";
-//       //var expectedMsg3 = "All those CPU cycles for nothing? Okay :(";
-      
-//       //console.log(msgId);
-
-//       const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
-//       let page = await login( browser, `${lib.config.mmurl}/login` );
-//       await navigateTo(page, lib.config.channelName);
-//       var respBody = await hasInteractiveMsg(page, msgId, expectedMsg1);
-
-//       // var msgId = await assignee_recommend.assign(mockNewIssue.owner, mockNewIssue.repo, mockNewIssue.issue_id, mockNewIssue.creator, mockAssignee);
-//       // await hasMsg(page, msgId, expectedMsg2);
-
-//       console.log(chalk.green('Test Case Assignee Recommend Successful!'));
-//      }
-//      catch(err)
-//      {
-//         console.log(err);
-//         console.log(chalk.red('Test Case Assignee Recommend Failed!!!'));
-//      }
-    
-//   })()

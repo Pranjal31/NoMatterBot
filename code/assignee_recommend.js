@@ -136,7 +136,7 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 		// console.log(data);
 
-		response_body = lib.postMessage(data);
+		response_body = await lib.postMessage(data);
 	}
 
 	return response_body.id;
@@ -153,7 +153,7 @@ async function ignoreRecommendations(creator) {
 
 	}
 
-	response_body = lib.postMessage(data);
+	response_body = await lib.postMessage(data);
 	return response_body.id;
 }
 
