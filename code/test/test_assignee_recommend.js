@@ -103,8 +103,6 @@ describe('Recommend assignee using puppeteer', function () {
 
     var ignore_post = "postMessageText_" + ignore_msgId;
 
-    console.log(ignore_post);
-
     const textEle = await page.$x(`//*[contains(@id, "${ignore_post}")]/p`);
     const text = await (await textEle[0].getProperty('textContent')).jsonValue();
 
@@ -115,32 +113,29 @@ describe('Recommend assignee using puppeteer', function () {
 
   it('Should set assignee to Issue', async () => {
 
-    var expectedMsg4 = "Done and dusted!";
+    var expectedMsg2 = "Done and dusted!";
 
     var postId = "messageAttachmentList_" + msgId;
-    console.log("postid:"+postId);
 
     await page.waitForSelector('#sidebarItem_'+ config.channelName);
     await page.click('#sidebarItem_'+ config.channelName);
 
-    let selector = `#${postId} > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > input:nth-child(2)`;
+    let selector = `div#${postId} > div > div.attachment__content > div > div > div.attachment__body.attachment__body--no_thumb > div.attachment-actions > div > div > div > input`;
 
     await page.waitForSelector(selector);
-    //await page.focus(selector);
-    //page.keyboard.type('asmalunj');
-
-    await page.evaluate(() => document.querySelector(`#${postId} > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > input:nth-child(2)`).setAttribute('value', 'asmalunj'));
+    await page.focus(selector);
+    await page.keyboard.type(mockAssignee);
+    await page.keyboard.enter;
+    // await page.evaluate((selector) => document.querySelector(selector).setAttribute('value', 'asmalunj'));
 
     var assign_msgId = await assignee_recommend.assign(mockNewIssue.creator, mockNewIssue.repo, mockNewIssue.issue_id, mockNewIssue.creator, mockAssignee);
 
     var assign_post = "postMessageText_" + assign_msgId;
 
-    console.log(assign_post);
-
-    const textEle = await page.$x(`//*[contains(@id, "${ignore_post}")]/p`);
+    const textEle = await page.$x(`//*[contains(@id, "${assign_post}")]/p`);
     const text = await (await textEle[0].getProperty('textContent')).jsonValue();
 
-    expect(text).to.eql(expectedMsg4);
+    expect(text).to.eql(expectedMsg2);
 
     await browser.close();
   });
