@@ -61,7 +61,7 @@ describe('Recommend assignee using puppeteer', function () {
       await browser.close();
   });
 
-  it('Should show assignne recommendations', async () => {
+  it('Should show assignee recommendations', async () => {
 
     var expectedMsg1 = "Ciao! I see that you recently created an issue " + mockNewIssue.issue_id;
 

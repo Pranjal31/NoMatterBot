@@ -1,7 +1,10 @@
-const puppeteer = require('puppeteer')
-const notifier = require('../status_notify.js')
-const mockStatChange = require('../mock_statChange.json')
-const chalk = require('chalk')
+const puppeteer = require('puppeteer');
+const notifier = require('../status_notify.js');
+const mockStatChange = require('../mock_statChange.json');
+const chalk = require('chalk');
+
+const chai = require("chai");
+const expect = chai.expect;
 
 var config = {};
 
@@ -12,72 +15,50 @@ config.botchannel = process.env.BOTUSERID;
 config.loginEmail = process.env.MATTERMOST_EMAIL;
 config.loginPassword = process.env.MATTERMOST_PWD;
 
-async function login(browser, url) {
-    const page = await browser.newPage();
-  
-    await page.goto(url, {waitUntil: 'networkidle0'});
-  
-    // Login
-    await page.type('input[id=loginId]', config.loginEmail);
-    await page.type('input[id=loginPassword]', config.loginPassword);
-    await page.click('button[id=loginButton]');
-  
-    // Wait for redirect
-    await page.waitForNavigation();
-    return page;
-  }
+describe('Notify status using puppeteer', function () {
 
-  async function navigateTo(page, channelName) {
-    await page.waitForSelector('#sidebarItem_'+channelName)
-    await page.click('#sidebarItem_'+channelName)
-  }
+  let browser;
+  let page;
+  let msgId;
 
-  async function hasMsg(page, msgId, expectedMsg)
-  {
-    var postId = "postMessageText_" + msgId;
-    try
-    {
-      await page.waitForSelector('#'+postId);
-      const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
-      const text = await (await textEle[0].getProperty('textContent')).jsonValue();
-      
-      if (!(text === expectedMsg))
-      {
-        throw "Message did not match!!";
-      }
-    }
-    catch(err)
-    {
-      throw err;
-    }
-  }
+  this.timeout(5000000);
 
-  (async () => {
-
-    try
-    {
-      var msgId = await notifier.notify_change(mockStatChange);
-
-      var expectedMsg = "Issue: #24 ahahah is now in progress";
-
-      var channelName = config.userchannel+"__"+config.botchannel;
-      
-      //console.log(msgId);
-
-      const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
-      let page = await login( browser, `${config.mmurl}/login` );
-      await navigateTo(page, config.channelName);
-      await hasMsg(page, msgId, expectedMsg);
-      console.log(chalk.green('Test Case Notify Status Successful!'));
-     }
-     catch(err)
-     {
-        console.log(err);
-        console.log(chalk.red('Test Case Notify Status Failed!!!'));
-     }
+  beforeEach(async () => {
+      browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
+      page = await browser.newPage();
+      await page.goto(`${config.mmurl}/login`, {waitUntil: 'networkidle0'});
+      await page.type('input[id=loginId]', config.loginEmail);
+      await page.type('input[id=loginPassword]', config.loginPassword);
+      await page.click('button[id=loginButton]');
     
-    // //await postMessage(page, "Hello world from browser automation" );
-  
-    //  const html = await page.content(); // serialized HTML of page DOM.
-     //browser.close();
-  })()
+      // Wait for redirect
+      await page.waitForNavigation();
+  });
+
+  afterEach(async () => {
+      await browser.close();
+  });
+
+  it('Should show status notification', async () => {
+
+    var expectedMsg = "Issue: #24 ahahah is now in progress";
+
+    var channelName = config.userchannel+"__"+config.botchannel;
+
+    msgId = await notifier.notify_change(mockStatChange);
+
+    var postId = "postMessageText_" + msgId;
+
+    await page.waitForSelector('#sidebarItem_'+ channelName);
+    await page.click('#sidebarItem_'+ channelName);
+
+    await page.waitForSelector('#postMessageText_' + msgId);
+
+    const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
+    const text = await (await textEle[0].getProperty('textContent')).jsonValue();
+
+    expect(text).to.eql(expectedMsg);
+
+    await browser.close();
+  });  
+});
