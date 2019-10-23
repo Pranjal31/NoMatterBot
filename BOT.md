@@ -93,6 +93,9 @@ Mocking infrastructure consists of different mock json files to abstract away di
 + mockStaleIssues.json: Used to abstract away finding stale issues. This is used both for implementation and testing of stale issues use case
 + mockUsers.json: Used to abstract away getting collaborators for a repository used for testing assignee recommendations
 
+### Nock
+nock module has been utilised to mock GitHub service. This set-up responds with a 200 Ok status-code for REST calls made to GitHub. After getting a status 200 Ok, Bot sends an appropriate message to user on Mattermost
+
 ## Selenium/Puppeteer testing of each use case
 
 Puppeteer has been used to test our three primary usecases.
@@ -103,15 +106,19 @@ The test starts by mocking the status change event and launching Mattermost to p
 
 + Use case - Assignee Recommendation: 
 
-The test suite consists of three tests.
-1. First test starts by mocking the new issue created event and launching Mattermost to post the corresponding assignee recommendations to the creator. If the posted message is the same as expected, the test passes. 
-2. Second test starts by mocking the "assign button clicked" event. If the posted message is the same as expected, the test passes. 
-3. Third test starts by mocking the "ignore button clicked" event. If the posted message is the same as expected, the test passes. 
+The test suite consists of three sub-tests.
+1. First test starts by mocking the new issue created event. Bot then posts the corresponding assignee recommendations to the creator on Mattermost. If the posted message is the same as expected, the test passes. 
+2. Second test starts by invoking "assign" button-click event (Happy Path) via Puppeteer and mocking the response from Mattermost. If Bot's reply to this Mattermost's message is same as defined in test-case, it passes. 
+3. Third test starts by invoking "Ignore" button-click event (Alternative Path) via Puppeteer and mocking the response from Mattermost. If Bot's reply to this Mattermost's message is same as defined in test-case, it passes. 
 
 + Use case - Stale Issues: 
 
-The test starts by mocking the timer expiry event (24 hours) and launching Mattermost to post the a message to assignee with list of stale issues. The test passes if the expected message has been posted on assignee's mattermost channel.
+The test suite consists of three sub-tests.
+1. First test starts by mocking system timer expiry event (24 hours). This triggers the Bot to post the list of Stale Issues on Mattermost. If the posted message is the same as expected, the test passes. 
+2. Second test starts by invoking "Close All Issues" button-click event (Happy-path) via Puppeteer and mocking the response from Mattermost. If Bot's reply to this message from Mattermost is same as defined in test-case, it passes. 
+3. Third test starts by invoking "Ignore" button-click event (Alternative Path) via Puppeteer and mocking the response from Mattermost. If Bot's reply to this message from Mattermost is same as defined in test-case, it passes.
+
 
 ## Screencast
 
-The screencast demonstrating the bot performing three primary use cases and running puppeteer tests is [here](https://drive.google.com/file/d/15n_SM9txz6F33M2rl9Ue6fcT-8oWFE3h/view)
+The screencast demonstrating the bot performing three primary use cases and running puppeteer tests is [here](https://drive.google.com/file/d/1rlnHlQjEJcwtMzbhI4GdxJVdjkAdx5d3/view?usp=sharing)
