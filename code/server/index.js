@@ -86,7 +86,7 @@ app.post('/triggers/', function (req, res) {
            {
              var data = req_body.context;
              console.log("In assign");
-            stale.assign();
+             stale.close_all();
            }
  
            if(req_body.context.action == "STALE_IGNORE")
