@@ -8,20 +8,24 @@ const chai = require("chai");
 const expect = chai.expect;
 const nock = require("nock");
 
+// const { puppeteer_util } = Apify.utils;
+
 const mockIssues = require('../mockIssues.json');
 const mockUsers = require('../mockUsers.json');
 const mockNewIssue = require('../mockNewIssue.json');
 const mockAssignee = "asmalunj";
 
-// var lib.config = {};
+var config = {};
 
-// // retrieve api tokens
-// lib.config.mmurl = process.env.MATTERMOSTURL;
-lib.config.channelName = lib.config.BOTUSERID + "_" + lib.config.CHANNELUSERID
-lib.config.loginEmail = process.env.MATTERMOST_EMAIL;
-lib.config.loginPassword = process.env.MATTERMOST_PWD;
+// retrieve api tokens
+config.mmurl = process.env.MATTERMOSTURL;
+config.channelName = process.env.CHANNELNAME;
+config.loginEmail = process.env.MATTERMOST_EMAIL;
+config.loginPassword = process.env.MATTERMOST_PWD;
 
-// MOCK SERVICE
+describe('Recommend assignee using puppeteer', function () {
+
+  // MOCK SERVICE
   var mockIssueService = nock("https://api.github.ncsu.edu")
     .persist() // This will persist mock interception for lifetime of program.
     .get("/repos/asmalunj/test_repo/issues")
@@ -37,107 +41,187 @@ lib.config.loginPassword = process.env.MATTERMOST_PWD;
     .patch("/repos/asmalunj/test_repo/issues/" + mockNewIssue.issue_id)
     .reply(200, JSON.stringify(mockUsers) );
 
+  let browser;
+  let page;
+  let msgId;
 
-async function login(browser, url) {
-    const page = await browser.newPage();
-  
-    await page.goto(url, {waitUntil: 'networkidle0'});
-  
-    // Login
-    await page.type('input[id=loginId]', lib.config.loginEmail);
-    await page.type('input[id=loginPassword]', lib.config.loginPassword);
-    await page.click('button[id=loginButton]');
-  
-    // Wait for redirect
-    await page.waitForNavigation();
-    return page;
-  }
+  this.timeout(5000000);
 
-  async function navigateTo(page, channelName) {
-    await page.waitForSelector('#sidebarItem_'+channelName)
-    await page.click('#sidebarItem_'+channelName)
-  }
-
-  async function hasMsg(page, msgId, expectedMsg)
-  {
-    var postId = "postMessageText_" + msgId;
-    try
-    {
-      await page.waitForSelector('#postMessageText_' + msgId);
-      const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
-      const text = await (await textEle[0].getProperty('textContent')).jsonValue();
-      
-      if (!(text === expectedMsg))
-      {
-        throw "Message did not match!!";
-      }
-    }
-    catch(err)
-    {
-      throw err;
-    }
-  }
-
-  async function hasInteractiveMsg(page, msgId, expectedMsg)
-  {
-    var postId = "postMessageText_" + msgId;
-    try
-    {
-      await page.waitForSelector('#'+postId);
-      const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
-      const text = await (await textEle[0].getProperty('textContent')).jsonValue();
-      
-      if (!(text === expectedMsg))
-      {
-        throw "Message did not match!!";
-      }
-
-      respBody = {}
-
-      // await page.setRequestInterception(true);
-      // await page.on('request', request => {
-      //   if (request.url().endsWith('/triggers/'))
-      //   {
-      //       respBody = request.body();
-      //   }
-      //       request.continue();
-      // });
-
-      // console.log(JSON.stringify(respBody));
-      return respBody;
-    }
-    catch(err)
-    {
-      throw err;
-    }
-  }
-
-  (async () => {
-
-    try
-    {
-      var msgId = await assignee_recommend.recommendAssignee(mockNewIssue);
-
-      var expectedMsg1 = "Ciao! I see that you recently created an issue " + mockNewIssue.issue_id;
-      var expectedMsg2 = "Done and dusted!";
-      //var expectedMsg3 = "All those CPU cycles for nothing? Okay :(";
-      
-      //console.log(msgId);
-
-      const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
-      let page = await login( browser, `${lib.config.mmurl}/login` );
-      await navigateTo(page, lib.config.channelName);
-      var respBody = await hasInteractiveMsg(page, msgId, expectedMsg1);
-
-      // var msgId = await assignee_recommend.assign(mockNewIssue.owner, mockNewIssue.repo, mockNewIssue.issue_id, mockNewIssue.creator, mockAssignee);
-      // await hasMsg(page, msgId, expectedMsg2);
-
-      console.log(chalk.green('Test Case Assignee Recommend Successful!'));
-     }
-     catch(err)
-     {
-        console.log(err);
-        console.log(chalk.red('Test Case Assignee Recommend Failed!!!'));
-     }
+  beforeEach(async () => {
+      browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
+      page = await browser.newPage();
+      await page.goto(`${config.mmurl}/login`, {waitUntil: 'networkidle0'});
+      await page.type('input[id=loginId]', config.loginEmail);
+      await page.type('input[id=loginPassword]', config.loginPassword);
+      await page.click('button[id=loginButton]');
     
-  })()
+      // Wait for redirect
+      await page.waitForNavigation();
+  });
+
+  afterEach(async () => {
+      await browser.close();
+  });
+
+  it('Should show assignne recommendations', async () => {
+
+    var expectedMsg1 = "Ciao! I see that you recently created an issue " + mockNewIssue.issue_id;
+
+    msgId = await assignee_recommend.recommendAssignee(mockNewIssue);
+
+    var postId = "postMessageText_" + msgId;
+
+    await page.waitForSelector('#sidebarItem_'+ config.channelName);
+    await page.click('#sidebarItem_'+ config.channelName);
+
+    await page.waitForSelector('#postMessageText_' + msgId);
+
+    const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
+    const text = await (await textEle[0].getProperty('textContent')).jsonValue();
+
+    expect(text).to.eql(expectedMsg1);
+
+    await browser.close();
+  });
+
+  it('Should ignore assignee recommendations', async () => {
+
+    var expectedMsg3 = "All those CPU cycles for nothing? Okay :(";
+
+    var postId = "messageAttachmentList_" + msgId;
+
+    await page.waitForSelector('#sidebarItem_'+ config.channelName);
+    await page.click('#sidebarItem_'+ config.channelName);
+
+    await page.waitForSelector('#messageAttachmentList_' + msgId);
+
+    let selector = `#${postId} > div > div.attachment__content > div > div > div.attachment__body.attachment__body--no_thumb > div.attachment-actions > button`;
+
+    await page.evaluate((selector) => document.querySelector(selector).click(), selector);
+
+    await browser.close();
+  });
+
+});
+
+// it('Should assign the selected assignee', async () => {
+
+//     var expectedMsg3 = "All those CPU cycles for nothing? Okay :(";
+
+//     var postId = "messageAttachmentList_" + msgId;
+
+//     await page.waitForSelector('#sidebarItem_'+ config.channelName);
+//     await page.click('#sidebarItem_'+ config.channelName);
+
+//     await page.waitForSelector('#messageAttachmentList_' + msgId);
+
+//     var text = await page.evaluate( () => document.querySelectorAll(`#${postId} > div > div[class="attachment__content"] > div > div > div > div[class = "attachment-actions"] > div > div > div > input`).textContent )[1];
+//     console.log('text = ' + text);
+
+//     await browser.close();
+// });
+
+
+// async function login(browser, url) {
+//     const page = await browser.newPage();
+  
+//     await page.goto(url, {waitUntil: 'networkidle0'});
+  
+//     // Login
+//     await page.type('input[id=loginId]', lib.config.loginEmail);
+//     await page.type('input[id=loginPassword]', lib.config.loginPassword);
+//     await page.click('button[id=loginButton]');
+  
+//     // Wait for redirect
+//     await page.waitForNavigation();
+//     return page;
+//   }
+
+//   async function navigateTo(page, channelName) {
+//     await page.waitForSelector('#sidebarItem_'+channelName)
+//     await page.click('#sidebarItem_'+channelName)
+//   }
+
+//   async function hasMsg(page, msgId, expectedMsg)
+//   {
+//     var postId = "postMessageText_" + msgId;
+//     try
+//     {
+//       await page.waitForSelector('#postMessageText_' + msgId);
+//       const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
+//       const text = await (await textEle[0].getProperty('textContent')).jsonValue();
+      
+//       if (!(text === expectedMsg))
+//       {
+//         throw "Message did not match!!";
+//       }
+//     }
+//     catch(err)
+//     {
+//       throw err;
+//     }
+//   }
+
+//   async function hasInteractiveMsg(page, msgId, expectedMsg)
+//   {
+//     var postId = "postMessageText_" + msgId;
+//     try
+//     {
+//       await page.waitForSelector('#'+postId);
+//       const textEle = await page.$x(`//*[contains(@id, "${postId}")]/p`);
+//       const text = await (await textEle[0].getProperty('textContent')).jsonValue();
+      
+//       if (!(text === expectedMsg))
+//       {
+//         throw "Message did not match!!";
+//       }
+
+//       respBody = {}
+
+//       // await page.setRequestInterception(true);
+//       // await page.on('request', request => {
+//       //   if (request.url().endsWith('/triggers/'))
+//       //   {
+//       //       respBody = request.body();
+//       //   }
+//       //       request.continue();
+//       // });
+
+//       // console.log(JSON.stringify(respBody));
+//       return respBody;
+//     }
+//     catch(err)
+//     {
+//       throw err;
+//     }
+//   }
+
+//   (async () => {
+
+//     try
+//     {
+//       var msgId = await assignee_recommend.recommendAssignee(mockNewIssue);
+
+//       var expectedMsg1 = "Ciao! I see that you recently created an issue " + mockNewIssue.issue_id;
+//       var expectedMsg2 = "Done and dusted!";
+//       //var expectedMsg3 = "All those CPU cycles for nothing? Okay :(";
+      
+//       //console.log(msgId);
+
+//       const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
+//       let page = await login( browser, `${lib.config.mmurl}/login` );
+//       await navigateTo(page, lib.config.channelName);
+//       var respBody = await hasInteractiveMsg(page, msgId, expectedMsg1);
+
+//       // var msgId = await assignee_recommend.assign(mockNewIssue.owner, mockNewIssue.repo, mockNewIssue.issue_id, mockNewIssue.creator, mockAssignee);
+//       // await hasMsg(page, msgId, expectedMsg2);
+
+//       console.log(chalk.green('Test Case Assignee Recommend Successful!'));
+//      }
+//      catch(err)
+//      {
+//         console.log(err);
+//         console.log(chalk.red('Test Case Assignee Recommend Failed!!!'));
+//      }
+    
+//   })()
