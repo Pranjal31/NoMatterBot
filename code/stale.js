@@ -3,13 +3,18 @@ const chalk  = require('chalk');
 var lib = require('./lib');
 const nock = require("nock");
 
-var mockService = nock("https://api.github.ncsu.edu")
+// lib.config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issue_number, "PATCH"
+
+
+/* var mockService = nock("https://api.github.ncsu.edu")
 .persist() // This will persist mock interception for lifetime of program.
 .filteringPath(function(path){
     return "/";
 })
 .patch("/")
-.reply(200, JSON.stringify("done"));
+.reply(200, JSON.stringify("done")); */
+
+
 
 
 if( !lib.config.gh_token )
@@ -127,8 +132,14 @@ function getIssues(){
 }
 
 async function close_stale(owner,repo,issue_number)
+
 {
-	var options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issue_number, "PATCH");
+    
+    var mockService = nock("https://api.github.ncsu.edu")
+    .patch("/repos/" + owner + "/" + repo + "/issues/" + issue_number)
+    .reply(200, JSON.stringify("done"));
+    
+    var options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issue_number, "PATCH");
 
 	options.body = `{"state": "closed"}`;
 
