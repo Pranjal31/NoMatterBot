@@ -27,13 +27,13 @@ if( !lib.config.gh_token )
 
 
 //In full Implementation, a timer based event will call Stale_Issues() periodically for every 24 hours.
-if (process.env.NODE_ENV != 'test')
+/* if (process.env.NODE_ENV != 'test')
 {
 	(async () => {			
 	await Stale_Issues();
 
 	})()
-}
+} */
 
 function sixMonthsPrior(date) {
     //Today's date
