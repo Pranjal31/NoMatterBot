@@ -119,7 +119,7 @@ async function Stale_Issues()
                  }
             }
 
-            respBody = await lib.postMessage(payload);
+            var respBody = await lib.postMessage(payload);
             
             return respBody.id;
             
@@ -168,7 +168,8 @@ async function ignore()
 	 	"message": "Alright! These issues(s) have been ignored for a day.",
 
     }
-	await lib.postMessage(data);
+    var respBody = await lib.postMessage(data);
+    return respBody.id;
 
 }
 
@@ -185,7 +186,8 @@ async function close_all()
             "message": "Cool. It's done!"
         }
 
-        await lib.postMessage(data);
+        var respBody = await lib.postMessage(data);
+        return respBody.id;
     }
     else
     {
@@ -193,7 +195,9 @@ async function close_all()
             "channel_id": channel_id,
             "message": "Sorry, Unable to complete task"
         }
-	   await lib.postMessage(data);
+
+        var respBody = await lib.postMessage(data);
+        return respBody.id;
     }
 
     
