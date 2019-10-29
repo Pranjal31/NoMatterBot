@@ -94,8 +94,8 @@ async function recommendAssignee(data) {
     return response_body.id;
 }
 
+// get number of matches between user's skills and issue's required skills
 async function getMatchedSkills(owner, repo, user, issueId ) {
-	// number of matched skills
 	var numMatchedSkills = 0
 	
 	// get user skills
