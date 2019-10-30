@@ -71,10 +71,33 @@ function getDefaultOptions(urlRoot, endpoint, method)
 	return options;
 }
 
+// get repositories for owner
+async function getRepos(owner) {
+
+	var options = getDefaultOptions(config.githubUrl, "/users/" + owner + "/repos", "GET");
+	options.json = true;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
 // get a particular issue
 async function getIssue(owner, repo, issueId) {
 
 	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issueId, "GET");
+	options.json = true;
 
 	return new Promise(function(resolve, reject)
 	{
@@ -215,6 +238,7 @@ async function openInteractiveDialog(data)
 	});
 }
 
+module.exports.getRepos = getRepos; 
 module.exports.getIssue = getIssue; 
 module.exports.postMessage = postMessage;
 module.exports.getOpenIssues = getOpenIssues;
