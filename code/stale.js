@@ -27,13 +27,13 @@ if( !lib.config.gh_token )
 
 
 //In full Implementation, a timer based event will call Stale_Issues() periodically for every 24 hours.
-/* if (process.env.NODE_ENV != 'test')
+ if (process.env.NODE_ENV != 'test')
 {
 	(async () => {			
 	await Stale_Issues();
 
 	})()
-} */
+}
 
 function sixMonthsPrior(date) {
     //Today's date
@@ -60,9 +60,21 @@ async function Stale_Issues()
             
 
     var map1 = new Map();
-    var str = "";          
+    var str = "";    
+    
+    var userid = "vbbhadra";
   
     var obj = getIssues();                          //Get Issues currently reading from mockIssues.json
+
+    var repos = await lib.getRepos(userid);
+
+    console.log(repos);
+
+    for(var repoid in repos){
+        var issueList = await lib.getOpenIssues(userid, repos[repoid].name);
+        console.log(repos[repoid].name);
+        console.log(issueList);
+    }
 		
 	for( var i = 0; i < obj.length; i++ )
 	{
