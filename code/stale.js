@@ -56,52 +56,56 @@ async function Stale_Issues()
 
     var list = [];                     // To capture list of Stale Issues
     present = Date();                 //Todays date
-    old = sixMonthsPrior(present);                                   
-    old = Date.parse(present);    
-    //old = Date.parse(old);   
-
-    var map1 = new Map();
-        
+    old = sixMonthsPrior(present);                //Function to compute 6 months old date                   
     
-    //var userid = "smkulka3";
-    var userid = ["smkulka3","vbbhadra","psharma9"];
-  
-    //Loop across all Users
-    for(id in userid){
-
-        var repos = await lib.getRepos(userid[id]);
-        console.log(userid[id]);
+    //Un-Comment below line for treating all issues created before now as stale Issues. For Demonstration.
+    old = Date.parse(present); 
+    
+    //Un-comment below for treating 6 month old issues as stale issues
+    //old = Date.parse(old);   
+    
+    //Get the List of repositories owned, mentioned for Bot Account. API call: /user/repos?type=all
+    var repos = await lib.getRepos();
+    //console.log(repos);
         
-        //Loop across all repositories for the user
+    //Loop across all repositories
         for(var repoid in repos){
-            var obj = await lib.getOpenIssues(userid[id], repos[repoid].name);
-            console.log(repos[repoid].name);
+
+            //Get Open Issues in each repository
+            var obj = await lib.getOpenIssues(repos[repoid].owner.login, repos[repoid].name);
+            
+            //console.log(repos[repoid].name);
+            //console.log(repos[repoid].owner.login);
+            
             
             //Intialse the String
             var str = "";
             for( var i = 0; i < obj.length; i++ )
 	        {
                 var updated = obj[i].updated_at;
+                //console.log(obj[i].assignee);
         
                 lm = Date.parse(updated);             //last_modified date of Git hub issue
                
                 th=old;                              //Threshold /6 months/ date set
                
-                console.log(th);
-                console.log(lm);   
+                //console.log(th);
+                //console.log(lm);   
                 if(th>lm)                               //compare threshold and last modified
                 {
                     list.push(obj[i].title);
-                    map1.set(obj[i].title,obj[i].number);
+                    
                     str += obj[i].title + "\t: " + obj[i].number + '\n'
                 }
             }
 
-            console.log(str);
+            //console.log(str);
+
+            //Post to the Mattermost Channel of Issue Assignee if Issue has been identified as stale. 
             if(str != "")
             {
-            //Create the channel
-            var channel_id = await lib.createChannel(userid[id]);
+            //Create the channel as per the owner of the issue
+            var channel_id = await lib.createChannel(repos[repoid].owner.login);
     
             var payload = {
                 "channel_id": channel_id,
@@ -147,9 +151,11 @@ async function Stale_Issues()
             
     }
 
+//}
+
     
 
-    }
+    
     //console.log(obj);
 
     
