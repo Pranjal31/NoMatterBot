@@ -80,15 +80,20 @@ async function recommendAssignee(data) {
 		recoScoreDict[candidate] = recoScore
 	}
 
-	// sort the recommendations based on score
 	var scores = Object.keys(recoScoreDict).map(function(key) {
 		return [key, recoScoreDict[key]];
-  	});
-  
+	});
+
+	// sort lexicographically to break any score ties since sort is stable
+	scores.sort(function(first, second) {
+		return ('' + first[0]).localeCompare(second[0]);
+	});
+	   
+	// sort by scores
   	scores.sort(function(first, second) {
 		return second[1] - first[1];
-  	});
-  
+	});
+	
 	// retain only top k recommendations
 	var sortedRecoScoreDict = scores.slice(0, numOptions);
 	for ( recoScoreIdx in sortedRecoScoreDict ) {
