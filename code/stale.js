@@ -57,26 +57,104 @@ async function Stale_Issues()
     var list = [];                     // To capture list of Stale Issues
     present = Date();                 //Todays date
     old = sixMonthsPrior(present);                                   
-            
+    old = Date.parse(present);    
+    //old = Date.parse(old);   
 
     var map1 = new Map();
-    var str = "";    
+        
     
-    var userid = "vbbhadra";
+    //var userid = "smkulka3";
+    var userid = ["smkulka3","vbbhadra","psharma9"];
   
-    var obj = getIssues();                          //Get Issues currently reading from mockIssues.json
+    //Loop across all Users
+    for(id in userid){
 
-    var repos = await lib.getRepos(userid);
+        var repos = await lib.getRepos(userid[id]);
+        console.log(userid[id]);
+        
+        //Loop across all repositories for the user
+        for(var repoid in repos){
+            var obj = await lib.getOpenIssues(userid[id], repos[repoid].name);
+            console.log(repos[repoid].name);
+            
+            //Intialse the String
+            var str = "";
+            for( var i = 0; i < obj.length; i++ )
+	        {
+                var updated = obj[i].updated_at;
+        
+                lm = Date.parse(updated);             //last_modified date of Git hub issue
+               
+                th=old;                              //Threshold /6 months/ date set
+               
+                console.log(th);
+                console.log(lm);   
+                if(th>lm)                               //compare threshold and last modified
+                {
+                    list.push(obj[i].title);
+                    map1.set(obj[i].title,obj[i].number);
+                    str += obj[i].title + "\t: " + obj[i].number + '\n'
+                }
+            }
 
-    console.log(repos);
+            console.log(str);
+            if(str != "")
+            {
+            //Create the channel
+            var channel_id = await lib.createChannel(userid[id]);
+    
+            var payload = {
+                "channel_id": channel_id,
+                 "message": "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.", 
+                 "props": {
+                     "attachments": [
+                         {
+                             "pretext": "Do you want to close them?",
+                             "text": str,   
+                             
+                             "actions": [
+                                 {
+                                     "name": "Close All Issues",
+                                     "integration": {
+                                         "url":lib.config.server + "/triggers/",
+                                         "context": {
+                                            "action": "STALE_CLOSE",
+                                            "issue_ids": list
+                                          }
 
-    for(var repoid in repos){
-        var issueList = await lib.getOpenIssues(userid, repos[repoid].name);
-        console.log(repos[repoid].name);
-        console.log(issueList);
+                                     }
+                                 },
+                                 {
+                                     "name": "Ignore",
+                                     "integration":{
+                                         "url":lib.config.server + "/triggers/",
+                                         "context":{
+                                             "action":"STALE_IGNORE"
+                                         }
+                                     }
+                                 }
+                             ]
+                         }
+                     ]
+                 }
+            }
+
+            var respBody = await lib.postMessage(payload);
+        }
+            
+            //return respBody.id;
+            
+            
     }
+
+    
+
+    }
+    //console.log(obj);
+
+    
 		
-	for( var i = 0; i < obj.length; i++ )
+/*	for( var i = 0; i < obj.length; i++ )
 	{
         var updated = obj[i].updated_at;
         
@@ -84,7 +162,8 @@ async function Stale_Issues()
                
         th=old;                              //Threshold /6 months/ date set
                
-            
+         console.log(th);
+         console.log(lm);   
         if(th>lm)                               //compare threshold and last modified
         {
             list.push(obj[i].title);
@@ -92,6 +171,8 @@ async function Stale_Issues()
             str += obj[i].title + "\t: " + obj[i].number + '\n'
         }
     }
+
+    console.log(str);
  
         var channel_id = await lib.createChannel();
     
@@ -133,7 +214,7 @@ async function Stale_Issues()
 
             var respBody = await lib.postMessage(payload);
             
-            return respBody.id;
+            return respBody.id; */
             
 }
 
