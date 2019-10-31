@@ -1,12 +1,4 @@
-var request = require('request');
-const got  = require('got');
-
 var lib = require('./lib');
-
-
- (async () => {
-     await getWorkLoad("psharma9", "psharma9");
- })(); 
 
 // get number of matches between user's skills and issue's required skills
 async function getMatchedSkills(owner, repo, user, issueId ) {
@@ -17,7 +9,7 @@ async function getMatchedSkills(owner, repo, user, issueId ) {
 	const userSkills = ['js', 'python', 'mysql']
 
 	// get skills required for issue
-	issue = await getIssue(owner, repo, issueId)
+	issue = await lib.getIssue(owner, repo, issueId)
 	if( issue.body && issue.body.toLowerCase().includes('skills:') ) {
 		issueSkillsStr = issue.body.toLowerCase().split('skills:')[1]
 		var issueSkills = issueSkillsStr.split(",").map(item => item.trim());
@@ -25,12 +17,13 @@ async function getMatchedSkills(owner, repo, user, issueId ) {
 		// do pairwise matching for issue and user skills
 		for ( userSkill in userSkills ) {
 			for ( issueSkill in issueSkills) {
-				if ( issueSkill === userSkill ) {
+				if ( issueSkills[issueSkill] === userSkills[userSkill] ) {
 					numMatchedSkills += 1
 				}
 			}
 		}
 	} 
+
 	return numMatchedSkills
 }
 
@@ -62,14 +55,15 @@ async function recommendAssignee(data) {
 	const numOptions = 3
 
 	// get list of assignment candidates
-	var assignCandidates = await lib.getCollaborators(owner, repo);
+	var assignCandidates = await lib.getCollaborators(data.owner, data.repo);
 	workloadsDict = {}
 	matchedSkillsDict = {}
 	recoScoreDict = {}
 	var recommendations = []
 
-	for (var candidate in assignCandidates) {
+	for (var candidateIdx in assignCandidates) {
 		var recoScore = 0
+		var candidate = assignCandidates[candidateIdx].login;
 
 		// get workload (number of assigned issues) for candidate
 		workloadsDict[candidate] = await getWorkLoad(data.owner, candidate);
@@ -78,7 +72,7 @@ async function recommendAssignee(data) {
 		matchedSkillsDict[candidate] = await getMatchedSkills( data.owner, data.repo, candidate, data.issue_id)
 	
 		// compute recommendation score for candidate
-		if ( workloadsDict[candidate] == 0 ) { 		// candidate has no assigned issues, must be strongly considered for assignment
+		if ( workloadsDict[candidate] == 0 ) { 		// candidate has zero load, must be strongly considered (accrues bonus score)
 			recoScore = weightSkill * matchedSkillsDict[candidate] + bonusScore 	
 		} else {
 			recoScore = weightSkill * matchedSkillsDict[candidate] + weightLoad / workloadsDict[candidate]
@@ -96,7 +90,14 @@ async function recommendAssignee(data) {
   	});
   
 	// retain only top k recommendations
-  	recommendations = scores.slice(0, numOptions);
+	var sortedRecoScoreDict = scores.slice(0, numOptions);
+	for ( recoScoreIdx in sortedRecoScoreDict ) {
+		var menu_data = {
+			"text": sortedRecoScoreDict[recoScoreIdx][0] ,
+			"value": sortedRecoScoreDict[recoScoreIdx][0]
+		}
+		recommendations[recoScoreIdx] = menu_data; 
+	} 
 
 	// send to front end
 	var channel_id = await lib.createChannel(data.creator);
@@ -142,7 +143,6 @@ async function recommendAssignee(data) {
 	}
 
 	let response_body = await lib.postMessage(data_assignee);
-
     return response_body.id;
 }
 
@@ -181,7 +181,7 @@ async function ignoreRecommendations(creator) {
 
 	var data = {
 		"channel_id": channel_id,
-	 	"message": "All those CPU cycles for nothing? Okay :("
+	 	"message": "All those CPU cycles wasted for nothing? Okay :("
 
 	}
 
