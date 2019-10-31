@@ -27,13 +27,13 @@ if( !lib.config.gh_token )
 
 
 //In full Implementation, a timer based event will call Stale_Issues() periodically for every 24 hours.
- if (process.env.NODE_ENV != 'test')
+ /*if (process.env.NODE_ENV != 'test')
 {
 	(async () => {			
 	await Stale_Issues();
 
 	})()
-}
+}*/
 
 function sixMonthsPrior(date) {
     //Today's date
@@ -146,82 +146,9 @@ async function Stale_Issues()
             var respBody = await lib.postMessage(payload);
         }
             
-            //return respBody.id;
-            
-            
+            //return respBody.id;            
     }
-
-//}
-
-    
-
-    
-    //console.log(obj);
-
-    
-		
-/*	for( var i = 0; i < obj.length; i++ )
-	{
-        var updated = obj[i].updated_at;
-        
-        lm = Date.parse(updated);             //last_modified date of Git hub issue
-               
-        th=old;                              //Threshold /6 months/ date set
-               
-         console.log(th);
-         console.log(lm);   
-        if(th>lm)                               //compare threshold and last modified
-        {
-            list.push(obj[i].title);
-            map1.set(obj[i].title,obj[i].number);
-            str += obj[i].title + "\t: " + obj[i].number + '\n'
-        }
-    }
-
-    console.log(str);
- 
-        var channel_id = await lib.createChannel();
-    
-        var payload = {
-                "channel_id": channel_id,
-                 "message": "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.", 
-                 "props": {
-                     "attachments": [
-                         {
-                             "pretext": "Do you want to close them?",
-                             "text": str,   
-                             
-                             "actions": [
-                                 {
-                                     "name": "Close All Issues",
-                                     "integration": {
-                                         "url":lib.config.server + "/triggers/",
-                                         "context": {
-                                            "action": "STALE_CLOSE",
-                                            "issue_ids": list
-                                          }
-
-                                     }
-                                 },
-                                 {
-                                     "name": "Ignore",
-                                     "integration":{
-                                         "url":lib.config.server + "/triggers/",
-                                         "context":{
-                                             "action":"STALE_IGNORE"
-                                         }
-                                     }
-                                 }
-                             ]
-                         }
-                     ]
-                 }
-            }
-
-            var respBody = await lib.postMessage(payload);
-            
-            return respBody.id; */
-            
+          
 }
 
 function getIssues(){

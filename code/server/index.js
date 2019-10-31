@@ -3,6 +3,7 @@ const status_change = require('../statuschange');
 const recommend_assignee = require('../assignee_recommend.js');
 const stale = require('../stale.js');
 const notifier = require('../status_notify');
+const cron = require("node-cron");
 
 const app = express()
 const port = 3000;
@@ -111,6 +112,14 @@ app.post('/triggers/', function (req, res) {
 
 });
 
-
+//"* * * * *" for every min===>demo purposes
+//"59 59 23 * * *" for every 23:59:59 seconds
+cron.schedule("* * * * *", function(){
+  console.log("Running CronJob, Intiating stale Issues check");
+  (async () => {			
+    await stale.Stale_Issues();
+  
+    })()
+});
 
 app.listen(port, () => console.log(`NoMatterBot server listening on port ${port}!\n`))
