@@ -65,7 +65,7 @@ async function Stale_Issues()
     //old = Date.parse(old);   
     
     //Get the List of repositories owned, mentioned for Bot Account. API call: /user/repos?type=all
-    var repos = await lib.getRepos();
+    var repos = await lib.getAccessibleRepos();
     //console.log(repos);
         
     //Loop across all repositories
