@@ -296,9 +296,3 @@ module.exports.removeghUName = removeghUName;
 //module.exports.removemmUName = removemmUName;
 module.exports.removeSkill = removeSkill;
 module.exports.removeUserSkill = removeUserSkill;
-
-// module.exports.update = update;
-// module.exports.remove = remove;
-// module.exports.getAll = getAll;
-// module.exports.get = get;
-// module.exports.getMultiple = getMultiple;
