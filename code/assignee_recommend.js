@@ -49,10 +49,9 @@ async function getWorkLoad(owner, user) {
 }
 
 async function recommendAssignee(data) {
-	const weightSkill = 0.5
-	const weightLoad = 0.5
-	const bonusScore = 1
-	const numOptions = 3
+	const weightSkill = 0.5		// weight for skill factor in recommendation score calculation
+	const weightLoad = 0.5		// weight for workload factor  in recommendation score calculation
+	const bonusScore = 1		// bonus score if a candidate has no workload
 
 	// get list of assignment candidates
 	var assignCandidates = await lib.getCollaborators(data.owner, data.repo);
@@ -195,7 +194,5 @@ async function ignoreRecommendations(creator) {
 }
 
 module.exports.recommendAssignee = recommendAssignee;
-module.exports.getMatchedSkills = getMatchedSkills;
-module.exports.getWorkLoad = getWorkLoad;
 module.exports.assign = assign;
 module.exports.ignoreRecommendations = ignoreRecommendations;

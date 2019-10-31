@@ -44,7 +44,7 @@ app.post('/events/', function (req, res) {
         data.issue_id = req_body.issue.number;
         data.issue_title = req_body.issue.title;
         data.creator = req_body.issue.user.login;
-
+        
         recommend_assignee.recommendAssignee(data);
       }
       //on issue status change or issue close
@@ -94,32 +94,14 @@ app.post('/triggers/', function (req, res) {
       if (req_body.context.action == "IGNORE_ASSIGN") {
           recommend_assignee.ignoreRecommendations(req_body.context.creator);
       }
-
-        // not used in this milestone because of existing issue with Mattermost (https://forum.mattermost.org/t/cannot-open-dialog/7842)
-         /* var data = {
-             "trigger_id": req_body.trigger_id,
-             "url": "http://808a9ed1.ngrok.io/triggers/",
-             "dialog": {
-               "callback_id": "1",
-               "title": "Lol",
-               "elements": [{ "display_name": "Email", "name": "email", "type": "text", "subtype": "email", "placeholder": "placeholder@example.com" }],
-               "submit_label": "submit",
-               "notify_on_cancel": false,
-               "state": "test"
-             }
-           }
-           status_change.openInteractiveDialog(data) */
-
            if (req_body.context.action == "STALE_CLOSE")
            {
              var data = req_body.context;
-             console.log("In assign");
              stale.close_all();
            }
  
            if(req_body.context.action == "STALE_IGNORE")
            {
-             console.log("In ignore");
              stale.ignore();
             }
     }
