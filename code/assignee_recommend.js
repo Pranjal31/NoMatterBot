@@ -1,12 +1,12 @@
 var lib = require('./lib');
+var storage_lib = require('./storage_lib.js');
 
 // get number of matches between user's skills and issue's required skills
 async function getMatchedSkills(owner, repo, user, issueId ) {
 	var numMatchedSkills = 0
 	
 	// get user skills
-	// TODO: replace me with a DB call; make use of 'user' variable
-	const userSkills = ['js', 'python', 'mysql']
+	const userSkills = await storage_lib.getUserSkills(user)
 
 	// get skills required for issue
 	issue = await lib.getIssue(owner, repo, issueId)
