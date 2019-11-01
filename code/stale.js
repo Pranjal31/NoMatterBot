@@ -95,7 +95,8 @@ async function Stale_Issues()
                 {
                     list.push(obj[i].title);
                     
-                    str += obj[i].title + "\t: " + obj[i].number + '\n'
+                   // str += obj[i].title + "\t: " + obj[i].number + '\n'
+                   str += "Issue: #" + obj[i].number + " - " + obj[i].title + ",\tRepo: " + repos[repoid].name + "\n"; 
                 }
             }
 
