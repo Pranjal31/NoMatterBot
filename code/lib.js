@@ -14,8 +14,14 @@ config.mmurl = process.env.MATTERMOSTURL;
 config.gh_token = process.env.GITHUBTOKEN;
 config.botuserid = process.env.BOTUSERID;
 config.server = process.env.SERVERURL;
+config.dbServer = process.env.DBSERVERURL;
+config.dbUserId = process.env.DBUSER;
+config.dbUserPwd = process.env.DBUSERPWD;
+config.dbName = process.env.DBNAME;
 
-if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || !config.gh_token || !config.botuserid || !config.server)
+if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || 
+	!config.gh_token || !config.botuserid || !config.server || !config.dbServer || !config.dbUserId || 
+	!config.dbUserPwd || !config.dbName)
 {
 	console.log(`Please set your environment variables with appropriate values.`);
 	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);

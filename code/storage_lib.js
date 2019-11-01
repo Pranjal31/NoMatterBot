@@ -1,18 +1,20 @@
 var chalk = require('chalk');
 var mysql = require('mysql');
+var lib = require('./lib.js');
 
-var myHost = "localhost";
-var userId = "root";
-var pwd = "abcd";
-var db = "test";
+//Retrieve mysql server and user credentials
+var mysqlServer = lib.config.dbServer;
+var dbUserId = lib.config.dbUserId;
+var dbUserPwd = lib.config.dbUserPwd;
+var db = lib.config.dbName;
 
 //Function to create connection to DB server, returns connection object
 function createConnDB()
 {
 	var conn = mysql.createConnection({
-		host: myHost,
-		user: userId,
-		password: pwd,
+		host: mysqlServer,
+		user: dbUserId,
+		password: dbUserPwd,
 		database: db
 	  });
 
