@@ -52,6 +52,7 @@ async function recommendAssignee(data) {
 	const weightSkill = 0.5		// weight for skill factor in recommendation score calculation
 	const weightLoad = 0.5		// weight for workload factor  in recommendation score calculation
 	const bonusScore = 1		// bonus score if a candidate has no workload
+	const numOptions = 3		// number of recommendations to provide to issue creator
 
 	// get list of assignment candidates
 	var assignCandidates = await lib.getCollaborators(data.owner, data.repo);
