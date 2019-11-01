@@ -84,7 +84,7 @@ Sub-flows: \
 ## Use Case: Assignee Recommendation
 
 Preconditions: \
-Bot must have GitHub API token, Mattermost access token and the permissions to set assignees for GitHub Issues. The skills required by an issue (if any), must be provided in the format: "skills: <skill1>, <skill2>, .... <skilln>" at th end of the issue body.
+Bot must have GitHub API token, Mattermost access token and the permissions to set assignees for GitHub Issues. The skills required by an issue (if any), must be provided in the format: "skills: skill1, skill2, .... skilln" at th end of the issue body.
 
 Main flow:\
 A user creates an issue. Bot analyses developer workloads and skillset and recommends top three potential assignees to the issue creator on Mattermost. The user can select an assignee or ignore the message altogether. The bot sets an assignee, if one is chosen.
