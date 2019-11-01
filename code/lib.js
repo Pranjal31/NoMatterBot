@@ -71,6 +71,29 @@ function getDefaultOptions(urlRoot, endpoint, method)
 	return options;
 }
 
+// get repositories for owner
+async function getAccessibleRepos() {
+
+	//var options = getDefaultOptions(config.githubUrl, "/users/" + owner + "/repos?type=all", "GET");
+	var options = getDefaultOptions(config.githubUrl, "/user/repos?type=all", "GET");
+	options.json = true;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
 // get issues for a given repo
 async function getOpenIssues(owner, repo) {
 
@@ -248,4 +271,5 @@ module.exports.getCollaborators = getCollaborators;
 module.exports.openInteractiveDialog = openInteractiveDialog;
 module.exports.getDefaultOptions = getDefaultOptions;
 module.exports.config = config;
+module.exports.getAccessibleRepos = getAccessibleRepos;
 
