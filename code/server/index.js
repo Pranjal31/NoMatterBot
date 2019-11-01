@@ -38,6 +38,7 @@ app.post('/events/', function (req, res) {
         data.owner = req_body.repository.owner.login;
         data.repo = req_body.repository.name;
         data.issue_id = req_body.issue.number;
+        data.issue_title = req_body.issue.title;
         data.creator = req_body.issue.user.login;
 
         recommend_assignee.recommendAssignee(data);

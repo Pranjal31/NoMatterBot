@@ -26,7 +26,7 @@ async function recommendAssignee(data) {
 
 	var data_assignee = {
 		"channel_id": channel_id,
-	 	"message": "Ciao! I see that you recently created an issue " + data.issue_id,
+	 	"message": "Ciao! I see that you recently created an issue #" + data.issue_id + " with title: " + data.issue_title,
 	 	"props": {
 			"attachments": [
 		     	{
