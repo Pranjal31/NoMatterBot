@@ -2,12 +2,14 @@ const express = require('express');
 const status_change = require('../statuschange');
 const recommend_assignee = require('../assignee_recommend.js');
 const stale = require('../stale.js');
+const notifier = require('../status_notify');
 
 const app = express()
 const port = 3000;
 
 var label_ir = "in review";
-var label_test = "test";
+var label_test = "in test";
+var label_ip = "in progress"
 
 // express configuration
 app.use(express.json({type: '*/*'}));
@@ -16,6 +18,7 @@ app.use(express.json({type: '*/*'}));
 app.post('/events/', function (req, res) {
     var req_body = req.body
 
+    //on pull-request event
     if (req_body.pull_request) {
         var userId = req_body.pull_request.user.login
 
@@ -29,8 +32,9 @@ app.post('/events/', function (req, res) {
         }
     }
 
+    //on issue-related event
     if (req_body.issue) {
-
+      //on issue open with no assignee
       if (req_body.action === "opened" && !req_body.issue.assignees.length) {
 
         var data = {};
@@ -42,6 +46,29 @@ app.post('/events/', function (req, res) {
         data.creator = req_body.issue.user.login;
 
         recommend_assignee.recommendAssignee(data);
+      }
+      //on issue status change or issue close
+      else if((req_body.action === "labeled" && (req_body.label.name === label_ip 
+                || req_body.label.name === label_ir || req_body.label.name === label_test)) 
+                || req_body.action === "closed")
+      {
+        var assignee = req_body.issue.assignees[0].login;
+        var repo = req_body.repository.name;
+        var issueNum = req_body.issue.number;
+        var issueTitle = req_body.issue.title;
+        var newStatus = null;
+        
+        if (req_body.action === "closed")
+        {
+          newStatus = req_body.action;
+        }
+        else
+        {
+          newStatus = req_body.label.name;
+        }
+        
+        notifier.notifyStatChange(assignee, repo, issueNum, issueTitle, newStatus);
+        
       }
 
     }
