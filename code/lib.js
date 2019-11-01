@@ -14,8 +14,14 @@ config.mmurl = process.env.MATTERMOSTURL;
 config.gh_token = process.env.GITHUBTOKEN;
 config.botuserid = process.env.BOTUSERID;
 config.server = process.env.SERVERURL;
+config.dbServer = process.env.DBSERVERURL;
+config.dbUserId = process.env.DBUSER;
+config.dbUserPwd = process.env.DBUSERPWD;
+config.dbName = process.env.DBNAME;
 
-if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || !config.gh_token || !config.botuserid || !config.server)
+if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || 
+	!config.gh_token || !config.botuserid || !config.server || !config.dbServer || !config.dbUserId || 
+	!config.dbUserPwd || !config.dbName)
 {
 	console.log(`Please set your environment variables with appropriate values.`);
 	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);
@@ -136,7 +142,7 @@ async function getCollaborators(owner, repo) {
 
 async function createChannel(githubUser) {
 
-	var mmuserid = storage_lib.get("tblGitMatter", githubUser);
+	var mmuserid = await storage_lib.getMMUID(githubUser);
 
 	var options = {
 		url: config.mmurl + "/api/v4/channels/direct",
@@ -211,6 +217,52 @@ async function openInteractiveDialog(data)
 	});
 }
 
+// get repositories for owner
+async function getRepos(owner) {
+
+	var options = getDefaultOptions(config.githubUrl, "/users/" + owner + "/repos", "GET");
+	options.json = true;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
+// get a particular issue
+async function getIssue(owner, repo, issueId) {
+
+	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issueId, "GET");
+	options.json = true;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
+module.exports.getRepos = getRepos; 
+module.exports.getIssue = getIssue; 
 module.exports.postMessage = postMessage;
 module.exports.getOpenIssues = getOpenIssues;
 module.exports.createChannel = createChannel;
