@@ -14,14 +14,9 @@ config.mmurl = process.env.MATTERMOSTURL;
 config.gh_token = process.env.GITHUBTOKEN;
 config.botuserid = process.env.BOTUSERID;
 config.server = process.env.SERVERURL;
-config.dbServer = process.env.DBSERVERURL;
-config.dbUserId = process.env.DBUSER;
-config.dbUserPwd = process.env.DBUSERPWD;
-config.dbName = process.env.DBNAME;
 
 if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || 
-	!config.gh_token || !config.botuserid || !config.server || !config.dbServer || !config.dbUserId || 
-	!config.dbUserPwd || !config.dbName)
+	!config.gh_token || !config.botuserid || !config.server )
 {
 	console.log(`Please set your environment variables with appropriate values.`);
 	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);
@@ -77,7 +72,7 @@ async function getAccessibleRepos() {
 	//var options = getDefaultOptions(config.githubUrl, "/users/" + owner + "/repos?type=all", "GET");
 	var options = getDefaultOptions(config.githubUrl, "/user/repos?type=all", "GET");
 	options.json = true;
-
+	config
 	return new Promise(function(resolve, reject)
 	{
 		request(options, function (error, response, body) {

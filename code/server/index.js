@@ -21,9 +21,8 @@ app.post('/events/', function (req, res) {
 
     //on pull-request event
     if (req_body.pull_request) {
-        //ar userId = req_body.pull_request.user.login
-        var owner = req_body.pull_request.head.repo.owner.login
 
+        var owner = req_body.pull_request.head.repo.owner.login
         var repo = req_body.pull_request.head.repo.name;
         var issue = req_body.pull_request.title.split('-')[0].trim()
 
@@ -50,7 +49,7 @@ app.post('/events/', function (req, res) {
         recommend_assignee.recommendAssignee(data);
       }
       //on issue status change or issue close
-      else if((req_body.action === "labeled" && (req_body.label.name === label_ip 
+      else if(req_body.issue.assignees.length > 0 && (req_body.action === "labeled" && (req_body.label.name === label_ip 
                 || req_body.label.name === label_ir || req_body.label.name === label_test)) 
                 || req_body.action === "closed")
       {
@@ -81,7 +80,6 @@ app.post('/events/', function (req, res) {
 
 app.post('/triggers/', function (req, res) {
     var req_body = req.body
-
     
     if (req_body.trigger_id) {
 
@@ -116,7 +114,7 @@ app.post('/triggers/', function (req, res) {
 //"* * * * *" for every min===>demo purposes
 //"59 59 23 * * *" for every 23:59:59 seconds
 cron.schedule("* * * * *", function(){
-  console.log("Running CronJob, Intiating stale Issues check");
+  console.log("Running CronJob, Initiating stale Issues check");
   (async () => {			
     await stale.Stale_Issues();
   

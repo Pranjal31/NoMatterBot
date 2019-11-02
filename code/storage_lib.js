@@ -1,21 +1,24 @@
 var chalk = require('chalk');
 var mysql = require('mysql');
-var lib = require('./lib.js');
+//var lib = require('./lib.js');
 
-//Retrieve mysql server and user credentials
-var mysqlServer = lib.config.dbServer;
-var dbUserId = lib.config.dbUserId;
-var dbUserPwd = lib.config.dbUserPwd;
-var db = lib.config.dbName;
+var dbConfig = {}
+
+//Read DB related environment variables
+dbConfig.dbServer = process.env.DBSERVERURL;
+dbConfig.dbUserId = process.env.DBUSER;
+dbConfig.dbUserPwd = process.env.DBUSERPWD;
+dbConfig.dbName = process.env.DBNAME;
 
 //Function to create connection to DB server, returns connection object
 function createConnDB()
 {
 	var conn = mysql.createConnection({
-		host: mysqlServer,
-		user: dbUserId,
-		password: dbUserPwd,
-		database: db
+		host: dbConfig.dbServer,
+		user: dbConfig.dbUserId,
+		password: dbConfig.dbUserPwd,
+		database: dbConfig.dbName,
+		socketPath: '/var/run/mysqld/mysqld.sock'
 	  });
 
 	conn.connect(function(err) {
@@ -49,7 +52,6 @@ async function makeQuery(sqlQuery, values)
 				
 				if (err)
 				{
-					//console.log(chalk.red(err));
 					reject(err);
 				}
 				else
@@ -72,7 +74,6 @@ async function addMMUID(ghUname, mmUname) {
 	try
 	{
 		var queryResult = await makeQuery(sqlQuery, [ghUname, mmUname]);
-		console.log(queryResult);
 	}
 	catch(err)
 	{
@@ -88,7 +89,6 @@ async function addChannelId(mmUname, channelId) {
 	try
 	{
 		var queryResult = await makeQuery(sqlQuery, [mmUname, channelId]);
-		console.log(queryResult);
 	}
 	catch(err)
 	{
@@ -103,7 +103,6 @@ async function addSkill(skill) {
 	try
 	{
 		var queryResult = await makeQuery(sqlQuery, skill);
-		console.log(queryResult);
 	}
 	catch(err)
 	{
@@ -118,7 +117,6 @@ async function addUserSkill(ghUname, skill) {
 	try
 	{
 		var queryResult = await makeQuery(sqlQuery, [ghUname, skill]);
-		console.log(queryResult);
 	}
 	catch(err)
 	{
@@ -138,7 +136,6 @@ async function getMMUID(ghUname) {
 			throw `DataBaseError: No Entry found for ${ghUname}!`;
 		}
 		
-		console.log(queryResult[0].mmUName);
 		return queryResult[0].mmUName;
 	}
 	catch(err)
@@ -159,7 +156,6 @@ async function getChannelId(mmUname) {
 			throw `DataBaseError: No Entry found for ${mmUname}!`;
 		}
 		
-		console.log(queryResult[0].chId);
 		return queryResult[0].chId;
 	}
 	catch(err)
@@ -186,7 +182,7 @@ async function getUserSkills(ghUname) {
 			skills.push(queryResult[i].skill);
 		}
 
-		console.log(skills);
+		//console.log(skills);
 		return skills;
 	}
 	catch(err)
@@ -202,7 +198,6 @@ async function updatemmUID(ghUName, newmmUName) {
 	try
 	{
 		var queryResult = await makeQuery(sqlQuery, [newmmUName, ghUName]);
-		console.log(queryResult);
 	}
 	catch(err)
 	{
@@ -217,7 +212,6 @@ async function updateChId(mmUName, newChId) {
 	try
 	{
 		var queryResult = await makeQuery(sqlQuery, [newChId, mmUName]);
-		console.log(queryResult);
 	}
 	catch(err)
 	{
@@ -232,7 +226,6 @@ async function removeghUName(ghUname) {
 	try
 	{
 		var queryResult = await makeQuery(sqlQuery, ghUname);
-		console.log(queryResult);
 	}
 	catch(err)
 	{
@@ -247,7 +240,6 @@ async function removemmUName(mmUname) {
 	try
 	{
 		var queryResult = await makeQuery(sqlQuery, mmUname);
-		console.log(queryResult);
 	}
 	catch(err)
 	{
@@ -262,7 +254,6 @@ async function removeSkill(skill) {
 	try
 	{
 		var queryResult = await makeQuery(sqlQuery, skill);
-		console.log(queryResult);
 	}
 	catch(err)
 	{
@@ -277,7 +268,6 @@ async function removeUserSkill(ghUname, skill) {
 	try
 	{
 		var queryResult = await makeQuery(sqlQuery, [ghUname, skill]);
-		console.log(queryResult);
 	}
 	catch(err)
 	{
