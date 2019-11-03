@@ -1,0 +1,46 @@
+Saturday, 26 October 2019 - First day
+--------------------------------------
+Updated story cards and came up with a schedule for the sprint
+Vaishakh will figure out the best way to filter out stale issues among all issues for each user from GitHub and come up with a code
+Anjali will look into ways of posting interactive messages on Mattermost and implement code to post interactive messages on Mattermost 
+Pranjal will figure out issue statuses that will be supported and REST calls to add/edit labels that represent Issue statuses and code them
+Sridhar will look into GitHub web-hooks and events supported by them and implement code to capture events from GitHub
+
+
+Monday October 28, 2019
+-----------------------
+Anjali: Working on API endpoints for Github get open issues and get collaborators for a repo. No roadblocks.
+Pranjal: Working on creating a score-based recommendation system. No roadblocks.
+Vaishakh: Working on determining if an Issue obtained is stale Issue. No roadblocks.
+Sridhar: Working on creating basic database functionality to support use-cases. No roadblocks
+
+Tuesday October 29, 2019
+------------------------
+Pranjal: Completed basic framework for score-based recommendation system. Working on pairwise skill-matching between issue skills and user skills. No roadblocks.
+Sridhar: Created database, associated query code. Currently working on integrating it with main codebase. No roadblocks
+Anjali: Get open Issues api implemented. No roadblocks. 
+Vaishakh: Worked on setting up a Mattermost server. Discussed with team the approach to identify stale Issues and regarding the token to be sent to get the repos and identify the stale Issues. Got a suggestion to use a dedicated Github account as Bot account which will be added as a contributor to all the tasks. Proceeded with the suggestion.
+
+
+Wednesday October 30, 2019
+---------------------------
+Pranjal: Completed pairwise skill matching. Working on adding functionality to get a given user’s workload. No roadblocks.
+Anjali: Completed get collaborators API. No roadblocks. Working on the create-channel API to have a direct channel between the bot and the user. 
+Vaishakh: Implemented the code to send bot account token and get the list of repositories. Iterate through repositories and find the stale Issues in each repository.
+Sridhar: Done with database code. Now, working on capturing GitHub events for Issue status change via issue labeled event
+
+
+Thursday October 31, 2019
+--------------------------
+Pranjal: Completed workload estimation functionality. Working on the following 1) fixing bug where no recommendations are shown  2) adding support for lexicographic ordering of users to break ties when multiple users have the same recommendation scores. No roadblocks.
+Anjali: Completed create-channel api. 
+Vaishakh: Worked on adding the cron job to identify stale issues(calling stale Issues) at regular intervals. Created the Pull request and assigned it team members. No roadblocks.
+Sridhar: Added code to handle issue status change event and integrated it with Bot server and mattermost client. No roadblocks.
+
+
+Friday November 1, 2019
+------------------------
+Pranjal: Added bug fix and lexicographic ordering support. Working on reviewing others’ code and fixing minor bugs. No roadblocks.
+Anjali: Code Review
+Sridhar:Code Review. Fixed bugs in status change notify code to support cases when there is no assignee to send message to. No roadblocks.
+Vaishakh: Clarified some queries regarding PR’s( regarding updating the cron job time to a day, regarding position of cron job code). No Roadblocks.
