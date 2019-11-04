@@ -19,23 +19,24 @@ app.use(express.json({type: '*/*'}));
 app.post('/events/', function (req, res) {
     var req_body = req.body
 
-    //on pull-request event
-    if (req_body.pull_request) {
-
+    // on pull-request event
+    if ( req_body.pull_request ) {
+      if ( req_body.pull_request.title.includes('-') ) {
         var owner = req_body.pull_request.head.repo.owner.login
         var repo = req_body.pull_request.head.repo.name;
         var issue = req_body.pull_request.title.split('-')[0].trim()
 
-        if (req_body.action === 'opened'){
+        if ( req_body.action === 'opened' ){
             status_change.updateLabelForIssue(owner, repo, issue, label_ir);
-        } else if(req_body.action === 'closed') {
+        } else if( req_body.action === 'closed' ) {
             status_change.updateLabelForIssue(owner, repo, issue, label_test);
         }
+      }
     }
 
-    //on issue-related event
+    // on issue-related event
     if (req_body.issue) {
-      //on issue open with no assignee
+      // on issue open with no assignee
       if (req_body.action === "opened" && !req_body.issue.assignees.length) {
 
         var data = {};
@@ -48,7 +49,7 @@ app.post('/events/', function (req, res) {
         
         recommend_assignee.recommendAssignee(data);
       }
-      //on issue status change or issue close
+      // on issue status change or issue close
       else if(req_body.issue.assignees.length > 0 && (req_body.action === "labeled" && (req_body.label.name === label_ip 
                 || req_body.label.name === label_ir || req_body.label.name === label_test)) 
                 || req_body.action === "closed")
