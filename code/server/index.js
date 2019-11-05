@@ -50,7 +50,7 @@ app.post('/events/', function (req, res) {
         data.issue_title = req_body.issue.title;
         data.creator = req_body.issue.user.login;
         
-        recommend_assignee.recommendAssignee(data);
+        recommend_assignee.recommendAssignee(data, 3);
       }
       // on issue status change or issue close
       else if(req_body.issue.assignees.length > 0 && (req_body.action === "labeled" && (req_body.label.name === label_ip 
@@ -95,19 +95,25 @@ app.post('/triggers/', function (req, res) {
 
       }
 
+      if (req_body.context.action == "MORE_SUGGESTIONS") {
+          recommend_assignee.moreRecommendations(data.owner, data.repo, data.issue_id, data.creator);
+      }
+
       if (req_body.context.action == "IGNORE_ASSIGN") {
           recommend_assignee.ignoreRecommendations(req_body.context.creator);
       }
-           if (req_body.context.action == "STALE_CLOSE")
-           {
-             var data = req_body.context;
-             stale.close_all();
-           }
- 
-           if(req_body.context.action == "STALE_IGNORE")
-           {
-             stale.ignore();
-            }
+
+      if (req_body.context.action == "STALE_CLOSE")
+      {
+        var data = req_body.context;
+        stale.close_all();
+      }
+
+      if(req_body.context.action == "STALE_IGNORE")
+      {
+        stale.ignore();
+      }
+
     }
 
     console.log(JSON.stringify(req_body));

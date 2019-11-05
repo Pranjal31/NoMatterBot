@@ -48,11 +48,11 @@ async function getWorkLoad(owner, user) {
 	return workload
 }
 
-async function recommendAssignee(data) {
+async function recommendAssignee(data, numOptions) {
 	const weightSkill = 0.5		// weight for skill factor in recommendation score calculation
 	const weightLoad = 0.5		// weight for workload factor  in recommendation score calculation
 	const bonusScore = 1		// bonus score if a candidate has no workload
-	const numOptions = 3		// number of recommendations to provide to issue creator
+	// const numOptions = 3		// number of recommendations to provide to issue creator
 
 	// get list of assignment candidates
 	var assignCandidates = await lib.getCollaborators(data.owner, data.repo);
@@ -93,58 +93,136 @@ async function recommendAssignee(data) {
   	scores.sort(function(first, second) {
 		return second[1] - first[1];
 	});
-	
-	// retain only top k recommendations
-	var sortedRecoScoreDict = scores.slice(0, numOptions);
-	for ( recoScoreIdx in sortedRecoScoreDict ) {
-		var menu_data = {
-			"text": sortedRecoScoreDict[recoScoreIdx][0] ,
-			"value": sortedRecoScoreDict[recoScoreIdx][0]
-		}
-		recommendations[recoScoreIdx] = menu_data; 
-	} 
 
 	// send to front end
 	var channel_id = await lib.createChannel(data.creator);
 
-	var data_assignee = {
-		"channel_id": channel_id,
-	 	"message": "Ciao! I see that you recently created an issue #" + data.issue_id + " with title: " + data.issue_title,
-	 	"props": {
-			"attachments": [
-		     	{
-					"pretext": "Here are some assignee recommendations based on current workload:",
-					"text": "Assignee recommendations",
-					"actions": [
-				        {
-							"name": "Select an option...",
-							"integration": {
-								"url": lib.config.server + "/triggers/",
-								"context": {
-									"action": "ASSIGN",
-									"owner": data.owner,
-									"creator": data.creator,
-									"issue_id": data.issue_id,
-									"repo": data.repo
+	if(numOptions === 3) {
+	
+		// retain only top k recommendations
+		var sortedRecoScoreDict = scores.slice(0, numOptions);
+		for ( recoScoreIdx in sortedRecoScoreDict ) {
+			var menu_data = {
+				"text": sortedRecoScoreDict[recoScoreIdx][0] ,
+				"value": sortedRecoScoreDict[recoScoreIdx][0]
+			}
+			recommendations[recoScoreIdx] = menu_data; 
+		} 
+
+		var data_assignee = {
+			"channel_id": channel_id,
+		 	"message": "Ciao! I see that you recently created an issue #" + data.issue_id + " with title: " + data.issue_title,
+		 	"props": {
+				"attachments": [
+			     	{
+						"pretext": "Here are some assignee recommendations based on current workload:",
+						"text": "Assignee recommendations",
+						"actions": [
+					        {
+								"name": "Select an option...",
+								"integration": {
+									"url": lib.config.server + "/triggers/",
+									"context": {
+										"action": "ASSIGN",
+										"owner": data.owner,
+										"creator": data.creator,
+										"issue_id": data.issue_id,
+										"repo": data.repo
+									}
+								},
+								"type": "select",
+								"options" : recommendations
+							}, 
+							{
+								"name": "Show more",
+								"integration": {
+									"url": lib.config.server + "/triggers/",
+									"context": {
+										"action": "MORE_SUGGESTIONS",
+										"owner": data.owner,
+										"creator": data.creator,
+										"issue_id": data.issue_id,
+										"repo": data.repo
+									}
 								}
-							},
-							"type": "select",
-							"options" : recommendations
-						}, 
-						{
-							"name": "Ignore",
-							"integration": {
-								"url": lib.config.server + "/triggers/",
-								"context": {
-									"action": "IGNORE_ASSIGN",
-									"creator": data.creator
+							}, 
+							{
+								"name": "Ignore",
+								"integration": {
+									"url": lib.config.server + "/triggers/",
+									"context": {
+										"action": "IGNORE_ASSIGN",
+										"creator": data.creator
+									}
 								}
 							}
+						]
+					}
+				]
+			}
+		}
+
+	} else{
+
+		if(scores.length <= 3) {
+
+			var data_assignee = {
+				"channel_id": channel_id,
+			 	"message": "Nope, that's all I have. Sorry :("
+
+			}
+
+		} else {
+			// retain only top k recommendations
+			for ( recoScoreIdx in scores ) {
+				var menu_data = {
+					"text": scores[recoScoreIdx][0] ,
+					"value": scores[recoScoreIdx][0]
+				}
+				recommendations[recoScoreIdx] = menu_data; 
+			} 
+
+			var data_assignee = {
+				"channel_id": channel_id,
+			 	"message": "Here are all of the recommendations I can think of for issue #" +data.issue_id
+			 	"props": {
+					"attachments": [
+				     	{
+							"pretext": "All assignee recommendations based on current workload:",
+							"text": "Assignee recommendations",
+							"actions": [
+						        {
+									"name": "Select an option...",
+									"integration": {
+										"url": lib.config.server + "/triggers/",
+										"context": {
+											"action": "ASSIGN",
+											"owner": data.owner,
+											"creator": data.creator,
+											"issue_id": data.issue_id,
+											"repo": data.repo
+										}
+									},
+									"type": "select",
+									"options" : recommendations
+								},
+								{
+									"name": "Ignore",
+									"integration": {
+										"url": lib.config.server + "/triggers/",
+										"context": {
+											"action": "IGNORE_ASSIGN",
+											"creator": data.creator
+										}
+									}
+								}
+							]
 						}
 					]
 				}
-			]
+			}
 		}
+
 	}
 
 	let response_body = await lib.postMessage(data_assignee);
@@ -178,6 +256,18 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 	return response_body.id;
 
+}
+
+async function moreRecommendations(owner, repo, issue_id, creator) {
+
+	var data = {};
+
+    data.owner = owner;
+    data.repo = repo;
+    data.issue_id = issue_id;
+    data.creator = creator;
+
+	await recommendAssignee(data, 10);
 }
 
 async function ignoreRecommendations(creator) {
