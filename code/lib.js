@@ -68,10 +68,30 @@ function getDefaultOptions(urlRoot, endpoint, method)
 	return options;
 }
 
+async function getUser() {
+
+	var options = getDefaultOptions(config.githubUrl, "/user", "GET");
+	options.json = true;
+	config
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
 // get repositories for owner
 async function getAccessibleRepos() {
 
-	//var options = getDefaultOptions(config.githubUrl, "/users/" + owner + "/repos?type=all", "GET");
 	var options = getDefaultOptions(config.githubUrl, "/user/repos?type=all", "GET");
 	options.json = true;
 	config
@@ -336,3 +356,4 @@ module.exports.getLabelsOnIssue = getLabelsOnIssue;
 module.exports.addLabelOnIssue = addLabelOnIssue;
 module.exports.deleteLabelOnIssue = deleteLabelOnIssue;
 module.exports.config = config;
+module.exports.getUser = getUser;

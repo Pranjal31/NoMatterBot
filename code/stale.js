@@ -63,9 +63,12 @@ async function Stale_Issues()
     
     //Un-comment below for treating 6 month old issues as stale issues
     //old = Date.parse(old);   
-    
+
+    var user = await lib.getUser();
+    //console.log(user);
+
     //Get the List of repositories owned, mentioned for Bot Account. API call: /user/repos?type=all
-    var repos = await lib.getAccessibleRepos();
+    var repos = await lib.getRepos(user);
     //console.log(repos);
         
     //Loop across all repositories
