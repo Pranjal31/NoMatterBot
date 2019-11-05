@@ -17,22 +17,25 @@ app.use(express.json({type: '*/*'}));
 
 // set routes
 app.post('/events/', function (req, res) {
-    var req_body = req.body
+  var req_body = req.body
 
-    // on pull-request event
-    if ( req_body.pull_request ) {
-      if ( req_body.pull_request.title.includes('-') ) {
+  // on pull-request event
+  if ( req_body.pull_request ) {
+    // change issue status only if PR title is in expected format
+    if ( req_body.pull_request.title.includes('-') ) {
+      var issue = req_body.pull_request.title.split('-')[0].trim()
+      // change issue status only if PR title is in expected format
+      if ( Number(issue) !== NaN ) {
         var owner = req_body.pull_request.head.repo.owner.login
         var repo = req_body.pull_request.head.repo.name;
-        var issue = req_body.pull_request.title.split('-')[0].trim()
-
         if ( req_body.action === 'opened' ){
-            status_change.updateLabelForIssue(owner, repo, issue, label_ir);
+          status_change.updateLabelForIssue(owner, repo, issue, label_ir);
         } else if( req_body.action === 'closed' ) {
             status_change.updateLabelForIssue(owner, repo, issue, label_test);
         }
       }
     }
+  }
 
     // on issue-related event
     if (req_body.issue) {
