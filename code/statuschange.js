@@ -10,20 +10,33 @@ if( !lib.config.gh_token )
 	process.exit(1);
 }
 
-console.log(chalk.green(`Your token is: ${lib.config.gh_token.substring(0,4)}...`));
+// Update status label on issue
+async function updateStatusLabelOnIssue(owner, repo, issue, label) {
+	var label_ir = "in review";
+	var label_test = "in test";
+	var label_ip = "in progress"
+	
+	issueLabels = await lib.getLabelsOnIssue(owner,repo, issue)
+	if (issueLabels.length > 0) {
+		for ( var labelIdx in issueLabels ) {	
+			// no need to update label
+			if ( issueLabels[labelIdx].name === label ) {
+				return;
+			} else if ( issueLabels[labelIdx].name === label_ir || issueLabels[labelIdx].name === label_ip || issueLabels[labelIdx].name === label_test ) {
+				await deleteLabelOnIssue(owner, repo, issue, issueLabels[labelIdx].name);
+				await addLabelToIssue(owner, repo, issue, label);
+				return;
+			}
+		}
 
-// Delete all labels and add a new label
-async function updateLabelForIssue(userId, repo, issue, label){
-    await deleteLabelsForIssue(userId, repo, issue);
-    await addLabelToIssue(userId, repo, issue,label);
+	} else {
+		await addLabelToIssue(owner, repo, issue, label);
+	}
 }
 
 // Delete all labels for issue
-async function deleteLabelsForIssue(owner,repo, issue)
-{
-	console.log(chalk.green("\nDelete Issue Labels"));
-
-    let options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "DELETE");
+async function deleteLabelOnIssue(owner,repo, issue, label) {
+    let options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels/" + label, "DELETE");
 
 	// Send a http request to url and specify a callback that will be called upon its return.
 	return new Promise(function(resolve, reject)
@@ -44,8 +57,6 @@ async function deleteLabelsForIssue(owner,repo, issue)
 // add a label for issue
 async function addLabelToIssue(owner,repo, issue, label)
 {
-	console.log(chalk.green("\nAdd Label to Issue"));
-
     let options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "POST");
     options.body = `{"labels":["${label}"]}`;
 
@@ -65,8 +76,6 @@ async function addLabelToIssue(owner,repo, issue, label)
 	});
 }
 
-module.exports.deleteLabelsForIssue = deleteLabelsForIssue;
-module.exports.addLabelToIssue = addLabelToIssue;
-module.exports.updateLabelForIssue = updateLabelForIssue;
+module.exports.updateStatusLabelOnIssue = updateStatusLabelOnIssue;
 
 

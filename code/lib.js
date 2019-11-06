@@ -256,6 +256,28 @@ async function getIssue(owner, repo, issueId) {
 	});
 }
 
+// list labels on a particular issue
+async function getLabelsOnIssue(owner,repo, issueId) {
+
+	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issueId + "/labels", "GET");
+	options.json = true;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
 module.exports.getRepos = getRepos; 
 module.exports.getIssue = getIssue; 
 module.exports.postMessage = postMessage;
@@ -265,6 +287,7 @@ module.exports.assignToIssue = assignToIssue;
 module.exports.getCollaborators = getCollaborators;
 module.exports.openInteractiveDialog = openInteractiveDialog;
 module.exports.getDefaultOptions = getDefaultOptions;
-module.exports.config = config;
 module.exports.getAccessibleRepos = getAccessibleRepos;
+module.exports.getLabelsOnIssue = getLabelsOnIssue;
+module.exports.config = config;
 

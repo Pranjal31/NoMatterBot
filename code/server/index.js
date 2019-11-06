@@ -25,13 +25,13 @@ app.post('/events/', function (req, res) {
     if ( req_body.pull_request.title.includes('-') ) {
       var issue = req_body.pull_request.title.split('-')[0].trim()
       // change issue status only if PR title is in expected format
-      if ( Number(issue) !== NaN ) {
+      if ( !isNaN(Number(issue)) ) {
         var owner = req_body.pull_request.head.repo.owner.login
         var repo = req_body.pull_request.head.repo.name;
         if ( req_body.action === 'opened' ){
-          status_change.updateLabelForIssue(owner, repo, issue, label_ir);
+          status_change.updateStatusLabelOnIssue(owner, repo, issue, label_ir);
         } else if( req_body.action === 'closed' ) {
-            status_change.updateLabelForIssue(owner, repo, issue, label_test);
+            status_change.updateStatusLabelOnIssue(owner, repo, issue, label_test);
         }
       }
     }
@@ -123,6 +123,6 @@ cron.schedule("* * * * *", function(){
     await stale.Stale_Issues();
   
     })()
-});
+}); 
 
 app.listen(port, () => console.log(`NoMatterBot server listening on port ${port}!\n`))
