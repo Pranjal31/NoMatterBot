@@ -65,11 +65,11 @@ async function Stale_Issues()
     //old = Date.parse(old);   
 
     var user = await lib.getUser();
-    //console.log(user);
+    console.log(user);
 
     //Get the List of repositories owned, mentioned for Bot Account. API call: /user/repos?type=all
-    var repos = await lib.getRepos(user);
-    //console.log(repos);
+    var repos = await lib.getRepos(user.login);
+    console.log(repos);
         
     //Loop across all repositories
         for(var repoid in repos){
@@ -77,7 +77,7 @@ async function Stale_Issues()
             //Get Open Issues in each repository
             var obj = await lib.getOpenIssues(repos[repoid].owner.login, repos[repoid].name);
             
-            //console.log(repos[repoid].name);
+            console.log(repos[repoid].name);
             //console.log(repos[repoid].owner.login);
             
             
@@ -93,20 +93,66 @@ async function Stale_Issues()
                 th=old;                              //Threshold /6 months/ date set
                
                 //console.log(th);
-                //console.log(lm);   
+                //console.log(lm); 
+                str="";  
                 if(th>lm)                               //compare threshold and last modified
                 {
                     list.push(obj[i].title);
                     
                    // str += obj[i].title + "\t: " + obj[i].number + '\n'
-                   str += "Issue: #" + obj[i].number + " - " + obj[i].title + ",\tRepo: " + repos[repoid].name + "\n"; 
+                   str += "Issue: #" + obj[i].number + " - " + obj[i].title + ",\tRepo: " + repos[repoid].name + "\n";
+                   
+                   var channel_id = await lib.createChannel(repos[repoid].owner.login);
+                   var issue_id;
+                   var repo_name;
+    
+                var payload = {
+                "channel_id": channel_id,
+                 "message": "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.", 
+                 "props": {
+                     "attachments": [
+                         {
+                             "pretext": "Do you want to close them?",
+                             "text": str,   
+                             
+                             "actions": [
+                                 {
+                                     "name": "Close All Issues",
+                                     "integration": {
+                                         "url":lib.config.server + "/triggers/",
+                                         "context": {
+                                            "action": "STALE_CLOSE",
+                                            "issue_ids": list
+                                          }
+
+                                     }
+                                 },
+                                 {
+                                     "name": "Ignore",
+                                     "integration":{
+                                         "url":lib.config.server + "/triggers/",
+                                         "context":{
+                                             "action":"STALE_IGNORE"
+                                         }
+                                     }
+                                 }
+                             ]
+                         }
+                     ]
+                 }
+            }
+
+            var respBody = await lib.postMessage(payload);
+                   
+
+
                 }
             }
 
             //console.log(str);
 
             //Post to the Mattermost Channel of Issue Assignee if Issue has been identified as stale. 
-            if(str != "")
+/*            if(str != "")
             {
             //Create the channel as per the owner of the issue
             var channel_id = await lib.createChannel(repos[repoid].owner.login);
@@ -148,7 +194,7 @@ async function Stale_Issues()
             }
 
             var respBody = await lib.postMessage(payload);
-        }
+        }*/
             
             //return respBody.id;            
     }
