@@ -65,12 +65,10 @@ async function Stale_Issues()
     //old = Date.parse(old);   
 
     var user = await lib.getUser();
-    //console.log(user);
 
     //Get the List of repositories owned, mentioned for Bot Account. API call: /user/repos?type=all
     var repos = await lib.getRepos(user.login); 
-    //console.log(repos);
-
+ 
     var dict = {};            //{User:{rep:{issue num: issue name}}}
         
     //Loop across all repositories
@@ -78,43 +76,31 @@ async function Stale_Issues()
 
             //Get Open Issues in each repository
             var obj = await lib.getOpenIssues(repos[repoid].owner.login, repos[repoid].name);
-            
-            //console.log(repos[repoid]);
-            //console.log(repos[repoid].owner.login);
-            
+                        
             for( var i = 0; i < obj.length; i++ )
 	        {
                 var updated = obj[i].updated_at;
-                //console.log(obj[i].assignee);
         
                 lm = Date.parse(updated);             //last_modified date of Git hub issue
                
                 th=old;                              //Threshold /6 months/ date set
-               
-                //console.log(obj[i]);
-                //console.log(th);
-                //console.log(lm); 
-                str="";  
+                  
                 if(th>lm)                               //compare threshold and last modified
                 {
-                    list.push(obj[i].title);
-                    
-                   // str += obj[i].title + "\t: " + obj[i].number + '\n'
-                   //str += "Issue: #" + obj[i].number + " - " + obj[i].title + ",\tRepo: " + repos[repoid].name + "\n";
-                   
-                   var channel_id = await lib.createChannel(obj[i].assignee.login);
-                   //console.log(obj[i]);
                    var issue_number = obj[i].number;
                    var reponame= repos[repoid].name;
-                   var recipent = obj[i].assignee.login;
                    var issue_name = obj[i].title;
                    var repo_owner = obj[i].user.login;
 
-                   console.log(issue_number);
-                   console.log(reponame);
-                   console.log(recipent);
-                   console.log(repo_owner);
-
+                   if(!obj[i].assignee)
+                   {
+                   var recipent = obj[i].user.login;
+                   }
+                   else
+                   {
+                    var recipent = obj[i].assignee.login;
+                   }
+                   
 
                   if(dict[recipent]===undefined)
                    {
@@ -127,7 +113,7 @@ async function Stale_Issues()
                        
                        
                    }
-                   //dict[recipent][reponame].push(issue_number);
+                  
                    if(dict[recipent][reponame][issue_number]===undefined)
                    {
                        dict[recipent][reponame][issue_number]= issue_name;
@@ -136,57 +122,46 @@ async function Stale_Issues()
             }            
     }
 
-    console.log(dict);
+    //console.log(dict);            //For debugging
 
     //Iterate over every assignee in dict 
-    for(assignee in dict)
+    for(recipient in dict)
     {
-        var repo_list = [];             
-        var issue_list = [];
         var issueData = {};             //Used in Close_All
-
-        //create a channel
-        var channel_id = await lib.createChannel(assignee);
 
         var message = [];               //For the attachment sent in mattemost
 
         //Iterate over every Repository for the user in dict
-        for(rep in dict[assignee])
+        for(rep in dict[recipient])
         {
             var display;
-            //console.log(rep);
-            display = "Repository : " + rep;
+            display = "Repository : "+ rep;
             issueData[rep] = [];
 
 
-            for(issue in dict[assignee][rep])
+            for(issue in dict[recipient][rep])
             {
-                repo_list.push(rep);
-                issue_list.push(issue);
                 issueData[rep].push(issue);
                 var output="";
 
-                output = display + "      Issue Number : " + issue + "       Repository owner : " + user.login;
-                //console.log(issue);
-                //console.log(assignee);
-                //console.log(user.login);
+                output = "Issue Name : "+dict[recipient][rep][issue]+"     Issue Number : "+issue+"     "+ display;
 
                 var body={
-                    "pretext": "Do you want to close the following issue?",
+                    //"pretext": "Do you want to close the following issue?",
                     "text": output,   
                     "actions": //message2
                     
                     [
                         {
-                            "name": dict[assignee][rep][issue],
+                            "name": "Close",
                             "integration": {
                                 "url":lib.config.server + "/triggers/",
                                 "context": {
                                    "action": "STALE_CLOSE",          //Action Item
                                    "repo": rep,                      //Repo name
                                    "issueNum": issue,                //Issue Number
-                                   "recipent": assignee,             //Assignee of the issue (as of now. Could be owner if unassigned)
-                                    "owner": user.login              //Owner of Repo
+                                   "recipient": recipient,             //Assignee of the issue (as of now. Could be owner if unassigned)
+                                   "owner": user.login              //Owner of Repo
                                 }
                                 
                             } 
@@ -196,10 +171,9 @@ async function Stale_Issues()
                             "integration":{
                                 "url":lib.config.server + "/triggers/",
                                 "context":{
-                                    "action":"STALE_IGNORE",        //Action Item
-                                    "repo": rep,                    //Repo name
-                                   "issueNum": issue,               //Issue Number
-                                   "recipent": assignee,            //Assignee of the issue (as of now. Could be owner if unassigned)
+                                    "action":"STALE_IGNORE_NULLIFIED",        //Action Item
+                                   
+                                   "recipient": recipient,            //Assignee of the issue (as of now. Could be owner if unassigned)
                                     "owner": user.login             //Owner of repo
                                 }
                             }
@@ -217,21 +191,19 @@ async function Stale_Issues()
         }
 
         var close_all={
-            "pretext": "Click Below to close all the Issues",
-            "text": " Issue Numbers : " + issue_list +"\n Corresponding Repositories: " + repo_list,   
+            //"pretext": "Click Below to close all the Issues",
+            //"text": " Issue Numbers : " + issue_list +"\n Corresponding Repositories: " + repo_list,   
             "actions": //message2
             
             [
                 {
-                    "name": "Close all issues",
+                    "name": "Close all Issues",
                     "integration": {
                         "url":lib.config.server + "/triggers/",
                         "context": {
-                           "action": "CLOSE_ALL",          //Action Item
-                           "repo_list": repo_list,                //Repo name
-                           "issue_list": issue_list,               //Issue Number
-                           "recipent": assignee,             //Assignee of the issue (as of now. Could be owner if unassigned)
-                           "issueData": issueData,
+                           "action": "CLOSE_ALL",            //Action Item
+                           "recipient": recipient,             //Assignee of the issue (as of now. Could be owner if unassigned)
+                           "issueData": issueData,           //Map of {Dict,[list of issues]}
                            "owner": user.login
                          }
 
@@ -245,7 +217,7 @@ async function Stale_Issues()
                             "action":"STALE_IGNORE",
                             "repo_name": rep,                //Repo name
                            "issue_number": issue,               //Issue Number
-                           "recipent": assignee             //Assignee of the issue (as of now. Could be owner if unassigned)
+                           "recipient": recipient             //Assignee of the issue (as of now. Could be owner if unassigned)
 
                         }
                     }
@@ -255,12 +227,15 @@ async function Stale_Issues()
 
         };
 
-        message.push(close_all);
+        if(message.length>1)
+        {
+            message.push(close_all);
+        }
+        
+        //console.log(message);          //For debugging
 
-       
-
-        //console.log(body);
-        //console.log(message);
+        //create a channel
+        var channel_id = await lib.createChannel(recipient);
 
         //Create the payload for the message to be posted on Mattermost
         var payload = {

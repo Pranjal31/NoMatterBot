@@ -2,7 +2,7 @@ var request = require('request');
 const got  = require('got');
 const chalk  = require('chalk');
 
-//var storage_lib = require('./storage_lib.js');
+var storage_lib = require('./storage_lib.js');
 
 var config = {};
 
@@ -159,8 +159,8 @@ async function getCollaborators(owner, repo) {
 
 async function createChannel(githubUser) {
 
-	//var mmuserid = await storage_lib.getMMUID(githubUser);
-	var mmuserid = config.userchannelid;
+	var mmuserid = await storage_lib.getMMUID(githubUser);
+
 
 	var options = {
 		url: config.mmurl + "/api/v4/channels/direct",
