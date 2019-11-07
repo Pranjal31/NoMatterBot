@@ -249,35 +249,7 @@ function getIssues(){
     return data;
 }
 
-// async function close_stale(owner,repo,issue_number)
-
-// {
-    
-//     var mockService = nock("https://api.github.ncsu.edu")
-//     .patch("/repos/" + owner + "/" + repo + "/issues/" + issue_number)
-//     .reply(200, JSON.stringify("done"));
-    
-//     var options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issue_number, "PATCH");
-
-// 	options.body = `{"state": "closed"}`;
-
-// 	return new Promise(function(resolve, reject)
-// 	{
-// 		request(options, function (error, response, body) {
-
-// 			if( error )
-// 			{
-// 				console.log( chalk.red( error ));
-// 				reject(error);
-// 				return; // Terminate execution.
-// 			}
-
-// 			resolve(response.statusCode);
-// 		});
-// 	});
-
-// }
-
+//Function to send message to issue owner/assignee if (s)he ignores stale issues reminder
 async function ignoreAll(recipient)
 {
     var channel_id = await lib.createChannel(recipient);
@@ -290,36 +262,28 @@ async function ignoreAll(recipient)
     return respBody.id;
 }
 
-async function closeStaleIssue(owner, repo, issueNum)
+//Function to close stale issues belonging to a user across repos
+async function closeStaleIssues(owner, issueData, recipient)
 {
-    var channel_id = await lib.createChannel();
-    var status = await lib.closeIssue(owner, repo, issueNum);
+    var success = true;
 
-    if(status == 200)
+    for (var [repo, staleIssueNums] of Object.entries(issueData))
     {
-        var data = {
-            "channel_id": channel_id,
-            "message": "Cool. It's done!"
-        }
+        for(var issueIdx in staleIssueNums)
+        {
+            var status = await lib.closeIssue(owner, repo, staleIssueNums[issueIdx]);
 
-        var respBody = await lib.postMessage(data);
-        return respBody.id;
-    }
-    else
-    {
-        var data ={
-            "channel_id": channel_id,
-            "message": "Sorry, Unable to complete task"
+            if (status != 200)
+            {
+                success = false;
+            }
         }
-
-        var respBody = await lib.postMessage(data);
-        return respBody.id;
     }
 }
 
-module.exports.close_all = close_all;
+
 module.exports.ignoreAll = ignoreAll;
-module.exports.closeStaleIssue = closeStaleIssue;
+module.exports.closeStaleIssues = closeStaleIssues;
 module.exports.Stale_Issues = Stale_Issues;
 module.exports.getIssues = getIssues;
 

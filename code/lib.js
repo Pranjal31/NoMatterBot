@@ -278,11 +278,19 @@ async function getIssue(owner, repo, issueId) {
 	});
 }
 
+<<<<<<< HEAD
 // list labels on a particular issue
 async function getLabelsOnIssue(owner,repo, issueId) {
 
 	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issueId + "/labels", "GET");
 	options.json = true;
+=======
+//Function to close GitHub Issue
+async function closeIssue(owner, repo, issueId)
+{
+	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issueId, "PATCH");
+	options.body = `{"state": "closed"}`;
+>>>>>>> stale issues code update
 
 	return new Promise(function(resolve, reject)
 	{
@@ -295,6 +303,7 @@ async function getLabelsOnIssue(owner,repo, issueId) {
 				return; // Terminate execution.
 			}
 
+<<<<<<< HEAD
 			resolve(response.body);
 		});
 	});
@@ -337,6 +346,8 @@ async function addLabelOnIssue(owner,repo, issue, label)
             }
             console.log(response.body);
 			console.log(`Response Status Code ${response.statusCode}`);
+=======
+>>>>>>> stale issues code update
 			resolve(response.statusCode);
 		});
 	});
@@ -352,8 +363,13 @@ module.exports.getCollaborators = getCollaborators;
 module.exports.openInteractiveDialog = openInteractiveDialog;
 module.exports.getDefaultOptions = getDefaultOptions;
 module.exports.getAccessibleRepos = getAccessibleRepos;
+<<<<<<< HEAD
 module.exports.getLabelsOnIssue = getLabelsOnIssue;
 module.exports.addLabelOnIssue = addLabelOnIssue;
 module.exports.deleteLabelOnIssue = deleteLabelOnIssue;
 module.exports.config = config;
 module.exports.getUser = getUser;
+=======
+module.exports.closeIssue = closeIssue;
+
+>>>>>>> stale issues code update

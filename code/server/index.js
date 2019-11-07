@@ -103,6 +103,7 @@ app.post('/events/', function (req, res) {
 app.post('/triggers/', function (req, res) {
     var req_body = req.body
     
+    //if it is a user's reponse on Mattermost 
     if (req_body.trigger_id) {
 
       if (req_body.context.action == "ASSIGN") {
@@ -124,13 +125,24 @@ app.post('/triggers/', function (req, res) {
           recommend_assignee.ignoreRecommendations(req_body.context.creator);
       }
       
-      if (req_body.context.action == "STALE_CLOSE")
+      //if user chooses to close all stale issues
+      if(req_body.context.action === "CLOSE_ALL")
       {
         var data = req_body.context;
-        stale.closeStaleIssues(data.owner, [data.repo], [data.issueNum], data.recipient);
+        stale.closeStaleIssues(data.owner, data.issueData, data.recipient)
+      }
+      
+      //if user chooses to close one stale issue
+      if (req_body.context.action === "STALE_CLOSE")
+      {
+        var data = req_body.context;
+        var issueData = {};
+        issueData[data.repo] = [repo.issueNum];
+        stale.closeStaleIssues(data.owner, issueData, data.recipient);
       }
  
-      if(req_body.context.action == "STALE_IGNORE")
+      //If user chooses to ignore stale issue reminder
+      if(req_body.context.action === "STALE_IGNORE")
       {
         var data = req_body.context;
         stale.ignoreAll(data.recipient);
