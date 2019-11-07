@@ -56,7 +56,7 @@ async function Stale_Issues()
 
     var list = [];                     // To capture list of Stale Issues
     present = Date();                 //Todays date
-    old = sixMonthsPrior(present);                //Function to compute 6 months old date                   
+    old = sixMonthsPrior(present);                //Function to compute 6 months old date    
     
     //Un-Comment below line for treating all issues created before now as stale Issues. For Demonstration.
     old = Date.parse(present); 
@@ -65,11 +65,15 @@ async function Stale_Issues()
     //old = Date.parse(old);   
 
     var user = await lib.getUser();
-    console.log(user);
+    //console.log(user);
 
     //Get the List of repositories owned, mentioned for Bot Account. API call: /user/repos?type=all
-    var repos = await lib.getRepos(user.login);
-    console.log(repos);
+    var repos = await lib.getRepos(user.login); 
+    //console.log(repos);
+
+    //var dict = new Object();
+
+    var dict = {};
         
     //Loop across all repositories
         for(var repoid in repos){
@@ -77,8 +81,9 @@ async function Stale_Issues()
             //Get Open Issues in each repository
             var obj = await lib.getOpenIssues(repos[repoid].owner.login, repos[repoid].name);
             
-            console.log(repos[repoid].name);
+            //console.log(repos[repoid]);
             //console.log(repos[repoid].owner.login);
+            
             
             
             //Intialse the String
@@ -92,6 +97,7 @@ async function Stale_Issues()
                
                 th=old;                              //Threshold /6 months/ date set
                
+                //console.log(obj[i]);
                 //console.log(th);
                 //console.log(lm); 
                 str="";  
@@ -102,11 +108,41 @@ async function Stale_Issues()
                    // str += obj[i].title + "\t: " + obj[i].number + '\n'
                    str += "Issue: #" + obj[i].number + " - " + obj[i].title + ",\tRepo: " + repos[repoid].name + "\n";
                    
-                   var channel_id = await lib.createChannel(repos[repoid].owner.login);
-                   var issue_id;
-                   var repo_name;
-    
-                var payload = {
+                   var channel_id = await lib.createChannel(obj[i].assignee.login);
+                   //console.log(obj[i].assignee.login);
+                   var issue_number = obj[i].number;
+                   var reponame= repos[repoid].name;
+                   var recipent = obj[i].assignee.login;
+
+                   console.log(issue_number);
+                   console.log(reponame);
+                   console.log(recipent);
+
+
+                  if(dict[recipent]===undefined)
+                   {
+                       dict[recipent]= {};
+                   }
+
+                   if(dict[recipent][reponame] === undefined)
+                   {
+                       dict[recipent][reponame] = [];
+                   }
+                   dict[recipent][reponame].push(issue_number);
+                  
+
+                  //dict[recipent][reponame].push(issue_number);
+                   
+                   
+        
+                   //dict.recipent = [];
+                   
+                   //dict.recipent.reponame = [];
+                   //dict.recipent.reponame.push(issue_number);
+                   
+                 //console.log(dict);
+
+/*                var payload = {
                 "channel_id": channel_id,
                  "message": "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.", 
                  "props": {
@@ -140,14 +176,21 @@ async function Stale_Issues()
                          }
                      ]
                  }
-            }
+            } */
 
-            var respBody = await lib.postMessage(payload);
+            //console.log(dict);
+
+            //var respBody = await lib.postMessage(payload);
                    
 
 
                 }
             }
+
+            //console.log(dict);
+
+
+
 
             //console.log(str);
 
@@ -197,6 +240,77 @@ async function Stale_Issues()
         }*/
             
             //return respBody.id;            
+    }
+
+    console.log(dict);
+
+    //For every assignee in the dictionary
+    for(assignee in dict)
+    {
+        console.log(assignee);
+
+        //create a channel
+        var channel_id = await lib.createChannel(assignee);
+
+
+
+        //Create the payload to be sent
+        var body= [];
+
+        for(rep in dict[assignee])
+        {
+            console.log(rep);
+            for(issue in dict[assignee][rep])
+            {
+                console.log(dict[assignee][rep][issue]);
+                 
+            }
+
+        }
+
+
+
+
+        var payload = {
+            "channel_id": channel_id,
+             "message": "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.", 
+             "props": {
+                 "attachments": [
+                     {
+                         "pretext": "Do you want to close them?",
+                         "text": str,   
+                         
+                         "actions": [
+                             {
+                                 "name": "Close All Issues",
+                                 "integration": {
+                                     "url":lib.config.server + "/triggers/",
+                                     "context": {
+                                        "action": "STALE_CLOSE",
+                                        "issue_ids": list
+                                      }
+
+                                 }
+                             },
+                             {
+                                 "name": "Ignore",
+                                 "integration":{
+                                     "url":lib.config.server + "/triggers/",
+                                     "context":{
+                                         "action":"STALE_IGNORE"
+                                     }
+                                 }
+                             }
+                         ]
+                     }
+                 ]
+             }
+        } 
+
+        
+        var respBody = await lib.postMessage(payload);
+
+
     }
           
 }
