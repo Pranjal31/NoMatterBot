@@ -109,14 +109,17 @@ async function Stale_Issues()
                    str += "Issue: #" + obj[i].number + " - " + obj[i].title + ",\tRepo: " + repos[repoid].name + "\n";
                    
                    var channel_id = await lib.createChannel(obj[i].assignee.login);
-                   //console.log(obj[i].assignee.login);
+                   //console.log(obj[i]);
                    var issue_number = obj[i].number;
                    var reponame= repos[repoid].name;
                    var recipent = obj[i].assignee.login;
+                   var issue_name = obj[i].title;
+                   var repo_owner = obj[i].user.login;
 
                    console.log(issue_number);
                    console.log(reponame);
                    console.log(recipent);
+                   console.log(repo_owner);
 
 
                   if(dict[recipent]===undefined)
@@ -126,9 +129,18 @@ async function Stale_Issues()
 
                    if(dict[recipent][reponame] === undefined)
                    {
-                       dict[recipent][reponame] = [];
+                       dict[recipent][reponame] = {};
+                       
+                       
                    }
-                   dict[recipent][reponame].push(issue_number);
+                   //dict[recipent][reponame].push(issue_number);
+                   if(dict[recipent][reponame][issue_number]===undefined)
+                   {
+                       dict[recipent][reponame][issue_number]= issue_name;
+                   }
+                   //dict[recipent][reponame] = repo_owner;
+                   //dict[recipent][reponame]
+                   
                   
 
                   //dict[recipent][reponame].push(issue_number);
@@ -245,9 +257,16 @@ async function Stale_Issues()
     console.log(dict);
 
     //For every assignee in the dictionary
+    
     for(assignee in dict)
     {
+        var repo_list = [];
+        var issue_list = [];
+
+       
+        
         console.log(assignee);
+
 
         //create a channel
         var channel_id = await lib.createChannel(assignee);
@@ -255,56 +274,143 @@ async function Stale_Issues()
 
 
         //Create the payload to be sent
-        var body= [];
+        
+
+        var message = [];
+        var index=0;
+
+        
 
         for(rep in dict[assignee])
         {
+            var display;
             console.log(rep);
+            display = "Repository : " + rep;
+
             for(issue in dict[assignee][rep])
             {
-                console.log(dict[assignee][rep][issue]);
+                repo_list.push(rep);
+                issue_list.push(issue);
+                var output="";
+
+                output = display + "      Issue Number : " + issue + "       Repository owner : " + user.login;
+                console.log(issue);
+
+                var body={
+                    "pretext": "Do you want to close the following issue?",
+                    "text": output,   
+                    "actions": //message2
+                    
+                    [
+                        {
+                            "name": dict[assignee][rep][issue],
+                            "integration": {
+                                "url":lib.config.server + "/triggers/",
+                                "context": {
+                                   "action": "STALE_CLOSE",          //Action Item
+                                   "repo_name": rep,                //Repo name
+                                   "issue_number": issue,               //Issue Number
+                                   "recipent": assignee             //Assignee of the issue (as of now. Could be owner if unassigned)
+                                 }
+
+                            }
+                        },
+                        {
+                            "name": "Ignore",
+                            "integration":{
+                                "url":lib.config.server + "/triggers/",
+                                "context":{
+                                    "action":"STALE_IGNORE",
+                                    "repo_name": rep,                //Repo name
+                                   "issue_number": issue,               //Issue Number
+                                   "recipent": assignee             //Assignee of the issue (as of now. Could be owner if unassigned)
+
+                                }
+                            }
+                        }
+                    ]
+                    
+
+                };
+
+   
+                //console.log(dict[assignee][rep][issue]);
+                //body.actions[0].name = dict[assignee][rep][issue]
+                //body.actions[0].
+                //body.actions[1].name = "Ignore"
+                
+                //message.push(body);
+                message.push(body);
+
+               
+                //console.log(message);
+                //message[index] = body;
+                //index++;
+               
                  
             }
 
         }
 
 
+        console.log(repo_list);
+        console.log(issue_list);
+
+        
+
+        var close_all={
+            "pretext": "Click Below to close all the Issues",
+            "text": " Issue Numbers : " + issue_list +"\n Corresponding Repositories: " + repo_list,   
+            "actions": //message2
+            
+            [
+                {
+                    "name": dict[assignee][rep][issue],
+                    "integration": {
+                        "url":lib.config.server + "/triggers/",
+                        "context": {
+                           "action": "STALE_CLOSE",          //Action Item
+                           "repo_list": repo_list,                //Repo name
+                           "issue_list": issue_list,               //Issue Number
+                           "recipent": assignee             //Assignee of the issue (as of now. Could be owner if unassigned)
+                         }
+
+                    }
+                },
+                {
+                    "name": "Ignore All",
+                    "integration":{
+                        "url":lib.config.server + "/triggers/",
+                        "context":{
+                            "action":"STALE_IGNORE",
+                            "repo_name": rep,                //Repo name
+                           "issue_number": issue,               //Issue Number
+                           "recipent": assignee             //Assignee of the issue (as of now. Could be owner if unassigned)
+
+                        }
+                    }
+                }
+            ]
+            
+
+        };
+
+        message.push(close_all);
+
+       
+
+        //console.log(body);
+        //console.log(message);
 
 
         var payload = {
             "channel_id": channel_id,
              "message": "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.", 
              "props": {
-                 "attachments": [
-                     {
-                         "pretext": "Do you want to close them?",
-                         "text": str,   
-                         
-                         "actions": [
-                             {
-                                 "name": "Close All Issues",
-                                 "integration": {
-                                     "url":lib.config.server + "/triggers/",
-                                     "context": {
-                                        "action": "STALE_CLOSE",
-                                        "issue_ids": list
-                                      }
-
-                                 }
-                             },
-                             {
-                                 "name": "Ignore",
-                                 "integration":{
-                                     "url":lib.config.server + "/triggers/",
-                                     "context":{
-                                         "action":"STALE_IGNORE"
-                                     }
-                                 }
-                             }
-                         ]
-                     }
-                 ]
+                 "attachments": message
              }
+            
+             
         } 
 
         
