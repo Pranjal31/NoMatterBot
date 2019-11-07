@@ -278,6 +278,48 @@ async function getLabelsOnIssue(owner,repo, issueId) {
 	});
 }
 
+// Delete a label on issue
+async function deleteLabelOnIssue(owner, repo, issue, label) {
+    let options = getDefaultOptions(config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels/" + label, "DELETE");
+
+	// Send a http request to url and specify a callback that will be called upon its return.
+	return new Promise(function(resolve, reject)
+	{
+        request.delete(options, function(error, response, body){
+			if(error){
+				console.log(chalk.red(error));
+				reject(error);
+				return; // Terminate execution
+            }
+            console.log(response.body);
+			console.log(`Response Status Code ${response.statusCode}`);
+			resolve(response.statusCode);
+		});
+	});
+}
+
+// add a label on issue
+async function addLabelOnIssue(owner,repo, issue, label)
+{
+    let options = getDefaultOptions(config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "POST");
+    options.body = `{"labels":["${label}"]}`;
+
+	// Send a http request to url and specify a callback that will be called upon its return.
+	return new Promise(function(resolve, reject)
+	{
+		request.post(options, function(error, response, body){
+			if(error){
+				console.log(chalk.red(error));
+				reject(error);
+				return; // Terminate execution
+            }
+            console.log(response.body);
+			console.log(`Response Status Code ${response.statusCode}`);
+			resolve(response.statusCode);
+		});
+	});
+}
+
 module.exports.getRepos = getRepos; 
 module.exports.getIssue = getIssue; 
 module.exports.postMessage = postMessage;
@@ -289,5 +331,6 @@ module.exports.openInteractiveDialog = openInteractiveDialog;
 module.exports.getDefaultOptions = getDefaultOptions;
 module.exports.getAccessibleRepos = getAccessibleRepos;
 module.exports.getLabelsOnIssue = getLabelsOnIssue;
+module.exports.addLabelOnIssue = addLabelOnIssue;
+module.exports.deleteLabelOnIssue = deleteLabelOnIssue;
 module.exports.config = config;
-
