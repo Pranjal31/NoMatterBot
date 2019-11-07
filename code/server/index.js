@@ -137,7 +137,7 @@ app.post('/triggers/', function (req, res) {
       {
         var data = req_body.context;
         var issueData = {};
-        issueData[data.repo] = [repo.issueNum];
+        issueData[data.repo] = [data.issueNum];
         stale.closeStaleIssues(data.owner, issueData, data.recipient);
       }
  
