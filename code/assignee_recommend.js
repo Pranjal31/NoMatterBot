@@ -184,7 +184,7 @@ async function recommendAssignee(data, numOptions) {
 
 			var data_assignee = {
 				"channel_id": channel_id,
-			 	"message": "Here are all of the recommendations I can think of for issue #" +data.issue_id
+			 	"message": "Here are all of the recommendations I can think of for issue #" + data.issue_id, 
 			 	"props": {
 					"attachments": [
 				     	{
@@ -287,3 +287,4 @@ async function ignoreRecommendations(creator) {
 module.exports.recommendAssignee = recommendAssignee;
 module.exports.assign = assign;
 module.exports.ignoreRecommendations = ignoreRecommendations;
+module.exports.moreRecommendations = moreRecommendations;

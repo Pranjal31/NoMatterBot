@@ -96,6 +96,9 @@ app.post('/triggers/', function (req, res) {
       }
 
       if (req_body.context.action == "MORE_SUGGESTIONS") {
+
+          var data = req_body.context;
+          
           recommend_assignee.moreRecommendations(data.owner, data.repo, data.issue_id, data.creator);
       }
 
@@ -122,7 +125,7 @@ app.post('/triggers/', function (req, res) {
 });
 
 //"* * * * *" for every min===>demo purposes
-//"59 59 23 * * *" for every 23:59:59 seconds
+// "59 59 23 * * *" for every 23:59:59 seconds
 cron.schedule("* * * * *", function(){
   console.log("Running CronJob, Initiating stale Issues check");
   (async () => {			
