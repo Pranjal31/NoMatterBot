@@ -71,9 +71,7 @@ async function Stale_Issues()
     var repos = await lib.getRepos(user.login); 
     //console.log(repos);
 
-    //var dict = new Object();
-
-    var dict = {};
+    var dict = {};            //{User:{rep:{issue num: issue name}}}
         
     //Loop across all repositories
         for(var repoid in repos){
@@ -84,10 +82,6 @@ async function Stale_Issues()
             //console.log(repos[repoid]);
             //console.log(repos[repoid].owner.login);
             
-            
-            
-            //Intialse the String
-            var str = "";
             for( var i = 0; i < obj.length; i++ )
 	        {
                 var updated = obj[i].updated_at;
@@ -106,7 +100,7 @@ async function Stale_Issues()
                     list.push(obj[i].title);
                     
                    // str += obj[i].title + "\t: " + obj[i].number + '\n'
-                   str += "Issue: #" + obj[i].number + " - " + obj[i].title + ",\tRepo: " + repos[repoid].name + "\n";
+                   //str += "Issue: #" + obj[i].number + " - " + obj[i].title + ",\tRepo: " + repos[repoid].name + "\n";
                    
                    var channel_id = await lib.createChannel(obj[i].assignee.login);
                    //console.log(obj[i]);
@@ -138,163 +132,44 @@ async function Stale_Issues()
                    {
                        dict[recipent][reponame][issue_number]= issue_name;
                    }
-                   //dict[recipent][reponame] = repo_owner;
-                   //dict[recipent][reponame]
-                   
-                  
-
-                  //dict[recipent][reponame].push(issue_number);
-                   
-                   
-        
-                   //dict.recipent = [];
-                   
-                   //dict.recipent.reponame = [];
-                   //dict.recipent.reponame.push(issue_number);
-                   
-                 //console.log(dict);
-
-/*                var payload = {
-                "channel_id": channel_id,
-                 "message": "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.", 
-                 "props": {
-                     "attachments": [
-                         {
-                             "pretext": "Do you want to close them?",
-                             "text": str,   
-                             
-                             "actions": [
-                                 {
-                                     "name": "Close All Issues",
-                                     "integration": {
-                                         "url":lib.config.server + "/triggers/",
-                                         "context": {
-                                            "action": "STALE_CLOSE",
-                                            "issue_ids": list
-                                          }
-
-                                     }
-                                 },
-                                 {
-                                     "name": "Ignore",
-                                     "integration":{
-                                         "url":lib.config.server + "/triggers/",
-                                         "context":{
-                                             "action":"STALE_IGNORE"
-                                         }
-                                     }
-                                 }
-                             ]
-                         }
-                     ]
-                 }
-            } */
-
-            //console.log(dict);
-
-            //var respBody = await lib.postMessage(payload);
-                   
-
-
                 }
-            }
-
-            //console.log(dict);
-
-
-
-
-            //console.log(str);
-
-            //Post to the Mattermost Channel of Issue Assignee if Issue has been identified as stale. 
-/*            if(str != "")
-            {
-            //Create the channel as per the owner of the issue
-            var channel_id = await lib.createChannel(repos[repoid].owner.login);
-    
-            var payload = {
-                "channel_id": channel_id,
-                 "message": "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.", 
-                 "props": {
-                     "attachments": [
-                         {
-                             "pretext": "Do you want to close them?",
-                             "text": str,   
-                             
-                             "actions": [
-                                 {
-                                     "name": "Close All Issues",
-                                     "integration": {
-                                         "url":lib.config.server + "/triggers/",
-                                         "context": {
-                                            "action": "STALE_CLOSE",
-                                            "issue_ids": list
-                                          }
-
-                                     }
-                                 },
-                                 {
-                                     "name": "Ignore",
-                                     "integration":{
-                                         "url":lib.config.server + "/triggers/",
-                                         "context":{
-                                             "action":"STALE_IGNORE"
-                                         }
-                                     }
-                                 }
-                             ]
-                         }
-                     ]
-                 }
-            }
-
-            var respBody = await lib.postMessage(payload);
-        }*/
-            
-            //return respBody.id;            
+            }            
     }
 
     console.log(dict);
 
-    //For every assignee in the dictionary
-    
+    //Iterate over every assignee in dict 
     for(assignee in dict)
     {
-        var repo_list = [];
+        var repo_list = [];             
         var issue_list = [];
-
-       
-        
-        console.log(assignee);
-
+        var issueData = {};             //Used in Close_All
 
         //create a channel
         var channel_id = await lib.createChannel(assignee);
 
+        var message = [];               //For the attachment sent in mattemost
 
-
-        //Create the payload to be sent
-        
-
-        var message = [];
-        var index=0;
-
-        
-
+        //Iterate over every Repository for the user in dict
         for(rep in dict[assignee])
         {
             var display;
-            console.log(rep);
+            //console.log(rep);
             display = "Repository : " + rep;
+            issueData[rep] = [];
+
 
             for(issue in dict[assignee][rep])
             {
                 repo_list.push(rep);
                 issue_list.push(issue);
+                issueData[rep].push(issue);
                 var output="";
 
                 output = display + "      Issue Number : " + issue + "       Repository owner : " + user.login;
-                console.log(issue);
+                //console.log(issue);
+                //console.log(assignee);
+                //console.log(user.login);
 
                 var body={
                     "pretext": "Do you want to close the following issue?",
@@ -308,55 +183,38 @@ async function Stale_Issues()
                                 "url":lib.config.server + "/triggers/",
                                 "context": {
                                    "action": "STALE_CLOSE",          //Action Item
-                                   "repo_name": rep,                //Repo name
-                                   "issue_number": issue,               //Issue Number
-                                   "recipent": assignee             //Assignee of the issue (as of now. Could be owner if unassigned)
-                                 }
-
-                            }
+                                   "repo": rep,                      //Repo name
+                                   "issueNum": issue,                //Issue Number
+                                   "recipent": assignee,             //Assignee of the issue (as of now. Could be owner if unassigned)
+                                    "owner": user.login              //Owner of Repo
+                                }
+                                
+                            } 
                         },
                         {
                             "name": "Ignore",
                             "integration":{
                                 "url":lib.config.server + "/triggers/",
                                 "context":{
-                                    "action":"STALE_IGNORE",
-                                    "repo_name": rep,                //Repo name
-                                   "issue_number": issue,               //Issue Number
-                                   "recipent": assignee             //Assignee of the issue (as of now. Could be owner if unassigned)
-
+                                    "action":"STALE_IGNORE",        //Action Item
+                                    "repo": rep,                    //Repo name
+                                   "issueNum": issue,               //Issue Number
+                                   "recipent": assignee,            //Assignee of the issue (as of now. Could be owner if unassigned)
+                                    "owner": user.login             //Owner of repo
                                 }
                             }
                         }
+                    
                     ]
                     
 
                 };
 
-   
-                //console.log(dict[assignee][rep][issue]);
-                //body.actions[0].name = dict[assignee][rep][issue]
-                //body.actions[0].
-                //body.actions[1].name = "Ignore"
-                
-                //message.push(body);
                 message.push(body);
-
-               
-                //console.log(message);
-                //message[index] = body;
-                //index++;
-               
                  
             }
 
         }
-
-
-        console.log(repo_list);
-        console.log(issue_list);
-
-        
 
         var close_all={
             "pretext": "Click Below to close all the Issues",
@@ -365,14 +223,16 @@ async function Stale_Issues()
             
             [
                 {
-                    "name": dict[assignee][rep][issue],
+                    "name": "Close all issues",
                     "integration": {
                         "url":lib.config.server + "/triggers/",
                         "context": {
-                           "action": "STALE_CLOSE",          //Action Item
+                           "action": "CLOSE_ALL",          //Action Item
                            "repo_list": repo_list,                //Repo name
                            "issue_list": issue_list,               //Issue Number
-                           "recipent": assignee             //Assignee of the issue (as of now. Could be owner if unassigned)
+                           "recipent": assignee,             //Assignee of the issue (as of now. Could be owner if unassigned)
+                           "issueData": issueData,
+                           "owner": user.login
                          }
 
                     }
@@ -402,7 +262,7 @@ async function Stale_Issues()
         //console.log(body);
         //console.log(message);
 
-
+        //Create the payload for the message to be posted on Mattermost
         var payload = {
             "channel_id": channel_id,
              "message": "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.", 
