@@ -27,7 +27,7 @@ async function updateStatusLabelOnIssue(owner, repo, issue, label) {
 				return;
 			}
 		}
-	} else {
+	} else {		// if there's no existing label, no need to delete anything
 		await lib.addLabelOnIssue(owner, repo, issue, label);
 	}
 }
