@@ -52,7 +52,6 @@ async function recommendAssignee(data, numOptions) {
 	const weightSkill = 0.5		// weight for skill factor in recommendation score calculation
 	const weightLoad = 0.5		// weight for workload factor  in recommendation score calculation
 	const bonusScore = 1		// bonus score if a candidate has no workload
-	// const numOptions = 3		// number of recommendations to provide to issue creator
 
 	// get list of assignment candidates
 	var assignCandidates = await lib.getCollaborators(data.owner, data.repo);
@@ -97,7 +96,8 @@ async function recommendAssignee(data, numOptions) {
 	// send to front end
 	var channel_id = await lib.createChannel(data.creator);
 
-	if(numOptions === 3) {
+	// default path for showing assignee recommendations
+	if(numOptions === lib.config.numrec) {
 	
 		// retain only top k recommendations
 		var sortedRecoScoreDict = scores.slice(0, numOptions);
@@ -161,10 +161,11 @@ async function recommendAssignee(data, numOptions) {
 				]
 			}
 		}
-
+	// Path to take when user selects show more assignees
 	} else{
 
-		if(scores.length <= 3) {
+		// If there is no change in original recommendation
+		if(scores.length <= lib.config.numrec) {
 
 			var data_assignee = {
 				"channel_id": channel_id,
@@ -173,7 +174,7 @@ async function recommendAssignee(data, numOptions) {
 			}
 
 		} else {
-			// retain only top k recommendations
+			// Display all recommendations
 			for ( recoScoreIdx in scores ) {
 				var menu_data = {
 					"text": scores[recoScoreIdx][0] ,
@@ -267,7 +268,7 @@ async function moreRecommendations(owner, repo, issue_id, creator) {
     data.issue_id = issue_id;
     data.creator = creator;
 
-	await recommendAssignee(data, 10);
+	await recommendAssignee(data, lib.config.smnumrec);
 }
 
 async function ignoreRecommendations(creator) {

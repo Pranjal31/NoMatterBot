@@ -14,9 +14,11 @@ config.mmurl = process.env.MATTERMOSTURL;
 config.gh_token = process.env.GITHUBTOKEN;
 config.botuserid = process.env.BOTUSERID;
 config.server = process.env.SERVERURL;
+config.numrec = process.env.NUMREC;
+config.smnumrec = process.env.SMNUMREC;
 
 if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || 
-	!config.gh_token || !config.botuserid || !config.server )
+	!config.gh_token || !config.botuserid || !config.server || !config.numrec || !config.smnumrec)
 {
 	console.log(`Please set your environment variables with appropriate values.`);
 	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);

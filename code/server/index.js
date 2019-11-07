@@ -12,6 +12,15 @@ var label_ir = "in review";
 var label_test = "in test";
 var label_ip = "in progress"
 
+var config = {}
+
+config.numrec = process.env.NUMREC;
+
+if(!config.numrec) {
+  console.log("Please set minimum number of recommendations for assignee\n");
+  process.exit(1);
+}
+
 // express configuration
 app.use(express.json({type: '*/*'}));
 
@@ -50,7 +59,7 @@ app.post('/events/', function (req, res) {
         data.issue_title = req_body.issue.title;
         data.creator = req_body.issue.user.login;
         
-        recommend_assignee.recommendAssignee(data, 3);
+        recommend_assignee.recommendAssignee(data, config.numrec);
       }
       // on issue status change or issue close
       else if(req_body.issue.assignees.length > 0 && (req_body.action === "labeled" && (req_body.label.name === label_ip 
@@ -98,7 +107,7 @@ app.post('/triggers/', function (req, res) {
       if (req_body.context.action == "MORE_SUGGESTIONS") {
 
           var data = req_body.context;
-          
+
           recommend_assignee.moreRecommendations(data.owner, data.repo, data.issue_id, data.creator);
       }
 
