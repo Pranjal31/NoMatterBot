@@ -94,7 +94,6 @@ async function getAccessibleRepos() {
 
 	var options = getDefaultOptions(config.githubUrl, "/user/repos?type=all", "GET");
 	options.json = true;
-	config
 	return new Promise(function(resolve, reject)
 	{
 		request(options, function (error, response, body) {
@@ -160,7 +159,7 @@ async function getCollaborators(owner, repo) {
 async function createChannel(githubUser) {
 
 	var mmuserid = await storage_lib.getMMUID(githubUser);
-
+	
 
 	var options = {
 		url: config.mmurl + "/api/v4/channels/direct",

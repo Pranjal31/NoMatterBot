@@ -82,23 +82,22 @@ async function Stale_Issues()
                 var updated = obj[i].updated_at;
         
                 lm = Date.parse(updated);             //last_modified date of Git hub issue
-               
-                th=old;                              //Threshold /6 months/ date set
                   
-                if(th>lm)                               //compare threshold and last modified
+                if(old>lm)                               //compare threshold and last modified
                 {
                    var issue_number = obj[i].number;
                    var reponame= repos[repoid].name;
                    var issue_name = obj[i].title;
                    var repo_owner = obj[i].user.login;
-
+                   var recipent;
+                   
                    if(!obj[i].assignee)
                    {
-                   var recipent = obj[i].user.login;
+                        recipent = obj[i].user.login;
                    }
                    else
                    {
-                    var recipent = obj[i].assignee.login;
+                        recipent = obj[i].assignee.login;
                    }
                    
 
@@ -165,20 +164,8 @@ async function Stale_Issues()
                                 }
                                 
                             } 
-                        },
-                        {
-                            "name": "Ignore",
-                            "integration":{
-                                "url":lib.config.server + "/triggers/",
-                                "context":{
-                                    "action":"STALE_IGNORE_NULLIFIED",        //Action Item
-                                   
-                                   "recipient": recipient,            //Assignee of the issue (as of now. Could be owner if unassigned)
-                                    "owner": user.login             //Owner of repo
-                                }
-                            }
                         }
-                    
+                        
                     ]
                     
 
