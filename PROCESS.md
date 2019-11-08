@@ -113,8 +113,11 @@ In addition to Primary pracitces of Software Design, we followed Corollary pract
 
 #### Shared Code
 An overall knowledge of the whole Software system enabled us to work on and/or help with each other's code. There were many instances during the Software Development process where one of us helped another debug their code and keep the wheel spinning. However, we will mention two major instances of Shared Code practice that helped shape our software.  
+  
 For Assignee Recommendation use-case, we used the work-load assigned to every team-member to come with a list of potential assignees to an Issue and one of our developers implemented the code accordingly. However, we later decided to enhance this feature to include the team-member's skills in deciding the list of potential assignees. Another developer was assigned to do this enhancement in the already existing code. He could easily identify the code changes required and where to implement those changes without changing or affecting other codes dependent on this feature. This was only possible because of the knowledge he had about the previous code and how it interacted with the rest of the system.  
+  
 Another instance of a shared code practice in action was in Stale Issues use-case. There were many sub-modules in the code for this use-case each having to deal with different sub-flows. One of the developers worked on identifying the stale issues and posting the reminders on Mattermost, while another developer worked on code to close the stale GitHub issues. Since these sub-modules were inter-dependent with each others, knowing each other's codes and their functionality was needed.  
+  
 Both these instances of collective code ownership helped us improve our software standards and make sure they were performing their expected tasks the expected way.  
 
 #### Single Code Base
