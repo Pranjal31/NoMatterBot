@@ -45,9 +45,9 @@ For every iteration, we had daily standup meetings and we logged the minutes of 
 ## Practices
 ### Primary Practices
 
-We have followed a combination of Scrum and Kanban practices. Some of the primary practices that we introduced in our methodology was:
+We have followed a combination of Scrum and Kanban practices. Some of the primary practices that we have introduced in our methodology are:
 
-* **Stories**: We assigned stories to developers which represented some value to the user. We made sure that the stories represent a small part of whole iteration's work.
+* **Stories**: We assigned stories to developers which represented some value to the user. We made sure that the stories represented a small part of whole iteration's work.
 * **Weekly Cycle**: We completed the milestone over the course of two weekly iterations.
 * **Code Reviews**: We diligently followed code reviews for merging feature branches to the developer branch. We mandated that each pull request needed at least two approvals before merging. This has helped ensure quality of code delivered. All the pull requests can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/pulls?q=is%3Apr+is%3Aclosed). 
 * **Incremental Design**: We have followed an incremental design by 
