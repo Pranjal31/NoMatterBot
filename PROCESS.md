@@ -47,9 +47,11 @@ For every iteration, we had daily standup meetings and we logged the minutes of 
 
 We have followed a combination of Scrum and Kanban practices. Some of the primary practices that we introduced in our methodology was:
 
-+ Stories: We assigned stories to developers which represented some value to the user. We made sure that the stories represent a small part of whole iteration's work.
-+ Weekly Cycle: We completed the milestone over the course of two weekly iterations.
-+ Code Reviews: We diligently followed code reviews for merging feature branches to the developer branch. This has helped ensure quality of code delivered. All the pull requests can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/pulls?q=is%3Apr+is%3Aclosed)
-+ Incremental Design: We have followed an incremental design by 
++ **Stories**: We assigned stories to developers which represented some value to the user. We made sure that the stories represent a small part of whole iteration's work.
++ **Weekly Cycle**: We completed the milestone over the course of two weekly iterations.
++ **Code Reviews**: We diligently followed code reviews for merging feature branches to the developer branch. We mandated that each pull request needed at least two approvals before merging. This has helped ensure quality of code delivered. All the pull requests can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/pulls?q=is%3Apr+is%3Aclosed). 
++ **Incremental Design**: We have followed an incremental design by 
+
 a) Building simple things that could possibly work (Assignee Recommendations use case was initially implemented considering only developer workload. It was later extended to include skillset match also as a factor in recommendation. Similarly, at the end of iteration 1, stale issues usecase only supported finding stale issues. Stale issue presentation part was added as part of iteration 2)
+
 b) Refactoring and testing (For all use cases, refactoring has been done to simplify code, add abstraction, remove duplicate code by introducing a library of helper functions that can be shared across use cases.)
