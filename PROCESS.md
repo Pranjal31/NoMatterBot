@@ -13,20 +13,30 @@ Before beginning of both iterations the state of the kanban board was
 ##### Iteration 1 (Wed Oct 23 -- Fri Nov 1)
 The stories created and worked on during this iteration are:
 + Story 2: *"As an Issue Assignee, I want to receive notifications for issue status changes, so that I can track it conveniently".* 
+
 Assignee: Sridhar Kulkarni. 
+
 Story points: 3
 
 + Story 3: *"As an Issue owner, I want stale issues to be identified among all issues, so that actions can be taken on them".* 
+
 Assignee: Vaishakh Bhadrappanavar. 
+
 Story points: 3
 + Story 6: *"As an Issue Creator, I want the assignee recommendations to take into account each team member's skillset and current workload, so that better assignment decision can be taken".* 
+
 Assignee: Pranjal Sharma
+
 Story points: 5
 + Story 7: *"As an Issue Creator, I want to have an automated mechanism to prepare assignee recommendations, so that best assignment decision can be taken".*
+
 Assignee: Anjali Malunjkar
+
 Story points: 3
 + Story 8: *"As an Issue Creator, I want to be presented with top 3 assignee recommendations with an option to assign whenever I create a new issue, so that the best recommendation can be chosen".*
+
 Assignee: Anjali Malunjkar
+
 Story points: 1
 
 When assignnes start working on their stories, they move the cards to "In progress" column. The kanban borad status: 
@@ -43,19 +53,27 @@ The final state of the kanban board at the end of the iteration 1:
 ##### Iteration 2 (Sat Nov 2 -- Fri Nov 8th)
 The stories created and worked on during this iteration are:
 + Story 1: *"As an Issue Assignee/Manager, I don't want to  change the status of the issue manually, so that my time is saved".* 
+
 Assignee: Pranjal Sharma
+
 Story points: 3
 
 + Story 4: *"As an Issue owner, I want issue assignees to be notified of their stale issues with an option to close them every day, so that the number of stale issues can be kept at a minimum.".*
+
 Assignee:  Vaishakh Bhadrappanavar
+
 Story points: 3
 
 + Story 5: *"As an Issue owner, I want issue assignees' response/action on stale issues to be reflected on GitHub automatically, so that their time is saved".*
+
 Assignee: Sridhar Kulkarni
+
 Story points: 3
 
 + Story 9: *"As an Issue Creator, I want my response/action to be reflected on GitHub automatically, so that my time is saved".*
+
 Assignee: Anjali Malunjkar
+
 Story points: 3
 
 In the beginning, when all the story cards of this iteratio were moved to "In progress" column, the kanban board status was: 
@@ -67,7 +85,7 @@ When the developers finished working on thier stores and created a pull request,
 Once all the pull requests were merged, the cards were moved to "Done" column of the kanban baord. 
 ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration%202/Process_Srint_2_Done.png)
 
-In summary, each one of us were assigneed following stories with associated story points:
+In summary, each one of us were assigneed following stories with associated story points:\
 |Assignee|Stories|Story points|
 |---|---|---|
 |Pranjal Sharma|1, 6|8|
