@@ -77,13 +77,13 @@ The stories created and worked on during this iteration are:
    Story points: 3
 
 In the beginning, when all the story cards of this iteration were moved to "In progress" column, the kanban board status was:\
-![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration%202/Process_Sprint_2_In_Progress.png)
+![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration2/Process_Sprint_2_In_Progress.png)
 
 When the developers finished working on their stories and created a pull request, all the respective cards were moved to "In review" column on the kanban board:\
-![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration%202/Process_Sprint_2_In_Review.png)
+![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration2/Process_Sprint_2_In_Review.png)
 
 Once all the pull requests were merged, the cards were moved to "Done" column of the kanban board. \
-![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration%202/Process_Srint_2_Done.png)
+![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration2/Process_Srint_2_Done.png)
 
 In summary, each one of us were assigned following stories with associated story points:
 
