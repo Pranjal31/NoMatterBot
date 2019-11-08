@@ -60,6 +60,8 @@ async function Stale_Issues()
     
     //Un-Comment below line for treating all issues created before now as stale Issues. For Demonstration.
     old = Date.parse(present); 
+    old = old - 900000;
+    
     
     //Un-comment below for treating 6 month old issues as stale issues
     //old = Date.parse(old);   
@@ -79,6 +81,10 @@ async function Stale_Issues()
                         
             for( var i = 0; i < obj.length; i++ )
 	        {
+                if(obj[i].pull_request)
+                {
+                    continue;
+                }
                 var updated = obj[i].updated_at;
         
                 lm = Date.parse(updated);             //last_modified date of Git hub issue
