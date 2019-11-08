@@ -7,7 +7,7 @@ We have two sprints for developing our bot:
 + Wed Oct 23 -- Fri Nov 1
 + Sat Nov 2 -- Fri Nov 8th
 
-Before beginning of both iterations the state of the kanban board was 
+Before beginning of first iterations the state of the kanban board was 
 ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration1/start.png)
 
 ##### Iteration 1 (Wed Oct 23 -- Fri Nov 1)
@@ -39,15 +39,15 @@ Assignee: Anjali Malunjkar
 
 Story points: 1
 
-When assignnes start working on their stories, they move the cards to "In progress" column. The kanban borad status: 
+When assignees start working on their stories, they move the cards to "In progress" column. The kanban board status:\
 ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration1/Process-26_10.png)
 
-Once the assignees have finished developing and testing the stories on their local machines, they create a pull request to merge their respective branches in the dev branch. Other developers from the team review their code and approve the merge request or recommend changes if needed. During this phase the story cards are moved from "In progress" to "In review" column, our kanban board status was: 
+Once the assignees have finished developing and testing the stories on their local machines, they create a pull request to merge their respective branches in the dev branch. Other developers from the team review their code and approve the merge request or recommend changes if needed. During this phase the story cards are moved from "In progress" to "In review" column, our kanban board status was:\
 ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration1/Process_Sprint_1_In_Review.png)
 
 If the changes are recommended on the pull request, the assignee keeps working on them until the pull request is approved. Once it is approved, the story cards move from "In review" to "Done" column. 
 
-The final state of the kanban board at the end of the iteration 1: 
+The final state of the kanban board at the end of the iteration 1:\
 ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration1/Process_Sprint_1_Done.png)
 
 ##### Iteration 2 (Sat Nov 2 -- Fri Nov 8th)
@@ -76,22 +76,23 @@ Assignee: Anjali Malunjkar
 
 Story points: 3
 
-In the beginning, when all the story cards of this iteratio were moved to "In progress" column, the kanban board status was: 
+In the beginning, when all the story cards of this iteration were moved to "In progress" column, the kanban board status was:\
 ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration%202/Process_Sprint_2_In_Progress.png)
 
-When the developers finished working on thier stores and created a pull request, all the respective cards were moved to "In review" column on the kanban board: 
+When the developers finished working on their stories and created a pull request, all the respective cards were moved to "In review" column on the kanban board:\
 ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration%202/Process_Sprint_2_In_Review.png)
 
-Once all the pull requests were merged, the cards were moved to "Done" column of the kanban baord. 
+Once all the pull requests were merged, the cards were moved to "Done" column of the kanban board. \
 ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration%202/Process_Srint_2_Done.png)
 
-In summary, each one of us were assigneed following stories with associated story points:\
-|Assignee|Stories|Story points|
-|---|---|---|
-|Pranjal Sharma|1, 6|8|
-|Sridhar Kulkarni|2, 5|6|
-|Vaishakh Bhadrappanavar|3, 4|6|
-|Anjali Malunjkar|7, 8, 9|7|
+In summary, each one of us were assigned following stories with associated story points:
+
+| Assignee | Stories | Story points |
+| --- | --- | --- |
+| Pranjal Sharma | 1, 6 | 8 |
+| Sridhar Kulkarni | 2, 5 | 6 |
+| Vaishakh Bhadrappanavar | 3, 4 | 6 |
+| Anjali Malunjkar | 7, 8, 9 | 7 |
 
 
 ## Practices
