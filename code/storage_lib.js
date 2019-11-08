@@ -18,7 +18,6 @@ function createConnDB()
 		user: dbConfig.dbUserId,
 		password: dbConfig.dbUserPwd,
 		database: dbConfig.dbName,
-		socketPath: '/var/run/mysqld/mysqld.sock'
 	  });
 
 	conn.connect(function(err) {

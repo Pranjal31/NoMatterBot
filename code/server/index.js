@@ -66,11 +66,20 @@ app.post('/events/', function (req, res) {
                 || req_body.label.name === label_ir || req_body.label.name === label_test)) 
                 || req_body.action === "closed")
       {
-        var assignee = req_body.issue.assignees[0].login;
         var repo = req_body.repository.name;
         var issueNum = req_body.issue.number;
         var issueTitle = req_body.issue.title;
         var newStatus = null;
+        var recipient = null;
+
+        if(!req_body.issue.assignee)
+        {
+          recipient = req_body.issue.user.login;
+        }
+        else
+        {
+          recipient = req_body.issue.assignee.login;
+        }
         
         if (req_body.action === "closed")
         {
@@ -81,7 +90,7 @@ app.post('/events/', function (req, res) {
           newStatus = req_body.label.name;
         }
         
-        notifier.notifyStatChange(assignee, repo, issueNum, issueTitle, newStatus);
+        notifier.notifyStatChange(recipient, repo, issueNum, issueTitle, newStatus);
         
       }
 
