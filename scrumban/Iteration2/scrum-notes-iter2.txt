@@ -1,0 +1,55 @@
+Iteration 2
+-----------
+
+2 November 2019
+---------------
+Came up with a schedule for the sprint
+Vaishakh will work on presenting stale issues to assignees as discussed
+Anjali will look into converting assignee recommendation messages to ephemeral messages. She will also work on providing additional recommendations if the creator requests so.
+Pranjal will work on changing status of issues automatically based on events like PR creation, PR merge. This should be achieved in such a way that existing labels are not affected.
+Sridhar will work on handling user actions (close issue, ignore all, close all)  on stale issues. 
+
+
+3 November 2019
+---------------
+Pranjal: Working on implementing the server component for issue status change use case. No roadblocks.
+Sridhar: Working on capturing different button click events related to stale issues message and passing the issue information to helper. No roadblocks
+Anjali: Started working on an api to assign an issue to the selected person in GitHub. No roadblocks
+Vaishakh: Worked on adding getUser() call to the lib to get the Authenticated User/Bot account. Used this with getRepos() to get list of repos owned by Bot. No Roadblocks.
+
+4 November 2019
+---------------
+Pranjal: Implemented the server component for issue status change use case. Working on label update implementation. No roadblocks.
+Sridhar: Implemented code to capture different button click events. Now working on using the information received to close one or more stale issues. No roadblocks
+Anjali: Finished working on the GitHub change api. Ephemeral message api for mattermost is not stable, not using it in this sprint. Started working on “Show more” button for assignee recommendation. No roadblocks.
+Vaishakh: Started working on code to Post message on Mattermost per Issue. No Roadblocks.
+
+5 November 2019
+---------------
+Pranjal: Finished basic label update implementation. Working on the following: 1) Need to refine implementation so that existing labels are not affected. 2) Need to handle the case when PR title is not in accordance with the expected format. No roadblocks.
+Anjali: Continue working on “Show more” button. Roadblock: Should we show all the collaborators with or without ordering them based on workload? .
+Vaishakh: Worked on creating Dictionary data structure to store Assignees, Repo, Stale Issue list. No Roadblocks
+Sridhar: Implemented REST API to close Issues on GitHub. Implemented code to use this API to close multiple stale issues across repositories. No roadblock 
+
+6 November 2019
+---------------
+Pranjal: Refined the implementation for label update to make sure existing labels are not affected. Handled the case where PR title is not in the expected format. Working on the following: 1) Need to refactor code so that functions to add and delete labels should be in lib.js 2) Need to test the use case end to end and raise a PR 3) Review others’ PRs. No roadblocks.
+Anjali: Got the solution for the roadblock: Show assignees in order.  Finished working on “Show more” button. 
+Vaishakh: Used the Dictionary created and refined the code to provide close issue button for every issue and a close all Issue for closing all issues in a message. Worked on sending the appropriate fields like: repo, issue num, issueData,recipient etc in the context of the button. No Roadblocks.
+Sridhar: Fixed minor bugs in Close stale issues code. Collaborated with Vaishakh to finalize Mattermost message structure and data passing. Updated code accordingly. No roadblocks.
+
+
+7 November 2019
+---------------
+Pranjal: Tested everything. Raised a PR, reviewed others’ PRs
+Anjali: Created a PR. Reviewed others’ PRs. 
+Vaishakh: Modified text/Pretext of the message being posted on Mattermost. Created PR. Reviewed PR’s. Implemented the changes requested in PR: Remove Ignore button per issue etc. Testing of the integrated code.
+Sridhar. Raised a PR for actions on stale issues. Reviewed other PRs.
+
+
+8 November 2019
+---------------
+Pranjal: Demonstrated NoMatterBot to TA. Working on documentation.
+Anjali: TA demo and Process.md documentation. 
+Vaishakh: TA Demo and Documentation.
+Sridhar: TA Demo and milestone documentation
