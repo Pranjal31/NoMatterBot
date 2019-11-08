@@ -14,6 +14,8 @@ async function updateStatusLabelOnIssue(owner, repo, issue, label) {
 	var label_ir = "in review";
 	var label_test = "in test";
 	var label_ip = "in progress"
+	var hasStatus = false
+	var labelName = ""
 	
 	issueLabels = await lib.getLabelsOnIssue(owner,repo, issue);
 	if (issueLabels.length > 0) {
@@ -22,14 +24,17 @@ async function updateStatusLabelOnIssue(owner, repo, issue, label) {
 			if ( issueLabels[labelIdx].name === label ) {
 				return;
 			} else if ( issueLabels[labelIdx].name === label_ir || issueLabels[labelIdx].name === label_ip || issueLabels[labelIdx].name === label_test ) {
-				await lib.deleteLabelOnIssue(owner, repo, issue, issueLabels[labelIdx].name);
-				await lib.addLabelOnIssue(owner, repo, issue, label);
-				return;
-			}
+				hasStatus = true
+				labelName = issueLabels[labelIdx].name
+				break;
+			} 
 		}
-	} else {		// if there's no existing label, no need to delete anything
-		await lib.addLabelOnIssue(owner, repo, issue, label);
+	} 
+	// delete status label if present
+	if (hasStatus) {
+		await lib.deleteLabelOnIssue(owner, repo, issue, labelName);
 	}
+	await lib.addLabelOnIssue(owner, repo, issue, label);
 }
 
 module.exports.updateStatusLabelOnIssue = updateStatusLabelOnIssue;

@@ -1,21 +1,5 @@
-var request = require('request');
 const chalk  = require('chalk');
 var lib = require('./lib');
-const nock = require("nock");
-
-// lib.config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issue_number, "PATCH"
-
-
-/* var mockService = nock("https://api.github.ncsu.edu")
-.persist() // This will persist mock interception for lifetime of program.
-.filteringPath(function(path){
-    return "/";
-})
-.patch("/")
-.reply(200, JSON.stringify("done")); */
-
-
-
 
 if( !lib.config.gh_token )
 {
@@ -24,16 +8,6 @@ if( !lib.config.gh_token )
 	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);
 	process.exit(1);
 }
-
-
-//In full Implementation, a timer based event will call Stale_Issues() periodically for every 24 hours.
- /*if (process.env.NODE_ENV != 'test')
-{
-	(async () => {			
-	await Stale_Issues();
-
-	})()
-}*/
 
 function sixMonthsPrior(date) {
     //Today's date
@@ -56,12 +30,11 @@ async function Stale_Issues()
 
     var list = [];                     // To capture list of Stale Issues
     present = Date();                 //Todays date
-    old = sixMonthsPrior(present);                //Function to compute 6 months old date    
+    //old = sixMonthsPrior(present);                //Function to compute 6 months old date    
     
     //Un-Comment below line for treating all issues created before now as stale Issues. For Demonstration.
     old = Date.parse(present); 
-    old = old - 900000;
-    
+    old = old - 120000;     // last two minutes
     
     //Un-comment below for treating 6 month old issues as stale issues
     //old = Date.parse(old);   
