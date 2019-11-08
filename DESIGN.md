@@ -84,17 +84,18 @@ Sub-flows: \
 ## Use Case: Assignee Recommendation
 
 Preconditions: \
-Bot must have GitHub API token, Mattermost access token and the permissions to set assignees for GitHub Issues.
+Bot must have GitHub API token, Mattermost access token and the permissions to set assignees for GitHub Issues. The skills required by an issue (if any), must be provided in the format: "skills: skill1, skill2, .... skilln" at the end of the issue body.
 
 Main flow:\
-A user creates an issue. Bot analyses developer workloads and recommends top three potential assignees to the issue creator on Mattermost. The user can select an assignee or ignore the message altogether. The bot sets an assignee, if one is chosen.
+A user creates an issue. Bot analyses developer workloads and skillset and recommends top three potential assignees to the issue creator on Mattermost. The user can select an assignee or ignore the message altogether. The bot sets an assignee, if one is chosen.
 
 Sub-flows:\
 [S1] User creates an issue with no assignee set\
 [S2] The bot compares the workload of different developers based on their number of open issues\
-[S3] Based on previous analysis, the bot suggests top three potential assignees to issue creator on Mattermost\
-[S3] Issue creator selects an assignee. The bot sets the chosen assignee for the issue and confirms it to issue creator\
-[S4] Otherwise, issue creator can ignore the recommendation. The bot would acknowledge it.
+[S3] The bot matches the skillset of different developers with the skills required by the issue\
+[S4] Based on previous analysis, the bot suggests top three potential assignees to issue creator on Mattermost\
+[S5] Issue creator selects an assignee. The bot sets the chosen assignee for the issue and confirms it to issue creator\
+[S6] Otherwise, issue creator can ignore the recommendation. The bot would acknowledge it.
 
 Alternative flows:\
 If more than three developers have the same workload, a tie-breaking mechanism would be used to decide the top three.

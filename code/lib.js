@@ -14,8 +14,11 @@ config.mmurl = process.env.MATTERMOSTURL;
 config.gh_token = process.env.GITHUBTOKEN;
 config.botuserid = process.env.BOTUSERID;
 config.server = process.env.SERVERURL;
+config.numrec = process.env.NUMREC;
+config.smnumrec = process.env.SMNUMREC;
 
-if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || !config.gh_token || !config.botuserid || !config.server)
+if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || 
+	!config.gh_token || !config.botuserid || !config.server || !config.numrec || !config.smnumrec)
 {
 	console.log(`Please set your environment variables with appropriate values.`);
 	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);
@@ -63,6 +66,48 @@ function getDefaultOptions(urlRoot, endpoint, method)
 		}
 	};
 	return options;
+}
+
+async function getUser() {
+
+	var options = getDefaultOptions(config.githubUrl, "/user", "GET");
+	options.json = true;
+	config
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
+// get repositories for owner
+async function getAccessibleRepos() {
+
+	var options = getDefaultOptions(config.githubUrl, "/user/repos?type=all", "GET");
+	options.json = true;
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
 }
 
 // get issues for a given repo
@@ -113,7 +158,8 @@ async function getCollaborators(owner, repo) {
 
 async function createChannel(githubUser) {
 
-	var mmuserid = storage_lib.get("tblGitMatter", githubUser);
+	var mmuserid = await storage_lib.getMMUID(githubUser);
+	
 
 	var options = {
 		url: config.mmurl + "/api/v4/channels/direct",
@@ -188,6 +234,141 @@ async function openInteractiveDialog(data)
 	});
 }
 
+// get repositories for owner
+async function getRepos(owner) {
+
+	var options = getDefaultOptions(config.githubUrl, "/users/" + owner + "/repos", "GET");
+	options.json = true;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
+// get a particular issue
+async function getIssue(owner, repo, issueId) {
+
+	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issueId, "GET");
+	options.json = true;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
+// list labels on a particular issue
+async function getLabelsOnIssue(owner,repo, issueId) {
+
+	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issueId + "/labels", "GET");
+	options.json = true;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
+// Delete a label on issue
+async function deleteLabelOnIssue(owner, repo, issue, label) {
+    let options = getDefaultOptions(config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels/" + label, "DELETE");
+
+	// Send a http request to url and specify a callback that will be called upon its return.
+	return new Promise(function(resolve, reject)
+	{
+        request.delete(options, function(error, response, body){
+			if(error){
+				console.log(chalk.red(error));
+				reject(error);
+				return; // Terminate execution
+            }
+            console.log(response.body);
+			console.log(`Response Status Code ${response.statusCode}`);
+			resolve(response.statusCode);
+		});
+	});
+}
+
+// add a label on issue
+async function addLabelOnIssue(owner,repo, issue, label)
+{
+    let options = getDefaultOptions(config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "POST");
+    options.body = `{"labels":["${label}"]}`;
+
+	// Send a http request to url and specify a callback that will be called upon its return.
+	return new Promise(function(resolve, reject)
+	{
+		request.post(options, function(error, response, body){
+			if(error){
+				console.log(chalk.red(error));
+				reject(error);
+				return; // Terminate execution
+            }
+            console.log(response.body);
+			console.log(`Response Status Code ${response.statusCode}`);
+
+			resolve(response.statusCode);
+		});
+	});
+}
+
+//Function to close GitHub Issue
+async function closeIssue(owner, repo, issueId)
+{
+	var options = getDefaultOptions(config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issueId, "PATCH");
+	options.body = `{"state": "closed"}`;
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.statusCode);
+		});
+	});
+}
+
+
+
+module.exports.getRepos = getRepos; 
+module.exports.getIssue = getIssue; 
 module.exports.postMessage = postMessage;
 module.exports.getOpenIssues = getOpenIssues;
 module.exports.createChannel = createChannel;
@@ -195,5 +376,11 @@ module.exports.assignToIssue = assignToIssue;
 module.exports.getCollaborators = getCollaborators;
 module.exports.openInteractiveDialog = openInteractiveDialog;
 module.exports.getDefaultOptions = getDefaultOptions;
+module.exports.getAccessibleRepos = getAccessibleRepos;
+module.exports.getLabelsOnIssue = getLabelsOnIssue;
+module.exports.addLabelOnIssue = addLabelOnIssue;
+module.exports.deleteLabelOnIssue = deleteLabelOnIssue;
 module.exports.config = config;
+module.exports.getUser = getUser;
+module.exports.closeIssue = closeIssue;
 

@@ -1,4 +1,3 @@
-var request = require('request');
 const chalk  = require('chalk');
 var lib = require('./lib');
 
@@ -10,63 +9,34 @@ if( !lib.config.gh_token )
 	process.exit(1);
 }
 
-console.log(chalk.green(`Your token is: ${lib.config.gh_token.substring(0,4)}...`));
-
-// Delete all labels and add a new label
-async function updateLabelForIssue(userId, repo, issue, label){
-    await deleteLabelsForIssue(userId, repo, issue);
-    await addLabelToIssue(userId, repo, issue,label);
+// Update status label on issue
+async function updateStatusLabelOnIssue(owner, repo, issue, label) {
+	var label_ir = "in review";
+	var label_test = "in test";
+	var label_ip = "in progress"
+	var hasStatus = false
+	var labelName = ""
+	
+	issueLabels = await lib.getLabelsOnIssue(owner,repo, issue);
+	if (issueLabels.length > 0) {
+		for ( var labelIdx in issueLabels ) {	
+			// no need to update label
+			if ( issueLabels[labelIdx].name === label ) {
+				return;
+			} else if ( issueLabels[labelIdx].name === label_ir || issueLabels[labelIdx].name === label_ip || issueLabels[labelIdx].name === label_test ) {
+				hasStatus = true
+				labelName = issueLabels[labelIdx].name
+				break;
+			} 
+		}
+	} 
+	// delete status label if present
+	if (hasStatus) {
+		await lib.deleteLabelOnIssue(owner, repo, issue, labelName);
+	}
+	await lib.addLabelOnIssue(owner, repo, issue, label);
 }
 
-// Delete all labels for issue
-async function deleteLabelsForIssue(owner,repo, issue)
-{
-	console.log(chalk.green("\nDelete Issue Labels"));
-
-    let options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "DELETE");
-
-	// Send a http request to url and specify a callback that will be called upon its return.
-	return new Promise(function(resolve, reject)
-	{
-        request.delete(options, function(error, response, body){
-			if(error){
-				console.log(chalk.red(error));
-				reject(error);
-				return; // Terminate execution
-            }
-            console.log(response.body);
-			console.log(`Response Status Code ${response.statusCode}`);
-			resolve(response.statusCode);
-		});
-	});
-}
-
-// add a label for issue
-async function addLabelToIssue(owner,repo, issue, label)
-{
-	console.log(chalk.green("\nAdd Label to Issue"));
-
-    let options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/"+owner+"/"+repo+"/issues/"+issue+"/labels", "POST");
-    options.body = `{"labels":["${label}"]}`;
-
-	// Send a http request to url and specify a callback that will be called upon its return.
-	return new Promise(function(resolve, reject)
-	{
-		request.post(options, function(error, response, body){
-			if(error){
-				console.log(chalk.red(error));
-				reject(error);
-				return; // Terminate execution
-            }
-            console.log(response.body);
-			console.log(`Response Status Code ${response.statusCode}`);
-			resolve(response.statusCode);
-		});
-	});
-}
-
-module.exports.deleteLabelsForIssue = deleteLabelsForIssue;
-module.exports.addLabelToIssue = addLabelToIssue;
-module.exports.updateLabelForIssue = updateLabelForIssue;
+module.exports.updateStatusLabelOnIssue = updateStatusLabelOnIssue;
 
 
