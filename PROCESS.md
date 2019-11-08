@@ -122,3 +122,46 @@ Both these instances of collective code ownership helped us improve our software
 
 #### Single Code Base
 Keeping the code-base free of redundant functionality and always moving forward is essential for a clean and well-maintained code. We used a single code-base in the form of GitHub repo to achieve this, where all our team-members pushed their part of the code. We created separate branches for each use-case (feature) so that there would not be unintentional code overwrites or conflicts. These branches were kept alive only for the duration of feature implementation, unit test and limited integration tests by the developer. After this was done, the code was reviewed and if approved by atleast two other team-members, it was merged with the main code-base. This ensured that the main code-base always had the most recent approved changes and free of code conflicts if any. Short-lived branches helped identify multiple versions or duplicate implementations of the same code early and remove redundancies.
+
+## Consistency
+
+All the features and tasks to be Implemented was represented in the form of Stories on GitHub Project/Scrumban board. A total of 9 stories with a total of 27 points were created.
+Based on the Level of Effort, different stories had points in the order of 1, 3, 5.
+
+* Number of Stories with 1 points: 1
+* Number of stories with 3 points: 7
+* Number of Stories with 5 Points: 1
+
+Our team of 4 developers picked up the stories with the following point distribution in sprint 1:
+
+* Anjali: 2 stories of points 1 and 3 respectively ( Total points:4)
+* Pranjal: 1 Story of 5 points. (Total Points: 5)
+* Sridhar: 1 Story of 3 points. (Total Points: 3)
+* Vaishakh: 1 Story of 3 points. (Total points: 3)
+
+Daily standup meeting were conducted to discuss the progress and the road blocks of the stories being worked upon.
+The meeting notes for the same can be found
+[here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration1/scrum-notes-iter1.txt).
+
+In the 2nd Sprint, the remaining stories were picked up, the point distribution for the same as shown below:
+
+* Anjali: 1 Story of 3 points (Toatl Points: 3)
+* Pranjal: 1 story of 3 points (Total Points: 3)
+* Sridhar: 1 story of 3 points (Toatal Points: 3)
+* Vaishakh: 1 story of 3 points (Toatal Points: 3)
+
+The daily standup meeting notes for the Sprint 2 can be found 
+[here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration2/scrum-notes-iter2.txt).
+
+The screen captures of the story board during the various stages of sprint 1 and srint 2 can be seen in Process and Practices section.
+
+In summary, following are the stories and the point distribution across the 2 sprints.
+
+| Assignee | Stories | Story points |
+| --- | --- | --- |
+| Pranjal Sharma | 1, 6 | 8 |
+| Sridhar Kulkarni | 2, 5 | 6 |
+| Vaishakh Bhadrappanavar | 3, 4 | 6 |
+| Anjali Malunjkar | 7, 8, 9 | 7 |
+
+
