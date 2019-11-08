@@ -249,38 +249,38 @@ function getIssues(){
     return data;
 }
 
-async function close_stale(owner,repo,issue_number)
+// async function close_stale(owner,repo,issue_number)
 
-{
+// {
     
-    var mockService = nock("https://api.github.ncsu.edu")
-    .patch("/repos/" + owner + "/" + repo + "/issues/" + issue_number)
-    .reply(200, JSON.stringify("done"));
+//     var mockService = nock("https://api.github.ncsu.edu")
+//     .patch("/repos/" + owner + "/" + repo + "/issues/" + issue_number)
+//     .reply(200, JSON.stringify("done"));
     
-    var options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issue_number, "PATCH");
+//     var options = lib.getDefaultOptions(lib.config.githubUrl, "/repos/" + owner + "/" + repo + "/issues/" + issue_number, "PATCH");
 
-	options.body = `{"state": "closed"}`;
+// 	options.body = `{"state": "closed"}`;
 
-	return new Promise(function(resolve, reject)
-	{
-		request(options, function (error, response, body) {
+// 	return new Promise(function(resolve, reject)
+// 	{
+// 		request(options, function (error, response, body) {
 
-			if( error )
-			{
-				console.log( chalk.red( error ));
-				reject(error);
-				return; // Terminate execution.
-			}
+// 			if( error )
+// 			{
+// 				console.log( chalk.red( error ));
+// 				reject(error);
+// 				return; // Terminate execution.
+// 			}
 
-			resolve(response.statusCode);
-		});
-	});
+// 			resolve(response.statusCode);
+// 		});
+// 	});
 
-}
+// }
 
-async function ignore()
+async function ignoreAll(recipient)
 {
-    var channel_id = await lib.createChannel();
+    var channel_id = await lib.createChannel(recipient);
     var data = {
 		"channel_id": channel_id,
 	 	"message": "Alright! These issues(s) have been ignored for a day.",
@@ -288,14 +288,12 @@ async function ignore()
     }
     var respBody = await lib.postMessage(data);
     return respBody.id;
-
 }
 
-async function close_all()
+async function closeStaleIssue(owner, repo, issueNum)
 {
     var channel_id = await lib.createChannel();
-
-    var status = await close_stale();
+    var status = await lib.closeIssue(owner, repo, issueNum);
 
     if(status == 200)
     {
@@ -317,14 +315,11 @@ async function close_all()
         var respBody = await lib.postMessage(data);
         return respBody.id;
     }
-
-    
-
 }
 
 module.exports.close_all = close_all;
-module.exports.ignore = ignore;
-module.exports.close_stale = close_stale;
+module.exports.ignoreAll = ignoreAll;
+module.exports.closeStaleIssue = closeStaleIssue;
 module.exports.Stale_Issues = Stale_Issues;
 module.exports.getIssues = getIssues;
 

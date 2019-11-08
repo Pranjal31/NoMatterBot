@@ -123,18 +123,18 @@ app.post('/triggers/', function (req, res) {
       if (req_body.context.action == "IGNORE_ASSIGN") {
           recommend_assignee.ignoreRecommendations(req_body.context.creator);
       }
-
+      
       if (req_body.context.action == "STALE_CLOSE")
       {
         var data = req_body.context;
-        stale.close_all();
+        stale.closeStaleIssues(data.owner, [data.repo], [data.issueNum], data.recipient);
       }
-
+ 
       if(req_body.context.action == "STALE_IGNORE")
       {
-        stale.ignore();
+        var data = req_body.context;
+        stale.ignoreAll(data.recipient);
       }
-
     }
 
     console.log(JSON.stringify(req_body));
