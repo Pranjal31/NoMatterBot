@@ -7,6 +7,8 @@
     git_repo: https://{{ githubuser | urlencode }}:{{ githubpassword | urlencode }}@github.ncsu.edu/csc510-fall2019/CSC510-12.git
     git_repo_path: /opt/nomatterbot
     app: code/server/index.js
+    app_start_condition: "forever_list.stdout.find('/opt/nomatterbot/code/server/index.js') == -1"
+
     skipchromium: true
     githuburl: https://api.github.ncsu.edu
     channeluserid: yuut455cftdrp87mdtmyt1yu8h   # to be updated for IT
@@ -183,6 +185,14 @@
         regexp: '^SMNUMREC='
         line: SMNUMREC="{{ smnumrec | int}}"
 
+    - name: Check list of Node.js apps running
+      command: forever list
+      register: forever_list
+      changed_when: false
+
     - name: Start Node.js app
       command: "forever start {{ git_repo_path }}/{{ app }}"
+      args:
+        warn: no
+      when: "{{ app_start_condition }}"
 
