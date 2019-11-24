@@ -13,7 +13,7 @@
     mattermosturl: http://35.231.138.79:8065
     botuserid: h8km48naib8fdf7myufcsjozfh
     serverurl: http://34.74.118.49
-    dbserverurl: 34.74.118.49
+    dbserverurl: "localhost" #34.74.118.49
     dbname: NoMatterBot
     numrec: 3
     smnumrec: 10
