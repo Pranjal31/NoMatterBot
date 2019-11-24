@@ -1,0 +1,188 @@
+- hosts: all
+  gather_facts: yes
+  become: yes
+  vars:
+    nodejs_version: "8"
+    distribution_release: "xenial" 
+    git_repo: https://{{ githubuser | urlencode }}:{{ githubpassword | urlencode }}@github.ncsu.edu/csc510-fall2019/CSC510-12.git
+    git_repo_path: /opt/nomatterbot
+    app: code/server/index.js
+    skipchromium: true
+    githuburl: https://api.github.ncsu.edu
+    channeluserid: yuut455cftdrp87mdtmyt1yu8h   # to be updated for IT
+    mattermosturl: http://35.231.138.79:8065
+    botuserid: h8km48naib8fdf7myufcsjozfh
+    serverurl: http://34.74.118.49
+    dbserverurl: 34.74.118.49
+    dbname: NoMatterBot
+    numrec: 3
+    smnumrec: 10
+
+  pre_tasks:
+    - name: Install gpg key for nodejs
+      apt_key:
+        url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+        state: present
+
+    - name: Install nodejs repos
+      apt_repository:
+        repo: "deb https://deb.nodesource.com/node_{{ nodejs_version }}.x {{ distribution_release }} main"
+        state: present
+        update_cache: yes
+
+  vars_prompt:
+    - name: "githubuser"
+      prompt: "Enter your github username"
+      private: no
+    - name: "githubpassword"
+      prompt: "Enter your github password"
+      private: yes
+    - name: "bottoken"
+      prompt: "Enter NoMatterBot access token"
+      private: yes
+    - name: "githubtoken"
+      prompt: "Enter Github token"
+      private: yes
+    - name: "dbuser"
+      prompt: "Enter DB user"
+      private: no
+    - name: "dbpassword"
+      prompt: "Enter DB user password"
+      private: yes
+    - name: "mattermostemail"
+      prompt: "Enter MM email"
+      private: no
+    - name: "mattermostpwd"
+      prompt: "Enter MM password"
+      private: yes
+  
+  tasks:
+    - name: Install nodejs
+      apt:
+        name: nodejs
+        force_apt_get: yes
+        state: present
+      register: nodejs_install
+
+    - name: Install forever
+      npm: name=forever global=yes state=present
+
+    - name: Clone/Pull repo
+      git: 
+        repo: "{{ git_repo }}"
+        dest: "{{ git_repo_path }}"
+        force: yes
+
+    - name: Install puppeteer globally
+      npm:
+        name: puppeteer
+        global: yes
+        unsafe_perm: yes
+    
+    - name: Ensure Puppeteer Skip Chromium environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^PUPPETEER_SKIP_CHROMIUM_DOWNLOAD='
+        line: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="{{ skipchromium }}"
+
+    - name: Install packages based on package.json
+      npm:
+        path: "{{ git_repo_path }}"
+  
+    - name: Install packages based on server/package.json
+      npm:
+        path: "{{ git_repo_path }}/code/server"
+
+    - name: Ensure Github URL environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^GITHUBURL='
+        line: GITHUBURL="{{ githuburl }}"
+
+    - name: Ensure User Channel Id environment variable is set
+      lineinfile:
+        path: /etc/environment
+        regexp: '^CHANNELUSERID='
+        line: CHANNELUSERID="{{ channeluserid }}"
+
+    - name: Ensure Bot Access Token environment variable is set
+      lineinfile:
+        path: /etc/environment
+        regexp: '^BOTACCESSTOKEN='
+        line: BOTACCESSTOKEN="{{ bottoken }}"
+
+    - name: Ensure Github Token environment variable is set
+      lineinfile:
+        path: /etc/environment
+        regexp: '^GITHUBTOKEN='
+        line: GITHUBTOKEN="{{ githubtoken }}"
+    
+    - name: Ensure Mattermost URL environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^MATTERMOSTURL='
+        line: MATTERMOSTURL="{{ mattermosturl }}"
+
+    - name: Ensure Mattermost email environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^MATTERMOST_EMAIL='
+        line: MATTERMOST_EMAIL="{{ mattermostemail }}"
+
+    - name: Ensure Mattermost password environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^MATTERMOST_PWD='
+        line: MATTERMOST_PWD="{{ mattermostpwd }}"
+
+    - name: Ensure Bot UserID environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^BOTUSERID='
+        line: BOTUSERID="{{ botuserid }}"
+    
+    - name: Ensure Server URL environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^SERVERURL='
+        line: SERVERURL="{{ serverurl }}"
+
+    - name: Ensure DB Server URL environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^DBSERVERURL='
+        line: DBSERVERURL="{{ dbserverurl }}"
+
+    - name: Ensure DB User environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^DBUSER='
+        line: DBUSER="{{ dbuser }}"
+
+    - name: Ensure DB User Password environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^DBUSERPWD='
+        line: DBUSERPWD="{{ dbpassword }}"
+  
+    - name: Ensure DB Name environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^DBNAME='
+        line: DBNAME="{{ dbname }}"
+
+    - name: Ensure Number of Recommendations environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^NUMREC='
+        line: NUMREC="{{ numrec | int }}"
+
+    - name: Ensure Show More Number of Recommendations environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^SMNUMREC='
+        line: SMNUMREC="{{ smnumrec | int}}"
+
+    - name: Start Node.js app
+      command: "forever start {{ git_repo_path }}/{{ app }}"
+
