@@ -188,11 +188,13 @@
     - name: Check list of Node.js apps running
       command: forever list
       register: forever_list
+      become: no
       changed_when: false
 
     - name: Start Node.js app
       command: "forever start {{ git_repo_path }}/{{ app }}"
       args:
         warn: no
+      become: no
       when: "{{ app_start_condition }}"
 
