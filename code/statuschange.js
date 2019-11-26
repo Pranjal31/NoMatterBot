@@ -10,7 +10,7 @@ function isStatusLabel(labelName) {
 
 // Update status label on issue
 async function updateStatusLabelOnIssue(owner, repo, issue, label) {
-	if ( await lib.issueExists(owner, repo, issue) ) {
+	if ( await lib.openIssueExists(owner, repo, issue) ) {
 		issueLabels = await lib.getLabelsOnIssue(owner,repo, issue);
 		if ( issueLabels.length > 0 ) {
 		var labelName = ""

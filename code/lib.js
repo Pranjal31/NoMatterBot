@@ -365,15 +365,15 @@ async function closeIssue(owner, repo, issueId)
 	});
 }
 
-// check if the specified issue exists
-async function issueExists(owner, repo, issueId)
+// check if the specified issue exists and is open
+async function openIssueExists(owner, repo, issueId)
 {
 	var issue  = await getIssue(owner, repo, issueId)
 
-    if ( issue.number && issue.number.toString() === issueId ){
+    if ( issue.number && issue.number.toString() === issueId && issue.state === "open" ){
 		return true;
 	}
-	console.log("For owner: " + owner + ", issue: " + repo + "/" + issueId + " doesn't exist!")
+	console.log("For owner: " + owner + ", " + repo + "/" + issueId + " is not an open issue!")
 	return false;
 }
 
@@ -390,7 +390,7 @@ module.exports.getAccessibleRepos = getAccessibleRepos;
 module.exports.getLabelsOnIssue = getLabelsOnIssue;
 module.exports.addLabelOnIssue = addLabelOnIssue;
 module.exports.deleteLabelOnIssue = deleteLabelOnIssue;
-module.exports.issueExists = issueExists;
+module.exports.openIssueExists = openIssueExists;
 module.exports.config = config;
 module.exports.getUser = getUser;
 module.exports.closeIssue = closeIssue;
