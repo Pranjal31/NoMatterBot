@@ -69,6 +69,16 @@ Alternative Flows: \
 PR is not approved. Bot doesn't take any action.
 
 Note: By default, GitHub Issues supports only "open" and "closed" issue status. We introduce three new statuses "in progress", "in review" and "in test". The new statuses are represented using issue labels. While events PR creation/closure lead to issues being labelled "in review"/"in test", "in progress" has to be manually configured by the developer once they start the assigned task.
+
+The following table summarizes the effective status of the issue based on original status and label status:
+
+|Original Status| Status Label|Effective Status|
+|---|---|---|
+| open | N/A | open |
+| open | in progress | in progress |
+| open | in review | in review |
+| open | in test | in test |
+| closed | * | closed |
 			
 ## Use Case: Notify Change in Issue Status
 
