@@ -54,19 +54,21 @@ Sub-flows:\
 ## Use Case: Change Issue Status
 
 Preconditions: \
-Bot must have GitHub API token. Pull Requests (PR) must include GitHub Issue number at the start of PR title Issue.
+Bot must have GitHub API token. Pull Requests (PR) must include GitHub Issue number at the start of PR title Issue (Example PR title: "132 - Concurrency Bug". This way the new PR will be linked with issue# 132). 
 
 Main Flow: \
-User will create a PR (or close an approved PR). It would change the issue’s status from "In Progress" to "In Review" (if closing PR, from "In Review" to "In Test").
+User will create a PR (or close an approved PR). It would change the issue’s status label to "in review" (if closing PR, to "in test").
 
 Sub-flows: \
 [S1] Bot identifies the triggered event (PR creation / PR closure)\
 [S2] Bot identifies the corresponding issue from the issue ID embedded in PR title\
-[S3] If the identified event is PR creation, Bot changes the issue status from "In Progress" to "In Review"\
-[S4] If the identified event is PR closure, Bot changes the issue status from "In Review" to "In Test"
+[S3] If the identified event is PR creation, Bot changes the issue status to "in review"\
+[S4] If the identified event is PR closure, Bot changes the issue status to "in test"
 
 Alternative Flows: \
 PR is not approved. Bot doesn't take any action.
+
+Note: By default, GitHub Issues supports only "open" and "closed" issue status. We introduce three new statuses "in progress", "in review" and "in test". The new statuses are represented using issue labels. While events PR creation/closure lead to issues being labelled "in review"/"in test", "in progress" has to be manually configured by the developer once they start the assigned task.
 			
 ## Use Case: Notify Change in Issue Status
 
