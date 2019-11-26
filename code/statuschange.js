@@ -10,8 +10,9 @@ function isStatusLabel(labelName) {
 
 // Update status label on issue
 async function updateStatusLabelOnIssue(owner, repo, issue, label) {
-	issueLabels = await lib.getLabelsOnIssue(owner,repo, issue);
-	if ( issueLabels.length > 0 ) {
+	if ( await lib.issueExists(owner, repo, issue) ) {
+		issueLabels = await lib.getLabelsOnIssue(owner,repo, issue);
+		if ( issueLabels.length > 0 ) {
 		var labelName = ""
 		// delete any existing status labels
 		for ( var labelIdx in issueLabels ) {
@@ -23,6 +24,8 @@ async function updateStatusLabelOnIssue(owner, repo, issue, label) {
 	} 
 	// add desired status label
 	await lib.addLabelOnIssue(owner, repo, issue, label);
+
+	}
 }
 
 module.exports.updateStatusLabelOnIssue = updateStatusLabelOnIssue;

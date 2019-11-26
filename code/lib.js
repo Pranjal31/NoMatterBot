@@ -365,7 +365,17 @@ async function closeIssue(owner, repo, issueId)
 	});
 }
 
+// check if the specified issue exists
+async function issueExists(owner, repo, issueId)
+{
+	var issue  = await getIssue(owner, repo, issueId)
 
+    if ( issue.number && issue.number.toString() === issueId ){
+		return true;
+	}
+	console.log("For owner: " + owner + ", issue: " + repo + "/" + issueId + " doesn't exist!")
+	return false;
+}
 
 module.exports.getRepos = getRepos; 
 module.exports.getIssue = getIssue; 
@@ -380,6 +390,7 @@ module.exports.getAccessibleRepos = getAccessibleRepos;
 module.exports.getLabelsOnIssue = getLabelsOnIssue;
 module.exports.addLabelOnIssue = addLabelOnIssue;
 module.exports.deleteLabelOnIssue = deleteLabelOnIssue;
+module.exports.issueExists = issueExists;
 module.exports.config = config;
 module.exports.getUser = getUser;
 module.exports.closeIssue = closeIssue;
