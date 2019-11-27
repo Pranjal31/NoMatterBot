@@ -14,11 +14,9 @@ config.mmurl = process.env.MATTERMOSTURL;
 config.gh_token = process.env.GITHUBTOKEN;
 config.botuserid = process.env.BOTUSERID;
 config.server = process.env.SERVERURL;
-config.numrec = process.env.NUMREC;
-config.smnumrec = process.env.SMNUMREC;
 
 if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || 
-	!config.gh_token || !config.botuserid || !config.server || !config.numrec || !config.smnumrec)
+	!config.gh_token || !config.botuserid || !config.server)
 {
 	console.log(`Please set your environment variables with appropriate values.`);
 	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);
@@ -36,6 +34,61 @@ async function postMessage(data) {
 			"Authorization": `Bearer ${config.botaccess}`
 		},
 		json : data
+	};
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
+async function updateMessage(msg_id, data) {
+
+	var options = {
+		url: config.mmurl + "/api/v4/posts/" + msg_id,
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${config.botaccess}`
+		},
+		json : data
+	};
+
+	return new Promise(function(resolve, reject)
+	{
+		request(options, function (error, response, body) {
+
+			if( error )
+			{
+				console.log( chalk.red( error ));
+				reject(error);
+				return; // Terminate execution.
+			}
+
+			resolve(response.body);
+		});
+	});
+}
+
+async function getMessage(msg_id) {
+
+	var options = {
+		url: config.mmurl + "/api/v4/posts/" + msg_id,
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${config.botaccess}`
+		}
 	};
 
 	return new Promise(function(resolve, reject)

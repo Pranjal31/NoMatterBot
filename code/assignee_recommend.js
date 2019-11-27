@@ -1,5 +1,7 @@
 var lib = require('./lib');
 var storage_lib = require('./storage_lib.js');
+const numrec = 3			// default number of recommendations
+const smnumrec = 10			// "show more" number of recommendations
 
 // get number of matches between user's skills and issue's required skills
 async function getMatchedSkills(owner, repo, user, issueId ) {
@@ -101,7 +103,7 @@ async function recommendAssignee(data, numOptions) {
 	var channel_id = await lib.createChannel(data.creator);
 
 	// default path for showing assignee recommendations
-	if(numOptions === lib.config.numrec) {
+	if(numOptions === numrec) {
 	
 		// retain only top k recommendations
 		var sortedRecoScoreDict = scores.slice(0, numOptions);
@@ -169,7 +171,7 @@ async function recommendAssignee(data, numOptions) {
 	} else{
 
 		// If there is no change in original recommendation
-		if(scores.length <= lib.config.numrec) {
+		if(scores.length <= numrec) {
 
 			var data_assignee = {
 				"channel_id": channel_id,
@@ -272,7 +274,7 @@ async function moreRecommendations(owner, repo, issue_id, creator) {
     data.issue_id = issue_id;
     data.creator = creator;
 
-	await recommendAssignee(data, lib.config.smnumrec);
+	await recommendAssignee(data, smnumrec);
 }
 
 async function ignoreRecommendations(creator) {

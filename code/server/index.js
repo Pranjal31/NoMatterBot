@@ -13,14 +13,7 @@ var label_ir = "in review";
 var label_test = "in test";
 var label_ip = "in progress"
 
-var config = {}
-
-config.numrec = process.env.NUMREC;
-
-if(!config.numrec) {
-  console.log("Please set minimum number of recommendations for assignee\n");
-  process.exit(1);
-}
+const numrec = 3      // default number of recommendations
 
 // express configuration
 app.use(express.json({type: '*/*'}));
@@ -60,7 +53,7 @@ app.post('/events/', function (req, res) {
         data.issue_title = req_body.issue.title;
         data.creator = req_body.issue.user.login;
         
-        recommend_assignee.recommendAssignee(data, config.numrec);
+        recommend_assignee.recommendAssignee(data, numrec);
       }
       // on issue status change or issue close
       else if((req_body.action === "labeled" && (req_body.label.name === label_ip 
