@@ -31,8 +31,8 @@ async function getMatchedSkills(owner, repo, user, issueId ) {
 async function getWorkLoad(owner, user) {
 	var workload = 0
 
-	//get all repos for owner
-	var repos = await lib.getRepos(owner)
+    // get all repos owned by the bot account
+	var repos = await lib.getAccessibleRepos()
 
 	for ( var repoIdx in repos ) {		
 		// get issues for all users

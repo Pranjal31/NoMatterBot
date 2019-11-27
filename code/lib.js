@@ -89,25 +89,25 @@ async function getUser() {
 	});
 }
 
-// get repositories for owner
+/// get repositories owned by the bot account
 async function getAccessibleRepos() {
 
-	var options = getDefaultOptions(config.githubUrl, "/user/repos?type=all", "GET");
-	options.json = true;
-	return new Promise(function(resolve, reject)
-	{
-		request(options, function (error, response, body) {
+    var options = getDefaultOptions(config.githubUrl, "/user/repos?affiliation=owner", "GET");
+    options.json = true;
+    return new Promise(function(resolve, reject)
+    {
+        request(options, function (error, response, body) {
 
-			if( error )
-			{
-				console.log( chalk.red( error ));
-				reject(error);
-				return; // Terminate execution.
-			}
+            if( error )
+            {
+                console.log( chalk.red( error ));
+                reject(error);
+                return; // Terminate execution.
+            }
 
-			resolve(response.body);
-		});
-	});
+            resolve(response.body);
+        });
+    });
 }
 
 // get issues for a given repo

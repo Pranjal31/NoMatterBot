@@ -27,7 +27,6 @@ function sixMonthsPrior(date) {
 
 async function Stale_Issues()
 {
-
     var list = [];                     // To capture list of Stale Issues
     present = Date();                 //Todays date
     //old = sixMonthsPrior(present);                //Function to compute 6 months old date    
@@ -41,8 +40,8 @@ async function Stale_Issues()
 
     var user = await lib.getUser();
 
-    //Get the List of repositories owned, mentioned for Bot Account. API call: /user/repos?type=all
-    var repos = await lib.getRepos(user.login); 
+    // get the list of repositories owned by the bot account
+    var repos = await lib.getAccessibleRepos();
  
     var dict = {};            //{User:{rep:{issue num: issue name}}}
         
