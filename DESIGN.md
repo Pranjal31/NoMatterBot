@@ -96,7 +96,7 @@ Sub-flows: \
 ## Use Case: Assignee Recommendation
 
 Preconditions: \
-Bot must have GitHub API token, Mattermost access token and the permissions to set assignees for GitHub Issues. The skills required by an issue (if any), must be provided in the format: "skills: skill1, skill2, .... skilln" at the end of the issue body.
+Bot must have GitHub API token, Mattermost access token and the permissions to set assignees for GitHub Issues. **The skills required by an issue (if any), must be provided in the format: "skills: skill1, skill2, .... skilln" at the end of the issue body.**
 
 Main flow:\
 A user creates an issue. Bot analyses developer workloads and skillset and recommends top three potential assignees to the issue creator on Mattermost. The user can select an assignee or ignore the message altogether. The bot sets an assignee, if one is chosen.
@@ -111,6 +111,24 @@ Sub-flows:\
 
 Alternative flows:\
 If more than three developers have the same workload, a tie-breaking mechanism would be used to decide the top three.
+
+Note: 
++ The skillset for each team member is listed below:
+
+|Team member| Skills|
+|---|---|
+| Pranjal | java, networking, python , js | 
+| Sridhar | sql, js, python, java | 
+| Vaishakh | js, c, python , networking | 
+| Anjali | ai, js, java, python | 
+
++ Issue creators see recommendations in the descending order of recommendation scores. For a recommendation candidate, the score is computed as follows: 
+
+```RecommendationScore = SkillScore + WorkloadScore```
+
+```RecommendationScore = (SkillWeight * NumberOfMatchedSkills) + (WorkloadWeight * 1 / Workload),``` 
+
+```where 'NumberOfMatchedSkills' are the number of candidate's skills that match those required for the issue, 'Workload' is the number of issues already assigned to the candidate. 'SkillWeight' and WorkloadWeight' are the weights for skills and workload respectively. If a candidate has zero workload, their workload score is two times the 'WorkloadWeight'```
 
 # Design Sketches
 
