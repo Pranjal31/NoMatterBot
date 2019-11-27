@@ -11,7 +11,11 @@ async function getMatchedSkills(owner, repo, user, issueId ) {
 	// get skills required for issue
 	issue = await lib.getIssue(owner, repo, issueId)
 	if( issue.body && issue.body.toLowerCase().includes('skills:') ) {
-		issueSkillsStr = issue.body.toLowerCase().split('skills:')[1]
+		var issueBody = issue.body.toLowerCase();
+
+		// use the last occurence of 'skills:' for the skill list
+		var issueSkillsStr = issueBody.substring(issueBody.lastIndexOf('skills:'));
+		issueSkillsStr = issueSkillsStr.split('skills:')[1];
 		var issueSkills = issueSkillsStr.split(",").map(item => item.trim());
 
 		// do pairwise matching for issue and user skills
@@ -22,7 +26,7 @@ async function getMatchedSkills(owner, repo, user, issueId ) {
 				}
 			}
 		}
-	} 
+	}
 
 	return numMatchedSkills
 }
