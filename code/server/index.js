@@ -1,4 +1,5 @@
 const express = require('express');
+const dbConnManager = require('../dbConnManager');
 const status_change = require('../statuschange');
 const recommend_assignee = require('../assignee_recommend.js');
 const stale = require('../stale.js');
@@ -162,6 +163,15 @@ cron.schedule("* * * * *", function(){
     await stale.Stale_Issues();
   
     })()
-}); 
+});
 
-app.listen(port, () => console.log(`NoMatterBot server listening on port ${port}!\n`))
+app.listen(port, () => console.log(`NoMatterBot server listening on port ${port}!\n`));
+
+function shutDown()
+{
+  dbConnManager.endDBConn();
+  process.exit(1);
+}
+
+process.on('SIGTERM', shutDown);
+process.on('SIGINT', shutDown);

@@ -1,62 +1,22 @@
 var chalk = require('chalk');
-var mysql = require('mysql');
-//var lib = require('./lib.js');
-
-var dbConfig = {}
-
-//Read DB related environment variables
-dbConfig.dbServer = process.env.DBSERVERURL;
-dbConfig.dbUserId = process.env.DBUSER;
-dbConfig.dbUserPwd = process.env.DBUSERPWD;
-dbConfig.dbName = process.env.DBNAME;
-
-//Function to create connection to DB server, returns connection object
-function createConnDB()
-{
-	var conn = mysql.createConnection({
-		host: dbConfig.dbServer,
-		user: dbConfig.dbUserId,
-		password: dbConfig.dbUserPwd,
-		database: dbConfig.dbName,
-	  });
-
-	conn.connect(function(err) {
-		if (err) throw err;
-		//console.log("Connected!");
-	  });
-
-	return conn;
-}
-
-//Function to end connection to DB server
-function endConnDB(conn)
-{
-	conn.end(function(err)
-  	{
-    	if (err) throw err;
-    	//console.log("Connection Ended!");
-  });
-}
+var dbConnManager = require('./dbConnManager');
 
 //Function to make query to DB and return the results of the query
 async function makeQuery(sqlQuery, values)
 {
 	try
 	{
-		conn = createConnDB();
-
 		return new Promise(function(resolve, reject) {
-			conn.query(sqlQuery, values, (err, results, fields) => {
-				endConnDB(conn);
+			dbConnManager.dbConnPool.query(sqlQuery, values, (err, results, fields) => {
 				
 				if (err)
 				{
 					reject(err);
+					return;
 				}
-				else
-				{
-					resolve(results);
-				}
+
+				resolve(results);
+
 			  });
 		});
 	}
