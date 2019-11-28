@@ -8,13 +8,18 @@
     git_repo_path: /opt/nomatterbot
     app: code/server/index.js
     app_start_condition: "forever_list.stdout.find('/opt/nomatterbot/code/server/index.js') == -1"
+    mysql_root_host: "localhost"
+    dbname: "NoMatterBot"
+    mysql_root_cred_path: /opt/nomatterbot/database/.my.cnf
+    mysql_import_file_path: /opt/nomatterbot/database
+
 
     skipchromium: true
     githuburl: https://api.github.ncsu.edu
     channeluserid: yuut455cftdrp87mdtmyt1yu8h   # to be updated for IT
     mattermosturl: http://35.231.138.79:8065
     botuserid: h8km48naib8fdf7myufcsjozfh
-    serverurl: http://34.74.118.49
+    serverurl: http://34.74.118.49:3000
     dbserverurl: "localhost" #34.74.118.49
     dbname: NoMatterBot
     numrec: 3
@@ -32,6 +37,18 @@
         state: present
         update_cache: yes
 
+    - name: Install pymysql
+      apt:
+        name: python3-pymysql
+        force_apt_get: yes
+        state: present
+
+    - name: Install python-mysqldb
+      apt:
+        name: python-mysqldb
+        force_apt_get: yes
+        state: present 
+      
   vars_prompt:
     - name: "githubuser"
       prompt: "Enter your github username"
@@ -44,6 +61,9 @@
       private: yes
     - name: "githubtoken"
       prompt: "Enter Github token"
+      private: yes
+    - name: "dbrootpassword"
+      prompt: "Enter password for DB root"
       private: yes
     - name: "dbuser"
       prompt: "Enter DB user"
@@ -68,6 +88,54 @@
 
     - name: Install forever
       npm: name=forever global=yes state=present
+
+    - name: Install MySQL Server
+      apt:
+        name: mysql-server
+        force_apt_get: yes
+        state: latest
+
+    - name: Start MySQL service
+      service: 
+        name: mysql 
+        state: started
+        enabled: true
+
+    - name: Set mysql root password
+      mysql_user:
+        name: root
+        host: "{{ mysql_root_host }}"
+        password: "{{ dbrootpassword }}"
+
+    - name: Drop mysql credentials file at Remote
+      template:
+        src: "{{ mysql_root_cred_path }}"
+        dest: "/home/{{ ansible_user }}/.my.cnf"
+
+    - name: Drop mysql import file at Remote
+      template:
+        src: "{{ mysql_import_file_path }}"
+        dest: "{{ mysql_import_file_path }}/{{ dbname }}.sql"
+
+    - name: Collect info about databases and version using ~/.my.cnf as a credential file
+      mysql_info:
+        filter:
+        - databases
+      register: databasesdict
+
+    - name: Import NoMatterBot database if not present
+      mysql_db:
+        state: import
+        name: NoMatterBot
+        target: "{{ mysql_import_file_path }}/{{ dbname }}.sql"
+      when: dbname not in databasesdict
+    
+    - name: Create new DB user
+      mysql_user:
+        name: "{{ dbuser }}"
+        password: "{{ dbpassword }}"
+        priv: '{{ dbname }}.*:ALL'
+        state: present
 
     - name: Clone/Pull repo
       git: 
