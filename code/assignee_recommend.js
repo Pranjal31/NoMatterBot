@@ -150,6 +150,8 @@ async function recommendAssignee(data, numOptions) {
 				recommendations[recoScoreIdx] = menu_data; 
 			} 
 
+			console.log(recommendations);
+
 			data.recommendations = recommendations;
 
 			var data_assignee = {
@@ -257,9 +259,13 @@ async function modifyMessage(post_id) {
 
 	var updated_msg = {
 
+		"id" : post_id,
 		"message" : old_msg.message,
 		"props" : new_props
 	}
+
+	console.log(updated_msg);
+
 	await lib.updateMessage(post_id, updated_msg);
 }
 
