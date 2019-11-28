@@ -237,6 +237,7 @@ async function modifyMessage(post_id) {
 				"text": old_msg.props.attachments[0].text,
 				"actions": []
 			}
+		]
 	}
 
 	for(var i = 0; i < old_msg.props.attachments[0].actions.length; i++) {
