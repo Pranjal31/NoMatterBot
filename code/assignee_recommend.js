@@ -10,7 +10,9 @@ async function getMatchedSkills(owner, repo, user, issueId ) {
 	var numMatchedSkills = 0
 	
 	// get user skills
-	const userSkills = await storage_lib.getUserSkills(user)
+//	const userSkills = await storage_lib.getUserSkills(user)
+
+	const userSkills = ['python', 'js']
 
 	// get skills required for issue
 	issue = await lib.getIssue(owner, repo, issueId)
@@ -121,8 +123,8 @@ async function recommendAssignee(data, numOptions) {
 
 		var data_assignee = {
 			"channel_id": channel_id,
-		 	"message": await generateMsg(md.msg.ar_suggest1, data),
-		 	"props": await getMessage_ar_suggest1(data)
+		 	"message": await md.generateMsg(md.msg.ar_suggest1, data),
+		 	"props": await md.getMessage_ar_suggest1(data)
 		}
 	// Path to take when user selects show more assignees
 	} else{
@@ -152,8 +154,8 @@ async function recommendAssignee(data, numOptions) {
 
 			var data_assignee = {
 				"channel_id": channel_id,
-			 	"message": await generateMsg(md.msg.ar_suggest2, data), 
-			 	"props": await getMessage_ar_suggest2(data)
+			 	"message": await md.generateMsg(md.msg.ar_suggest2, data), 
+			 	"props": await md.getMessage_ar_suggest2(data)
 			}
 		}
 	}
@@ -223,12 +225,15 @@ async function ignoreRecommendations(creator, post_id) {
 
 async function modifyMessage(post_id) {
 
-	var old_msg = await lib.getMessage(post_id)
+	var old_msg = JSON.parse(await lib.getMessage(post_id));
+	
+	console.log(old_msg.message);
+	console.log(old_msg.props.attachments[0].actions.length);
 
-	for(var i = 0; i < old_msg.props.attachments.actions.length; i++) {
+	for(var i = 0; i < old_msg.props.attachments[0].actions.length; i++) {
 
-		old_msg.props.attachments.actions[i].integration.url = "";
-		old_msg.props.attachments.actions[i].integration.context = "";
+		//old_msg.props.attachments[0].actions[i].integration.url = "";
+	//	old_msg.props.attachments.actions[i].integration.context = "";
 	}
 
 	var updated_msg = {
@@ -236,7 +241,7 @@ async function modifyMessage(post_id) {
 		"message" : old_msg.message,
 		"props" : old_msg.props
 	}
-
+	console.log(updated_msg);
 	await lib.updateMessage(post_id, updated_msg)
 }
 
