@@ -8,7 +8,7 @@ const msg = {
 	ar_ignore : "All those CPU cycles wasted for nothing? Okay :(",
 	ar_no_sm : "Nope, that's all I have. Sorry :(",
 	ar_suggest1 : "Ciao! I see that you recently created an issue #issue_id with title: issue_title",
-	ar_suggest2 : "Here are all of the recommendations I can think of for issue #issue_id",
+	ar_suggest2 : "Here are all of the assignees I can think of for issue #issue_id",
 
 	lib_env_1 : "Please set your environment variables with appropriate values.",
 	lib_env_2 : "italic You may need to refresh your shell in order for your changes to take place.",

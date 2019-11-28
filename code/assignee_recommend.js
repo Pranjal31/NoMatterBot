@@ -70,7 +70,7 @@ async function recommendAssignee(data, numOptions) {
 	recoScoreDict = {}
 	var recommendations = []
 
-	if (assignCandidates.length == 0) {
+	if (assignCandidates[0].login == undefined) {
 
 		return;		
 	}
