@@ -1,5 +1,7 @@
 var lib = require('./lib');
 var storage_lib = require('./storage_lib.js');
+var md = require('./messages');
+
 const numrec = 3			// default number of recommendations
 const smnumrec = 10			// "show more" number of recommendations
 
@@ -115,57 +117,12 @@ async function recommendAssignee(data, numOptions) {
 			recommendations[recoScoreIdx] = menu_data; 
 		} 
 
+		data.recommendations = recommendations;
+
 		var data_assignee = {
 			"channel_id": channel_id,
-		 	"message": "Ciao! I see that you recently created an issue #" + data.issue_id + " with title: " + data.issue_title,
-		 	"props": {
-				"attachments": [
-			     	{
-						"pretext": "Here are some assignee recommendations based on current workload:",
-						"text": "Assignee recommendations",
-						"actions": [
-					        {
-								"name": "Select an option...",
-								"integration": {
-									"url": lib.config.server + "/triggers/",
-									"context": {
-										"action": "ASSIGN",
-										"owner": data.owner,
-										"creator": data.creator,
-										"issue_id": data.issue_id,
-										"repo": data.repo
-									}
-								},
-								"type": "select",
-								"options" : recommendations
-							}, 
-							{
-								"name": "Show more",
-								"integration": {
-									"url": lib.config.server + "/triggers/",
-									"context": {
-										"action": "MORE_SUGGESTIONS",
-										"owner": data.owner,
-										"creator": data.creator,
-										"issue_id": data.issue_id,
-										"repo": data.repo
-									}
-								}
-							}, 
-							{
-								"name": "Ignore",
-								"integration": {
-									"url": lib.config.server + "/triggers/",
-									"context": {
-										"action": "IGNORE_ASSIGN",
-										"creator": data.creator
-									}
-								}
-							}
-						]
-					}
-				]
-			}
+		 	"message": await generateMsg(md.msg.ar_suggest1, data),
+		 	"props": await getMessage_ar_suggest1(data)
 		}
 	// Path to take when user selects show more assignees
 	} else{
@@ -175,11 +132,13 @@ async function recommendAssignee(data, numOptions) {
 
 			var data_assignee = {
 				"channel_id": channel_id,
-			 	"message": "Nope, that's all I have. Sorry :("
-
+			 	"message": md.msg.ar_no_sm
 			}
 
 		} else {
+
+			await modifyMessage(data.post_id)
+			
 			// Display all recommendations
 			for ( recoScoreIdx in scores ) {
 				var menu_data = {
@@ -189,64 +148,33 @@ async function recommendAssignee(data, numOptions) {
 				recommendations[recoScoreIdx] = menu_data; 
 			} 
 
+			data.recommendations = recommendations;
+
 			var data_assignee = {
 				"channel_id": channel_id,
-			 	"message": "Here are all of the recommendations I can think of for issue #" + data.issue_id, 
-			 	"props": {
-					"attachments": [
-				     	{
-							"pretext": "All assignee recommendations based on current workload:",
-							"text": "Assignee recommendations",
-							"actions": [
-						        {
-									"name": "Select an option...",
-									"integration": {
-										"url": lib.config.server + "/triggers/",
-										"context": {
-											"action": "ASSIGN",
-											"owner": data.owner,
-											"creator": data.creator,
-											"issue_id": data.issue_id,
-											"repo": data.repo
-										}
-									},
-									"type": "select",
-									"options" : recommendations
-								},
-								{
-									"name": "Ignore",
-									"integration": {
-										"url": lib.config.server + "/triggers/",
-										"context": {
-											"action": "IGNORE_ASSIGN",
-											"creator": data.creator
-										}
-									}
-								}
-							]
-						}
-					]
-				}
+			 	"message": await generateMsg(md.msg.ar_suggest2, data), 
+			 	"props": await getMessage_ar_suggest2(data)
 			}
 		}
-
 	}
 
 	let response_body = await lib.postMessage(data_assignee);
     return response_body.id;
 }
 
-async function assign(owner, repo, issue_id, creator, assignee) {
+async function assign(owner, repo, issue_id, creator, assignee, post_id) {
 
 	var channel_id = await lib.createChannel(creator);
 
 	var status = await lib.assignToIssue(owner, repo, issue_id, assignee);
 
+	await modifyMessage(post_id);
+
 	if(status == 200) {
 
 		var data = {
 			"channel_id": channel_id,
-		 	"message": "Done and dusted!"
+		 	"message": md.msg.ar_done
 		}
 
 		response_body = await lib.postMessage(data);
@@ -255,7 +183,7 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 		var data = {
 			"channel_id": channel_id,
-		 	"message": "Sorry, something went wrong."
+		 	"message": md.msg.msg_500
 		}
 
 		response_body = await lib.postMessage(data);
@@ -265,7 +193,7 @@ async function assign(owner, repo, issue_id, creator, assignee) {
 
 }
 
-async function moreRecommendations(owner, repo, issue_id, creator) {
+async function moreRecommendations(owner, repo, issue_id, creator, post_id) {
 
 	var data = {};
 
@@ -273,22 +201,43 @@ async function moreRecommendations(owner, repo, issue_id, creator) {
     data.repo = repo;
     data.issue_id = issue_id;
     data.creator = creator;
+    data.post_id = post_id;
 
 	await recommendAssignee(data, smnumrec);
 }
 
-async function ignoreRecommendations(creator) {
+async function ignoreRecommendations(creator, post_id) {
 
 	var channel_id = await lib.createChannel(creator);
 
+	await modifyMessage(post_id);
+
 	var data = {
 		"channel_id": channel_id,
-	 	"message": "All those CPU cycles wasted for nothing? Okay :("
-
+	 	"message": md.msg.ar_ignore
 	}
 
 	response_body = await lib.postMessage(data);
 	return response_body.id;
+}
+
+async function modifyMessage(post_id) {
+
+	var old_msg = await lib.getMessage(post_id)
+
+	for(var i = 0; i < old_msg.props.attachments.actions.length; i++) {
+
+		old_msg.props.attachments.actions[i].integration.url = "";
+		old_msg.props.attachments.actions[i].integration.context = "";
+	}
+
+	var updated_msg = {
+
+		"message" : old_msg.message,
+		"props" : old_msg.props
+	}
+
+	await lib.updateMessage(post_id, updated_msg)
 }
 
 module.exports.recommendAssignee = recommendAssignee;

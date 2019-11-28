@@ -1,5 +1,6 @@
 const chalk  = require('chalk');
 var lib = require('./lib');
+var md = require('./messages');
 
 if( !lib.config.gh_token )
 {

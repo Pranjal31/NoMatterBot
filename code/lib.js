@@ -211,8 +211,9 @@ async function getCollaborators(owner, repo) {
 
 async function createChannel(githubUser) {
 
-	var mmuserid = await storage_lib.getMMUID(githubUser);
-	
+	// var mmuserid = await storage_lib.getMMUID(githubUser);
+
+	var mmuserid = "g9ztakciipdtuf5354yk6yof1h";
 
 	var options = {
 		url: config.mmurl + "/api/v4/channels/direct",
@@ -447,4 +448,6 @@ module.exports.openIssueExists = openIssueExists;
 module.exports.config = config;
 module.exports.getUser = getUser;
 module.exports.closeIssue = closeIssue;
+module.exports.updateMessage = updateMessage;
+module.exports.getMessage = getMessage;
 

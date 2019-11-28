@@ -104,7 +104,7 @@ app.post('/triggers/', function (req, res) {
 
         var data = req_body.context;
 
-        recommend_assignee.assign(data.owner, data.repo, data.issue_id, data.creator, data.selected_option);
+        recommend_assignee.assign(data.owner, data.repo, data.issue_id, data.creator, data.selected_option, req_body.post_id);
 
       }
 
@@ -112,11 +112,11 @@ app.post('/triggers/', function (req, res) {
 
           var data = req_body.context;
 
-          recommend_assignee.moreRecommendations(data.owner, data.repo, data.issue_id, data.creator);
+          recommend_assignee.moreRecommendations(data.owner, data.repo, data.issue_id, data.creator, req_body.post_id);
       }
 
       if (req_body.context.action == "IGNORE_ASSIGN") {
-          recommend_assignee.ignoreRecommendations(req_body.context.creator);
+          recommend_assignee.ignoreRecommendations(req_body.context.creator, req_body.post_id);
       }
       
       //if user chooses to close all stale issues
