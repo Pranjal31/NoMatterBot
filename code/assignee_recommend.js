@@ -230,19 +230,34 @@ async function modifyMessage(post_id) {
 	console.log(old_msg.message);
 	console.log(old_msg.props.attachments[0].actions.length);
 
+	var new_props = {
+		"attachments": [
+	     	{
+				"pretext": old_msg.props.attachments[0].pretext,
+				"text": old_msg.props.attachments[0].text,
+				"actions": []
+			}
+	}
+
 	for(var i = 0; i < old_msg.props.attachments[0].actions.length; i++) {
 
-		//old_msg.props.attachments[0].actions[i].integration.url = "";
-	//	old_msg.props.attachments.actions[i].integration.context = "";
+		new_props.attachments[0].actions[i].name = old_msg.props.attachments[0].actions[i].name;
+		new_props.attachments[0].actions[i].integration = "";
+		if(old_msg.props.attachments[0].actions[i].type != null){
+			new_props.attachments[0].actions[i].type = old_msg.props.attachments[0].actions[i].type;
+		}
+		if(old_msg.props.attachments[0].actions[i].options != null){
+			new_props.attachments[0].actions[i].options = old_msg.props.attachments[0].actions[i].options;
+		}
+
 	}
 
 	var updated_msg = {
 
 		"message" : old_msg.message,
-		"props" : old_msg.props
+		"props" : new_props
 	}
-	console.log(updated_msg);
-	await lib.updateMessage(post_id, updated_msg)
+	await lib.updateMessage(post_id, updated_msg);
 }
 
 module.exports.recommendAssignee = recommendAssignee;
