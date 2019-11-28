@@ -242,6 +242,8 @@ async function modifyMessage(post_id) {
 
 	for(var i = 0; i < old_msg.props.attachments[0].actions.length; i++) {
 
+		new_props.attachments[0].actions[i] = {};
+
 		new_props.attachments[0].actions[i].name = old_msg.props.attachments[0].actions[i].name;
 		new_props.attachments[0].actions[i].integration = "";
 		if(old_msg.props.attachments[0].actions[i].type != null){
