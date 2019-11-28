@@ -3,6 +3,7 @@ const got  = require('got');
 const chalk  = require('chalk');
 
 var storage_lib = require('./storage_lib.js');
+var md = require('./messages.js');
 
 var config = {};
 
@@ -18,8 +19,8 @@ config.server = process.env.SERVERURL;
 if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || 
 	!config.gh_token || !config.botuserid || !config.server)
 {
-	console.log(`Please set your environment variables with appropriate values.`);
-	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);
+	console.log(`${md.msg.lib_env_1}`);
+	console.log(chalk`${md.msg.lib_env_2}`);
 	process.exit(1);
 }
 

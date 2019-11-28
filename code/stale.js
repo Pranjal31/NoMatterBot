@@ -4,9 +4,9 @@ var md = require('./messages');
 
 if( !lib.config.gh_token )
 {
-	console.log(chalk`{red.bold GITHUBTOKEN is not defined!}`);
-	console.log(`Please set your environment variables with appropriate token.`);
-	console.log(chalk`{italic You may need to refresh your shell in order for your changes to take place.}`);
+	console.log(chalk`${md.msg.stale_gh_token}`);
+	console.log(`${md.msg.lib_env_1}`);
+	console.log(chalk`${md.msg.lib_env_2}`);
 	process.exit(1);
 }
 
@@ -206,7 +206,7 @@ async function Stale_Issues()
         //Create the payload for the message to be posted on Mattermost
         var payload = {
             "channel_id": channel_id,
-             "message": "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.", 
+             "message": md.msg.stale_message, 
              "props": {
                  "attachments": message
              }
@@ -234,7 +234,7 @@ async function ignoreAll(recipient)
     var channel_id = await lib.createChannel(recipient);
     var data = {
 		"channel_id": channel_id,
-	 	"message": "Alright! These issues(s) have been ignored for a day.",
+	 	"message": md.msg.stale_ignore
 
     }
     var respBody = await lib.postMessage(data);

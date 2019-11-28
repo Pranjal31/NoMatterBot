@@ -9,7 +9,12 @@ const msg = {
 	ar_no_sm : "Nope, that's all I have. Sorry :(",
 	ar_suggest1 : "Ciao! I see that you recently created an issue #issue_id with title: issue_title",
 	ar_suggest2 : "Here are all of the recommendations I can think of for issue #issue_id",
-	
+
+	lib_env_1 : "Please set your environment variables with appropriate values.",
+	lib_env_2 : "italic You may need to refresh your shell in order for your changes to take place.",
+
+	stale_message : "Hey, Bot's up? \n The following open issues have had no activity in the last 6 months.",
+	stale_gh_token : "red.bold GITHUBTOKEN is not defined!",
 	stale_ignore : "Alright! These issues(s) have been ignored for a day."
 }
 

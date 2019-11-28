@@ -70,6 +70,11 @@ async function recommendAssignee(data, numOptions) {
 	recoScoreDict = {}
 	var recommendations = []
 
+	if (assignCandidates.length == 0) {
+
+		return;		
+	}
+
 	for (var candidateIdx in assignCandidates) {
 		var recoScore = 0
 		var candidate = assignCandidates[candidateIdx].login;
@@ -150,8 +155,6 @@ async function recommendAssignee(data, numOptions) {
 				recommendations[recoScoreIdx] = menu_data; 
 			} 
 
-			console.log(recommendations);
-
 			data.recommendations = recommendations;
 
 			var data_assignee = {
@@ -228,9 +231,6 @@ async function ignoreRecommendations(creator, post_id) {
 async function modifyMessage(post_id) {
 
 	var old_msg = JSON.parse(await lib.getMessage(post_id));
-	
-	console.log(old_msg.message);
-	console.log(old_msg.props.attachments[0].actions.length);
 
 	var new_props = {
 		"attachments": [
@@ -266,8 +266,6 @@ async function modifyMessage(post_id) {
 		"message" : old_msg.message,
 		"props" : new_props
 	}
-
-	console.log(updated_msg.props.attachments[0].actions);
 
 	await lib.updateMessage(post_id, updated_msg);
 }
