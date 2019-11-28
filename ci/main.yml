@@ -1,0 +1,118 @@
+- hosts: all
+  vars:
+    - jenkins_user: admin
+    - jenkins_password: admin
+    - jenkins_path: /var/lib/jenkins
+    - jenkins_url: http://localhost:8080
+
+  pre_tasks:
+    - name: update apt-get cache
+      command: apt-get update
+      become: yes
+
+  roles:
+    - {role: geerlingguy.java, become: yes}
+
+  tasks: 
+    - name: Adding Apt Key For Jenkins
+      become: yes
+      apt_key:
+        url: "https://jenkins-ci.org/debian/jenkins-ci.org.key"
+        state: present
+        validate_certs: no
+
+    - name: Check For Jenkins List    
+      stat: path=/etc/apt/sources.list.d/jenkins.list
+      register: jenkins_list
+
+    - name: Adding Jenkins Source List
+      become: yes
+      lineinfile:
+        path: /etc/apt/sources.list.d/jenkins.list
+        line: deb http://pkg.jenkins.io/debian-stable binary/
+        create: yes
+      when: not jenkins_list.stat.exists
+
+    - name: Installing Jenkins
+      become: yes
+      apt:
+        name: jenkins     
+        state: present
+        update_cache: yes
+      register: jenkins_install
+
+    - name: Restarting Jenkins
+      become: yes
+      service:
+        name: jenkins
+        state: restarted
+      when: jenkins_install.changed
+
+    - name: "Wait For Jenkins To Come Up"
+      uri:
+        url: "{{jenkins_url}}"
+        status_code: 403
+      register: result
+      until: result.status == 403
+      retries: 6
+      delay: 15
+      when: jenkins_install.changed
+
+    - name: Creating Directory For Groovy Script - Jenkins
+      become: true
+      file:
+        path: "{{jenkins_path}}/init.groovy.d"
+        state: directory
+        mode: 0755
+        owner: jenkins
+
+    - name: Copying Groovy Script For Deafult Jenkins User Creation
+      become: true
+      template:
+        force: yes
+        src: "templates/jenkins_script.groovy"
+        dest: "{{jenkins_path}}/init.groovy.d/basic-security.groovy"
+        mode: 0755
+        owner: jenkins
+      register: groovy_dir
+
+    - name: Restarting Jenkins
+      become: yes
+      service:
+        name: jenkins
+        state: restarted
+      when: groovy_dir.changed
+
+    - name: "Wait For Jenkins To Come Up"
+      uri:
+        url: "{{jenkins_url}}/cli/"
+        status_code: 403
+      register: result
+      until: result.status == 403
+      retries: 6
+      delay: 15
+      when: groovy_dir.changed
+
+    - name: Removing Groovy Script
+      become: true
+      become_user: jenkins
+      file:
+        path: "{{jenkins_path}}/init.groovy.d/basic-security.groovy"
+        state: absent
+
+    - name: Restarting Jenkins
+      become: yes
+      service:
+        name: jenkins
+        state: restarted
+      when: groovy_dir.changed
+
+    - name: "Wait For Jenkins To Come Up"
+      uri:
+        url: "{{jenkins_url}}/cli/"
+        status_code: 403
+      register: result
+      until: result.status == 403
+      retries: 6
+      delay: 15
+      when: groovy_dir.changed
