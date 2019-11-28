@@ -10,9 +10,7 @@ async function getMatchedSkills(owner, repo, user, issueId ) {
 	var numMatchedSkills = 0
 	
 	// get user skills
-//	const userSkills = await storage_lib.getUserSkills(user)
-
-	const userSkills = ['python', 'js']
+	const userSkills = await storage_lib.getUserSkills(user)
 
 	// get skills required for issue
 	issue = await lib.getIssue(owner, repo, issueId)
@@ -70,7 +68,7 @@ async function recommendAssignee(data, numOptions) {
 	recoScoreDict = {}
 	var recommendations = []
 
-	if (assignCandidates[0].login == undefined) {
+	if (assignCandidates[0] == undefined) {
 
 		return;		
 	}

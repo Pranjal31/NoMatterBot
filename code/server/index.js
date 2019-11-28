@@ -84,7 +84,7 @@ app.post('/events/', function (req, res) {
           newStatus = req_body.label.name;
         }
         
-        //notifier.notifyStatChange(recipient, repo, issueNum, issueTitle, newStatus);
+        notifier.notifyStatChange(recipient, repo, issueNum, issueTitle, newStatus);
         
       }
 
@@ -147,7 +147,7 @@ app.post('/triggers/', function (req, res) {
     res.send(`Received trigger. ${JSON.stringify(req.body)}`);
 
 });
-/*
+
 //"* * * * *" for every min===>demo purposes
 // "59 59 23 * * *" for every 23:59:59 seconds
 cron.schedule("* * * * *", function(){
@@ -169,5 +169,5 @@ function shutDown()
 process.on('SIGTERM', shutDown);
 process.on('SIGINT', shutDown);
 }); 
-*/
+
 app.listen(port, () => console.log(`NoMatterBot server listening on port ${port}!\n`))
