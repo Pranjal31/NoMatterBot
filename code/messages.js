@@ -88,7 +88,7 @@ async function getMessage_ar_suggest2(data) {
 							}
 						},
 						"type": "select",
-						"options" : recommendations
+						"options" : data.recommendations
 					},
 					{
 						"name": "Ignore",

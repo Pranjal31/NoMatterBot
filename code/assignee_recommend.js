@@ -247,7 +247,10 @@ async function modifyMessage(post_id) {
 		new_props.attachments[0].actions[i] = {};
 
 		new_props.attachments[0].actions[i].name = old_msg.props.attachments[0].actions[i].name;
-		new_props.attachments[0].actions[i].integration = "";
+		new_props.attachments[0].actions[i].integration = {
+			"url" : "",
+			"context" : {}
+		};
 		if(old_msg.props.attachments[0].actions[i].type != null){
 			new_props.attachments[0].actions[i].type = old_msg.props.attachments[0].actions[i].type;
 		}
@@ -264,7 +267,7 @@ async function modifyMessage(post_id) {
 		"props" : new_props
 	}
 
-	console.log(updated_msg);
+	console.log(updated_msg.props.attachments[0].actions);
 
 	await lib.updateMessage(post_id, updated_msg);
 }
