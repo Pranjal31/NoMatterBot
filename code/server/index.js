@@ -150,15 +150,14 @@ app.post('/triggers/', function (req, res) {
 
 //"* * * * *" for every min===>demo purposes
 // "59 59 23 * * *" for every 23:59:59 seconds
-cron.schedule("* * * * *", function(){
-  console.log("Running CronJob, Initiating stale Issues check");
-  (async () => {			
-    await stale.Stale_Issues();
+ cron.schedule("* * * * *", function(){
+   console.log("Running CronJob, Initiating stale Issues check");
+   (async () => {			
+     await stale.Stale_Issues();
   
     })()
 });
 
-app.listen(port, () => console.log(`NoMatterBot server listening on port ${port}!\n`));
 
 function shutDown()
 {
@@ -167,7 +166,6 @@ function shutDown()
 }
 
 process.on('SIGTERM', shutDown);
-process.on('SIGINT', shutDown);
-}); 
+process.on('SIGINT', shutDown); 
 
 app.listen(port, () => console.log(`NoMatterBot server listening on port ${port}!\n`))
