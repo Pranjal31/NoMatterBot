@@ -151,7 +151,7 @@
       lineinfile:
         path: /etc/environment
         regexp: '^CHANNELNAME='
-        line: CHANNELNAME="{{ botuserid }}__{{ userid }}"
+        line: CHANNELNAME="{{ userid }}__{{ botuserid }}"
     
     - name: Ensure Server URL environment variable is set 
       lineinfile:
