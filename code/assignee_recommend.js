@@ -73,6 +73,8 @@ async function recommendAssignee(data, numOptions) {
 		return;		
 	}
 
+	var total_candidates = assignCandidates.length;
+
 	for (var candidateIdx in assignCandidates) {
 		var recoScore = 0
 		var candidate = assignCandidates[candidateIdx].login;
@@ -124,23 +126,36 @@ async function recommendAssignee(data, numOptions) {
 
 		data.recommendations = recommendations;
 
-		var data_assignee = {
-			"channel_id": channel_id,
-		 	"message": await md.generateMsg(md.msg.ar_suggest1, data),
-		 	"props": await md.getMessage_ar_suggest1(data)
+		if (total_candidates <= numrec) {
+
+			var data_assignee = {
+				"channel_id": channel_id,
+			 	"message": await md.generateMsg(md.msg.ar_suggest1, data),
+			 	"props": await md.getMessage_ar_suggest2(data)
+			}
+
+		}
+
+		else{
+
+			var data_assignee = {
+				"channel_id": channel_id,
+			 	"message": await md.generateMsg(md.msg.ar_suggest1, data),
+			 	"props": await md.getMessage_ar_suggest1(data)
+			}
 		}
 	// Path to take when user selects show more assignees
 	} else{
 
 		// If there is no change in original recommendation
-		if(scores.length <= numrec) {
+		// if(scores.length <= numrec) {
 
-			var data_assignee = {
-				"channel_id": channel_id,
-			 	"message": md.msg.ar_no_sm
-			}
+		// 	var data_assignee = {
+		// 		"channel_id": channel_id,
+		// 	 	"message": md.msg.ar_no_sm
+		// 	}
 
-		} else {
+		// } else {
 
 			await modifyMessage(data.post_id)
 			
@@ -160,7 +175,7 @@ async function recommendAssignee(data, numOptions) {
 			 	"message": await md.generateMsg(md.msg.ar_suggest2, data), 
 			 	"props": await md.getMessage_ar_suggest2(data)
 			}
-		}
+		// }
 	}
 
 	let response_body = await lib.postMessage(data_assignee);

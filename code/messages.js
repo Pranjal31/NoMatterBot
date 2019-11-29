@@ -23,7 +23,7 @@ async function getMessage_ar_suggest1(data) {
 	var suggest1 = {
 		"attachments": [
 	     	{
-				"pretext": "Here are some assignee recommendations based on current workload:",
+				"pretext": "Assignee recommendations based on current workload:",
 				"text": "Assignee recommendations",
 				"actions": [
 			        {
@@ -77,7 +77,7 @@ async function getMessage_ar_suggest2(data) {
 	var suggest2 = {
 		"attachments": [
 	     	{
-				"pretext": "All assignee recommendations based on current workload:",
+				"pretext": "Assignee recommendations based on current workload:",
 				"text": "Assignee recommendations",
 				"actions": [
 			        {
