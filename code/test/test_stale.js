@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 //const assignee_recommend = require('../assignee_recommend.js');
 const lib = require('../lib.js');
-const mockStatChange = require('../mock_statChange.json');
+// const mockStatChange = require('../mock_statChange.json');	//FIXME //TODO
 const chalk = require('chalk');
 const stale = require('../stale.js');
 
@@ -10,9 +10,9 @@ const expect = chai.expect;
 const nock = require("nock");
 
 const mockIssues = require('../mockIssues.json');
-const mockUsers = require('../mockUsers.json');
-const mockNewIssue = require('../mockNewIssue.json');
-const mockAssignee = "asmalunj";
+const mockUser = require('../mockUser.json');	
+const mockRepos = require('../mockRepos.json');		
+const mockAssignee = "psharma9";	//TODO
 
 var config = {};
 
@@ -27,18 +27,32 @@ describe('Close or Ignore stale Issues', function () {
   // MOCK SERVICE
   var mockIssueService = nock("https://api.github.ncsu.edu")
     .persist() // This will persist mock interception for lifetime of program.
-    .get("/repos/asmalunj/test_repo/issues")
+    .get("/repos/psharma9/test1/issues")	//TODO
     .reply(200, JSON.stringify(mockIssues) );
 
   var mockUserService = nock("https://api.github.ncsu.edu")
     .persist() // This will persist mock interception for lifetime of program.
-    .get("/repos/asmalunj/test_repo/collaborators")
-    .reply(200, JSON.stringify(mockUsers) );
+    .get("/user")       
+    .reply(200, JSON.stringify(mockUser);
 
-  var mockAssignService = nock("https://api.github.ncsu.edu")
+  var mockReposService = nock("https://api.github.ncsu.edu")
     .persist() // This will persist mock interception for lifetime of program.
-    .patch("/repos/asmalunj/test_repo/issues/" + mockNewIssue.issue_id)
+    .get("/users/psharma9/repos")
+    .reply(200, JSON.stringify(mockRepos) );
+
+
+//TODO
+/*  var mockUserService = nock("https://api.github.ncsu.edu")
+    .persist() // This will persist mock interception for lifetime of program.
+    .get("/repos/psharma9/test1/collaborators")		//TODO
     .reply(200, JSON.stringify(mockUsers) );
+*/
+
+// TODO
+/*  var mockAssignService = nock("https://api.github.ncsu.edu")
+    .persist() // This will persist mock interception for lifetime of program.
+    .patch("/repos/psharma9/test1/issues/" + mockNewIssue.issue_id)	
+    .reply(200, JSON.stringify(mockUsers) ); */
 
   let browser;
   let page;
@@ -47,7 +61,7 @@ describe('Close or Ignore stale Issues', function () {
   this.timeout(5000000);
 
   beforeEach(async () => {
-      browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
+      browser = await puppeteer.launch({headless: true, args: ["--no-sandbox", "--disable-web-security"]});	//TODO
       page = await browser.newPage();
       await page.goto(`${config.mmurl}/login`, {waitUntil: 'networkidle0'});
       await page.type('input[id=loginId]', config.loginEmail);
@@ -83,7 +97,8 @@ describe('Close or Ignore stale Issues', function () {
 
     await browser.close();
   });
-
+//TODO  -- as of now stale issue code isn't responsible for such a message
+/*
   it('Should close Stale Issues', async () => {
 
     var expectedMsg2 = "Cool. It's done!";
@@ -114,7 +129,7 @@ describe('Close or Ignore stale Issues', function () {
 
     await browser.close();
   });
-
+*/
   it('Should ignore Stale Issues', async () => {
 
     var expectedMsg3 = "Alright! These issues(s) have been ignored for a day.";
@@ -132,7 +147,7 @@ describe('Close or Ignore stale Issues', function () {
 
     // await page.evaluate((selector) => document.querySelector(selector).click(), selector);
 
-    var ignore_msgId = await stale.ignore();
+    var ignore_msgId = await stale.ignoreAll(mockAssignee);	//TODO
 
     var ignore_post = "postMessageText_" + ignore_msgId;
 
