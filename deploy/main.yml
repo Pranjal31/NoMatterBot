@@ -14,7 +14,7 @@
     channeluserid: yuut455cftdrp87mdtmyt1yu8h   # to be updated for IT
     mattermosturl: http://35.231.138.79:8065
     botuserid: h8km48naib8fdf7myufcsjozfh
-    serverurl: http://34.74.118.49
+    serverurl: http://34.74.118.49:3000
     dbserverurl: "localhost" #34.74.118.49
     dbname: NoMatterBot
     numrec: 3
@@ -78,9 +78,11 @@
     - name: Install puppeteer globally
       npm:
         name: puppeteer
-        global: yes
         unsafe_perm: yes
-    
+
+    - name: Install Puppeteer dependencies
+      shell: sudo apt install -y gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+
     - name: Ensure Puppeteer Skip Chromium environment variable is set 
       lineinfile:
         path: /etc/environment
