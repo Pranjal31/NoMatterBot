@@ -19,6 +19,7 @@
     channeluserid: yuut455cftdrp87mdtmyt1yu8h   # to be updated for IT
     mattermosturl: http://35.231.138.79:8065
     botuserid: h8km48naib8fdf7myufcsjozfh
+    userid: 393geubi5inudkyn9d1wz418rr
     serverurl: http://34.74.118.49:3000
     dbserverurl: "localhost" #34.74.118.49
     dbname: NoMatterBot
@@ -143,10 +144,11 @@
         dest: "{{ git_repo_path }}"
         force: yes
 
-    - name: Install puppeteer globally
+     - name: Install puppeter
       npm:
         name: puppeteer
         unsafe_perm: yes
+        path: "{{ git_repo_path  }}"
 
     - name: Install Puppeteer dependencies
       shell: sudo apt install -y gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
@@ -212,6 +214,12 @@
         path: /etc/environment
         regexp: '^BOTUSERID='
         line: BOTUSERID="{{ botuserid }}"
+
+    - name: Ensure Channel Name environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^CHANNELNAME='
+        line: CHANNELNAME="{{ botuserid }}__{{ userid }}"
     
     - name: Ensure Server URL environment variable is set 
       lineinfile:
@@ -254,6 +262,11 @@
         path: /etc/environment
         regexp: '^SMNUMREC='
         line: SMNUMREC="{{ smnumrec | int}}"
+
+    - name: Source /etc/environment
+      shell: "source /etc/environment"
+      args:
+        executable: /bin/bash
 
     - name: Check list of Node.js apps running
       command: forever list
