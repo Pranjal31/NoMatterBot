@@ -10,7 +10,9 @@ async function getMatchedSkills(owner, repo, user, issueId ) {
 	var numMatchedSkills = 0
 	
 	// get user skills
-	const userSkills = await storage_lib.getUserSkills(user)
+	// const userSkills = await storage_lib.getUserSkills(user)
+
+	const userSkills = ['python', 'js'];
 
 	// get skills required for issue
 	issue = await lib.getIssue(owner, repo, issueId)
