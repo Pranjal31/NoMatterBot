@@ -56,7 +56,7 @@ app.post('/events/', function (req, res) {
         recommend_assignee.recommendAssignee(data, numrec);
       }
       // on issue status change or issue close
-      else if((req_body.action === "labeled" && (req_body.label.name === label_ip 
+      else if(!(req_body.issue.state === "closed") && (req_body.action === "labeled" && (req_body.label.name === label_ip 
                 || req_body.label.name === label_ir || req_body.label.name === label_test)) 
                 || req_body.action === "closed")
       {
