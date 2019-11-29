@@ -10,9 +10,7 @@ async function getMatchedSkills(owner, repo, user, issueId ) {
 	var numMatchedSkills = 0
 	
 	// get user skills
-	// const userSkills = await storage_lib.getUserSkills(user)
-
-	const userSkills = ['python', 'js'];
+	const userSkills = await storage_lib.getUserSkills(user)
 
 	// get skills required for issue
 	issue = await lib.getIssue(owner, repo, issueId)
@@ -149,35 +147,24 @@ async function recommendAssignee(data, numOptions) {
 	// Path to take when user selects show more assignees
 	} else{
 
-		// If there is no change in original recommendation
-		// if(scores.length <= numrec) {
-
-		// 	var data_assignee = {
-		// 		"channel_id": channel_id,
-		// 	 	"message": md.msg.ar_no_sm
-		// 	}
-
-		// } else {
-
-			await modifyMessage(data.post_id)
-			
-			// Display all recommendations
-			for ( recoScoreIdx in scores ) {
-				var menu_data = {
-					"text": scores[recoScoreIdx][0] ,
-					"value": scores[recoScoreIdx][0]
-				}
-				recommendations[recoScoreIdx] = menu_data; 
-			} 
-
-			data.recommendations = recommendations;
-
-			var data_assignee = {
-				"channel_id": channel_id,
-			 	"message": await md.generateMsg(md.msg.ar_suggest2, data), 
-			 	"props": await md.getMessage_ar_suggest2(data)
+		await modifyMessage(data.post_id)
+		
+		// Display all recommendations
+		for ( recoScoreIdx in scores ) {
+			var menu_data = {
+				"text": scores[recoScoreIdx][0] ,
+				"value": scores[recoScoreIdx][0]
 			}
-		// }
+			recommendations[recoScoreIdx] = menu_data; 
+		} 
+
+		data.recommendations = recommendations;
+
+		var data_assignee = {
+			"channel_id": channel_id,
+		 	"message": await md.generateMsg(md.msg.ar_suggest2, data), 
+		 	"props": await md.getMessage_ar_suggest2(data)
+		}
 	}
 
 	let response_body = await lib.postMessage(data_assignee);
