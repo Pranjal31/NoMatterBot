@@ -43,7 +43,7 @@ async function Stale_Issues()
 
     // get the list of repositories owned by the bot account
     var repos = await lib.getAccessibleRepos();
- 
+    var respBody;
     var dict = {};            //{User:{rep:{issue num: issue name}}}
         
     //Loop across all repositories
@@ -215,11 +215,11 @@ async function Stale_Issues()
         } 
 
         
-        var respBody = await lib.postMessage(payload);
+        respBody = await lib.postMessage(payload);
 
 
     }
-          
+    return respBody.id;          
 }
 
 //Function to send message to issue owner/assignee if (s)he ignores stale issues reminder
