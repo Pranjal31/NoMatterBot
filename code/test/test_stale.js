@@ -33,11 +33,11 @@ describe('Close or Ignore stale Issues', function () {
   var mockUserService = nock("https://api.github.ncsu.edu")
     .persist() // This will persist mock interception for lifetime of program.
     .get("/user")       
-    .reply(200, JSON.stringify(mockUser);
+    .reply(200, JSON.stringify(mockUser));
 
   var mockReposService = nock("https://api.github.ncsu.edu")
     .persist() // This will persist mock interception for lifetime of program.
-    .get("/users/psharma9/repos")
+    .get("/user/repos?affiliation=owner")
     .reply(200, JSON.stringify(mockRepos) );
 
 
