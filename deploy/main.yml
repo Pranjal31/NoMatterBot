@@ -11,9 +11,7 @@
     mysql_root_host: "localhost"
     dbname: "NoMatterBot"
     mysql_root_cred_path: /opt/nomatterbot/database/.my.cnf
-    mysql_import_file_path: {{ git_repo_path }}/database
-
-
+    mysql_import_file_path: "{{ git_repo_path }}/database"
     skipchromium: true
     githuburl: https://api.github.ncsu.edu
     channeluserid: yuut455cftdrp87mdtmyt1yu8h   # to be updated for IT
@@ -22,7 +20,6 @@
     userid: 393geubi5inudkyn9d1wz418rr
     serverurl: http://34.74.118.49:3000
     dbserverurl: "localhost" #34.74.118.49
-    dbname: NoMatterBot
     numrec: 3
     smnumrec: 10
     dbconnlimit: 50
@@ -103,16 +100,17 @@
         state: started
         enabled: true
 
-    - name: Set mysql root password
-      mysql_user:
-        name: root
-        host: "{{ mysql_root_host }}"
-        password: "{{ dbrootpassword }}"
+#    - name: Set mysql root password
+#      mysql_user:
+#        name: root
+#        host: "{{ mysql_root_host }}"
+#        password: "{{ dbrootpassword }}"
+#      become: no
 
     - name: Drop mysql credentials file at Remote
       template:
-        src: "{{ playbook_dir }}/.my.cnf"
-        dest: "/home/{{ ansible_user }}/.my.cnf"
+        src: "{{ playbook_dir }}/my.cnf"
+        dest: "/home/pranjal/.my.cnf"
 
     - name: Clone/Pull repo
       git: 
@@ -132,12 +130,14 @@
 
     - name: Collect info about databases and version using ~/.my.cnf as a credential file
       mysql_info:
+        config_file: /home/pranjal/.my.cnf
         filter:
         - databases
       register: databasesdict
 
     - name: Import NoMatterBot database if not present
       mysql_db:
+        config_file: /home/pranjal/.my.cnf
         state: import
         name: NoMatterBot
         target: "{{ mysql_import_file_path }}/{{ dbname }}.sql"
@@ -145,12 +145,13 @@
     
     - name: Create new DB user
       mysql_user:
+        config_file: /home/pranjal/.my.cnf
         name: "{{ dbuser }}"
         password: "{{ dbpassword }}"
         priv: '{{ dbname }}.*:ALL'
         state: present
 
-     - name: Install puppeter
+    - name: Install puppeter
       npm:
         name: puppeteer
         unsafe_perm: yes
@@ -267,13 +268,13 @@
       lineinfile:
         path: /etc/environment
         regexp: '^NUMREC='
-        line: NUMREC="{{ numrec | int }}"
+        line: "NUMREC={{ numrec | int }}"
 
     - name: Ensure Show More Number of Recommendations environment variable is set 
       lineinfile:
         path: /etc/environment
         regexp: '^SMNUMREC='
-        line: SMNUMREC="{{ smnumrec | int}}"
+        line: "SMNUMREC={{ smnumrec | int }}"
 
     - name: Source /etc/environment
       shell: "source /etc/environment"
