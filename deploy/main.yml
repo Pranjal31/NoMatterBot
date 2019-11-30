@@ -20,8 +20,6 @@
     userid: 393geubi5inudkyn9d1wz418rr
     serverurl: http://34.74.118.49:3000
     dbserverurl: "localhost" #34.74.118.49
-    numrec: 3
-    smnumrec: 10
     dbconnlimit: 50
 
   pre_tasks:
@@ -263,18 +261,6 @@
         path: /etc/environment
         regexp: '^DBCONNLIMIT='
         line: "DBCONNLIMIT={{ dbconnlimit }}"
-
-    - name: Ensure Number of Recommendations environment variable is set 
-      lineinfile:
-        path: /etc/environment
-        regexp: '^NUMREC='
-        line: "NUMREC={{ numrec | int }}"
-
-    - name: Ensure Show More Number of Recommendations environment variable is set 
-      lineinfile:
-        path: /etc/environment
-        regexp: '^SMNUMREC='
-        line: "SMNUMREC={{ smnumrec | int }}"
 
     - name: Source /etc/environment
       shell: "source /etc/environment"
