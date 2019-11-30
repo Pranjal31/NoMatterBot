@@ -132,7 +132,7 @@
         state: import
         name: NoMatterBot
         target: "{{ mysql_files_path }}/{{ dbname }}.sql"
-      when: dbname not in databasesdict.databases
+#      when: dbname not in databasesdict.databases
     
     - name: Create new DB user
       mysql_user:
