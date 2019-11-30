@@ -11,7 +11,7 @@
     mysql_root_host: "localhost"
     dbname: "NoMatterBot"
     mysql_root_cred_path: /opt/nomatterbot/database/.my.cnf
-    mysql_import_file_path: /opt/nomatterbot/database
+    mysql_import_file_path: {{ git_repo_path }}/database
 
 
     skipchromium: true
@@ -25,6 +25,7 @@
     dbname: NoMatterBot
     numrec: 3
     smnumrec: 10
+    dbconnlimit: 50
 
   pre_tasks:
     - name: Install gpg key for nodejs
@@ -110,12 +111,23 @@
 
     - name: Drop mysql credentials file at Remote
       template:
-        src: "{{ mysql_root_cred_path }}"
+        src: "{{ playbook_dir }}/.my.cnf"
         dest: "/home/{{ ansible_user }}/.my.cnf"
 
+    - name: Clone/Pull repo
+      git: 
+        repo: "{{ git_repo }}"
+        dest: "{{ git_repo_path }}"
+        force: yes
+
+    - name: Create directory for database files
+      file:
+        path: "{{ mysql_import_file_path }}"
+        state: directory
+
     - name: Drop mysql import file at Remote
-      template:
-        src: "{{ mysql_import_file_path }}"
+      copy:
+        src: "{{ playbook_dir }}/{{ dbname }}.sql"
         dest: "{{ mysql_import_file_path }}/{{ dbname }}.sql"
 
     - name: Collect info about databases and version using ~/.my.cnf as a credential file
@@ -137,12 +149,6 @@
         password: "{{ dbpassword }}"
         priv: '{{ dbname }}.*:ALL'
         state: present
-
-    - name: Clone/Pull repo
-      git: 
-        repo: "{{ git_repo }}"
-        dest: "{{ git_repo_path }}"
-        force: yes
 
      - name: Install puppeter
       npm:
@@ -250,6 +256,12 @@
         path: /etc/environment
         regexp: '^DBNAME='
         line: DBNAME="{{ dbname }}"
+
+    - name: Ensure DB Connection Limit environment variable is set 
+      lineinfile:
+        path: /etc/environment
+        regexp: '^DBCONNLIMIT='
+        line: "DBCONNLIMIT={{ dbconnlimit }}"
 
     - name: Ensure Number of Recommendations environment variable is set 
       lineinfile:
