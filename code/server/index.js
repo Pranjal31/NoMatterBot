@@ -123,7 +123,7 @@ app.post('/triggers/', function (req, res) {
       if(req_body.context.action === "CLOSE_ALL")
       {
         var data = req_body.context;
-        stale.closeStaleIssues(data.owner, data.issueData, data.recipient)
+        stale.closeStaleIssues(data.owner, data.issueData)
       }
       
       //if user chooses to close one stale issue
@@ -132,7 +132,7 @@ app.post('/triggers/', function (req, res) {
         var data = req_body.context;
         var issueData = {};
         issueData[data.repo] = [data.issueNum];
-        stale.closeStaleIssues(data.owner, issueData, data.recipient);
+        stale.closeStaleIssues(data.owner, issueData);
       }
  
       //If user chooses to ignore stale issue reminder

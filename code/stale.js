@@ -242,7 +242,7 @@ async function ignoreAll(recipient)
 }
 
 //Function to close stale issues belonging to a user across repos
-async function closeStaleIssues(owner, issueData, recipient)
+async function closeStaleIssues(owner, issueData)
 {
     var success = true;
 
@@ -251,11 +251,6 @@ async function closeStaleIssues(owner, issueData, recipient)
         for(var issueIdx in staleIssueNums)
         {
             var status = await lib.closeIssue(owner, repo, staleIssueNums[issueIdx]);
-
-            if (status != 200)
-            {
-                success = false;
-            }
         }
     }
 }
