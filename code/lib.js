@@ -15,6 +15,8 @@ config.mmurl = process.env.MATTERMOSTURL;
 config.gh_token = process.env.GITHUBTOKEN;
 config.botuserid = process.env.BOTUSERID;
 config.server = process.env.SERVERURL;
+config.numrec = parseInt(process.env.NUMREC);
+config.smnumrec = parseInt(process.env.SMNUMREC);
 
 if( !config.githubUrl || !config.mmurl || !config.botaccess || !config.userchannelid || 
 	!config.gh_token || !config.botuserid || !config.server)

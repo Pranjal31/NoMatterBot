@@ -39,6 +39,7 @@ describe('Recommend assignee using puppeteer', function () {
   var mockUserService = nock("https://api.github.ncsu.edu")
     .persist() // This will persist mock interception for lifetime of program.
     .get("/repos/psharma9/test1/collaborators")
+    .reply(200, JSON.stringify(mockUsers) );
 
     var mockGetIssueService = nock("https://api.github.ncsu.edu")
     .persist() // This will persist mock interception for lifetime of program.
@@ -93,7 +94,7 @@ describe('Recommend assignee using puppeteer', function () {
 
   it('Should ignore assignee recommendations', async () => {
 
-    var expectedMsg3 = "All those CPU cycles wasted for nothing? Okay :(";
+    var expectedMsg3 = "All those CPU cycles wasted for nothing? Okay ";
 
     var postId = "messageAttachmentList_" + msgId;
 
@@ -105,8 +106,6 @@ describe('Recommend assignee using puppeteer', function () {
     await page.waitForSelector(selector);
 
     await page.click(selector);
-
-    // await page.evaluate((selector) => document.querySelector(selector).click(), selector);
 
     var ignore_msgId = await assignee_recommend.ignoreRecommendations(mockNewIssue.creator);
 
@@ -135,7 +134,6 @@ describe('Recommend assignee using puppeteer', function () {
     await page.focus(selector);
     await page.keyboard.type(mockAssignee);
     await page.keyboard.enter;
-    // await page.evaluate((selector) => document.querySelector(selector).setAttribute('value', 'asmalunj'));
 
     var assign_msgId = await assignee_recommend.assign(mockNewIssue.creator, mockNewIssue.repo, mockNewIssue.issue_id, mockNewIssue.creator, mockAssignee);
 
