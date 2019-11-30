@@ -11,7 +11,7 @@
     mysql_root_host: "localhost"
     dbname: "NoMatterBot"
     mysql_root_cred_path: /opt/nomatterbot/database/.my.cnf
-    mysql_import_file_path: "{{ git_repo_path }}/database"
+    mysql_files_path: "{{ git_repo_path }}/database"
     skipchromium: true
     githuburl: https://api.github.ncsu.edu
     channeluserid: yuut455cftdrp87mdtmyt1yu8h   # to be updated for IT
@@ -98,18 +98,6 @@
         state: started
         enabled: true
 
-#    - name: Set mysql root password
-#      mysql_user:
-#        name: root
-#        host: "{{ mysql_root_host }}"
-#        password: "{{ dbrootpassword }}"
-#      become: no
-
-    - name: Drop mysql credentials file at Remote
-      template:
-        src: "{{ playbook_dir }}/my.cnf"
-        dest: "/home/pranjal/.my.cnf"
-
     - name: Clone/Pull repo
       git: 
         repo: "{{ git_repo }}"
@@ -118,32 +106,37 @@
 
     - name: Create directory for database files
       file:
-        path: "{{ mysql_import_file_path }}"
+        path: "{{ mysql_files_path }}"
         state: directory
+
+    - name: Drop MySQL credentials file at Remote
+      template:
+        src: "{{ playbook_dir }}/my.cnf"
+        dest: "{{ mysql_files_path }}/.my.cnf"
 
     - name: Drop mysql import file at Remote
       copy:
         src: "{{ playbook_dir }}/{{ dbname }}.sql"
-        dest: "{{ mysql_import_file_path }}/{{ dbname }}.sql"
+        dest: "{{ mysql_files_path }}/{{ dbname }}.sql"
 
-    - name: Collect info about databases and version using ~/.my.cnf as a credential file
+    - name: Collect info about databases 
       mysql_info:
-        config_file: /home/pranjal/.my.cnf
+        config_file: "{{ mysql_files_path }}/.my.cnf"
         filter:
         - databases
       register: databasesdict
 
     - name: Import NoMatterBot database if not present
       mysql_db:
-        config_file: /home/pranjal/.my.cnf
+        config_file: "{{ mysql_files_path }}/.my.cnf"
         state: import
         name: NoMatterBot
-        target: "{{ mysql_import_file_path }}/{{ dbname }}.sql"
-      when: dbname not in databasesdict
+        target: "{{ mysql_files_path }}/{{ dbname }}.sql"
+      when: dbname not in databasesdict.databases
     
     - name: Create new DB user
       mysql_user:
-        config_file: /home/pranjal/.my.cnf
+        config_file: "{{ mysql_files_path }}/.my.cnf"
         name: "{{ dbuser }}"
         password: "{{ dbpassword }}"
         priv: '{{ dbname }}.*:ALL'
