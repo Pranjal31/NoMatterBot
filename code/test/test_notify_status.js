@@ -5,6 +5,7 @@ const chalk = require('chalk');
 
 const chai = require("chai");
 const expect = chai.expect;
+const dbConnManager = require('../dbConnManager.js')
 
 var config = {};
 

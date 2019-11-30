@@ -12,6 +12,7 @@ const mockUser = require('../mockUser.json');
 const mockRepos = require('../mockRepos.json');		
 const mockAssignee = "psharma9";	
 
+const dbConnManager = require('../dbConnManager.js')
 var config = {};
 
 // retrieve api tokens
@@ -107,6 +108,7 @@ describe('Close or Ignore stale Issues', function () {
     expect(text).to.eql(expectedMsg3);
 
     await browser.close();
+    dbConnManager.endDBConn();
   });
 
 });

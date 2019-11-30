@@ -15,6 +15,7 @@ const mockGetIssue = require('../mockGetIssue.json');
 const mockNewIssue = require('../mockNewIssue.json');
 const mockAssignee = "psharma9";
 
+const dbConnManager = require('../dbConnManager.js')
 var config = {};
 
 // retrieve api tokens
