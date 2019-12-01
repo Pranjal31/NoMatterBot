@@ -13,11 +13,11 @@ The bot is kept up and running using `forever`.
 ### Acceptance testing
 
 For acceptance testing, TA user accounts were created on Mattermost. The login credentials are:\
-Login username: Unity ID(yshi26, ffahid)\
+Login username: Unity ID (yshi26, ffahid)\
 Password: @Bcde12345 (For both accounts).
 
 Also the TAs were added as collaborators on the test repo: `Enter test repo name`. This would enable them to perform various actions like creating an issue, updating issue labels, updating issues and closing the issues. Login to [Github](https://github.ncsu.edu/) using NCSU's unity ID credentials.\
-(Note: Do not remove `psharma9` from the collaborators' list, the bot is using that account's access token for Github. If the new repo is created for testing, add `psharma9` in the collaborators and update the webhook in settings to send all notifications to `http://34.74.118.49:3000/events/`).
+(Note: Do not remove `psharma9` from the collaborators' list, the bot is using that account's access token for Github. If the new repo is created for testing, add `psharma9` in the collaborators and update the webhook in settings to send all the notifications to `http://34.74.118.49:3000/events/`).
 
 
 Acceptance tests for the bot:
@@ -128,16 +128,16 @@ Acceptance tests for the bot:
 
 ### Exploratory testing and final code
 
-	+ Github webhooks are configured to receive any real time event data about issues from Github. All the mockups have been removed.
-	+ The messages that are being displayed to the users on Mattermost are kept separate in a file. 
-	+ Access token for the bot, github user name and password, database username and password are entered via command line when the app is deployed.
-	+ Github username to mattermost user mapping is saved in the database and fetched in real time. Simillaryly user skills for assignee recommendations are also saved in database and fetched in real time whenever needed.
++ Github webhooks are configured to receive any real time event data about issues from Github. All the mockups have been removed.
++ The messages that are being displayed to the users on Mattermost are kept separate in a file. 
++ Access token for the bot, github user name and password, database username and password are entered via command line when the app is deployed.
++ Github username to mattermost user mapping is saved in the database and fetched in real time. Simillaryly user skills for assignee recommendations are also saved in database and fetched in real time whenever needed.
 
-	The architecture of this project is entirely event-based. NoMatterBot does not accept any textual input from the user and the conversation is always initiated by the bot based on the events. 
+The architecture of this project is entirely event-based. NoMatterBot does not accept any textual input from the user and the conversation is always initiated by the bot based on the events. 
 
-	NoMatterBot follows 'call and return' model. When an event occurs(issue is created on github or time to show stale issue has occured), the server of the NoMatterBot is notified [Layer 1]. This component then invokes a function specific to the event that has occured[Layer 2]. To complete the processing some general-purpose methods defined in `lib.js` may be called by the use-case function [Layer 3]. 
+NoMatterBot follows 'call and return' model. When an event occurs(issue is created on github or time to show stale issue has occured), the server of the NoMatterBot is notified [Layer 1]. This component then invokes a function specific to the event that has occured[Layer 2]. To complete the processing some general-purpose methods defined in `lib.js` may be called by the use-case function [Layer 3]. 
 
-	By using the mixture of the two above-mentioned patterns, we could process real-time event based data and make our software resusable and scalable.
+By using the mixture of the two above-mentioned patterns, we could process real-time event based data and make our software resusable and scalable.
 
 
 ### Continuous Integration (CI) Server
