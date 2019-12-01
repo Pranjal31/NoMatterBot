@@ -24,7 +24,7 @@ Note:
 
 Acceptance tests for the bot:
 
-- Notifying and closing stale issues UAT:
+#### Stale Issues
 
 	|1|Identify stale issues|
 	|:-----:|:---:|
@@ -43,39 +43,35 @@ Acceptance tests for the bot:
 	|3|Close all stale issues|
 	|:-----:|:---:|
 	|Purpose|Ensuring `Close All` button on mattermost closes all the stale Issue.|
-	|Pre-Conditions| a) Tester must have more than one issue which are stale b)Tester has received a stale issue message on mattermost, with the options to `Close`, `Close All`, `Ignore All`|
+	|Pre-Conditions| a) Tester must have more than one issue which are stale b)Tester has received a stale issue message on mattermost, with the options to `Close`, `Close All`, `Ignore All`. Tester must wait for at least two issues to go stale before proceeding |
 	|Process|Tester clicks on `Close All`|
 	|Output|All the issues listed on the message are closed on Github |
 
 	|4|Ignore all stale issues|
 	|:-----:|:---:|
-	|Purpose|Ensuring Ignore All button on mattermost does not close any Issues and ignores the recognized stale issues.|
-	|Pre-Conditions|a) Bot has the BOTACCESS token to post messages on mattermost.<br> b) Bot has GITHUBTOKEN to interact with the Github.<br>c) Tester has received a stale issue message on mattermost, with the options to Close, Close All, Ignore All. |
-	|Input|No input necessary. Tester clicks on Ignore All.|
-	|Process| a) Tester receives a message on Mattermost showing the list of stale Issues. Option to close Individual stale Issues, Close All, Ignore All.<br> b) Tester clicks on Ignore All.|
-	|Output|All the issues listed in the message are ignored/not closed. Tester gets a message on Mattermost “ ”|
+	|Purpose|Ensuring Ignore All button on mattermost does not close any stale issues|
+	|Pre-Conditions|a) Tester must have more than one issue which are stale b) Tester has received a stale issue message on mattermost, with the options to `Close`, `Close All`, `Ignore All`. Tester must wait for at least two issues to go stale before proceeding |
+	|Process| Tester clicks on `Ignore All`|
+	|Output| None of the issues listed in the message are closed|
 
-- Change Issue status UAT:
+##### Issue Status Change
 
-
-	|1|Change issue status to 'In review'|
+	|1|Change issue status to `in review`|
 	|:-----:|:---:|
-	|Purpose|To Ensure that once a PR(Pull request) is created, the Issue status (label) changes to “in review”|
-	|Pre-Conditions|a) Ensure that GitHub webhooks are configured properly<br> b) Ensure that there is an open issue in the Repo<br> c)Ensure that all required status labels are configured|
-	|Input|No input|
-	|Process|Create a Pull request and reference the open Issue number in its title|
-	|Output|If not already present, “in review” label is added to the Issue. All other status labels will be deleted from the Issue, if there were any|
+	|Purpose| Ensuring that PR (Pull Request) creation changes the issue status to `in review` (label addition/update)|
+	|Pre-Conditions| a) Ensure that there is an open issue in the repo <br>
+	|Process| Create a Pull request and reference the open Issue number in its title. For e.g. `<Issue Number> - <PR Title> `|
+	|Output| The only status label on the issue should be `in review`|
 	
 
-	|2|Change issue status to 'In test'|
+	|2|Change issue status to `in test`|
 	|:-----:|:---:|
-	|Purpose|To ensure that once a Pull Request is approved the Issue status changes to “in test”|
-	|Pre-Conditions|a) Ensure that GitHub webhooks are configured properly <br> b) Ensure that there is a Pull Request referencing an open issue in the Repo <br> c) Ensure that all required status labels are configured|
-	|Input|No input|
-	|Process|Close Pull request by merging/rebasing it|
-	|Output|If not already present, “in-test” label is added to the Issue referenced in the PR. All other status labels will be deleted from the Issue, if there were any|
+	|Purpose| Ensuring that PR approval changes the issue status to `in test` (label addition/update)|
+	|Pre-Conditions|a) Ensure that there is a Pull Request referencing an open issue in the Repo <br>|
+	|Process|Close Pull request by merging it|
+	|Output|The only status label on the issue should be `in test`|
 
-- Notify change in an issue status UAT:
+##### Issue Status Change Notification:
 
 	|1|Notify Change in Issue Status|
 	|:-----:|:---:|
