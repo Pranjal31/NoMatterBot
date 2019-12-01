@@ -222,12 +222,6 @@ async function Stale_Issues()
           
 }
 
-function getIssues(){
-
-    const data = require("../code/mockStaleIssues.json");
-    return data;
-}
-
 //Function to send message to issue owner/assignee if (s)he ignores stale issues reminder
 async function ignoreAll(recipient,postid)
 {
@@ -322,7 +316,7 @@ async function closeStaleIssues(owner, issueData,postid)
 module.exports.ignoreAll = ignoreAll;
 module.exports.closeStaleIssues = closeStaleIssues;
 module.exports.Stale_Issues = Stale_Issues;
-module.exports.getIssues = getIssues;
+
 
 
 
