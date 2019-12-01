@@ -123,6 +123,8 @@ Note:
 | Sridhar | sql, js, python, java | 
 | Vaishakh | js, c, python , networking | 
 | Anjali | ai, js, java, python | 
+| Fahmid | ai, se, devops | 
+| Yang | ml, js, se | 
 
 + Issue creators see recommendations in the descending order of recommendation scores. For a recommendation candidate, the score is computed as follows: 
 
