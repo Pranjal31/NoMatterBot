@@ -31,15 +31,14 @@ Acceptance tests for the bot:
 	|Purpose|Ensuring stale Issues(for the demo purpose, these represent the issues which have had no activity on them in past 2 mins) are getting recognized and being posted on Mattermost|
 	|Pre-Conditions| a) For the tester who expects to see stale issues, there must be some Issues assigned to them on the mentioned test repos. (one can create Issues and assign to one of the testers) <br>|
 	|Process|User need not take any action. This activity is triggered from cron job every minute. As per the design, the cron job is supposed to run every 24hours. However, this time has been reduced to 1 minute for ease of demonstration.|
-	|Output|It takes 2 minutes for the issue(s) to get flagged as stale. Cron Job runs every Minute. So after a max period of 3 minutes, the assignee of issue(s) should get a message on Mattermost with issue status details with an option to close issue(s) (an option to ignore issues will also be provided if there is more than one stale issue)|
+	|Output|It takes 2 minutes for the issue(s) to get flagged as stale. Cron Job runs every Minute. So after a max period of 3 minutes, the assignee of issue(s) should get a message on Mattermost with stale issue details with an option to close issue (options to `ignore all` and `close all` issues will also be provided if there is more than one stale issue)|
 
 	|2|Close a stale issue|
 	|:-----:|:---:|
 	|Purpose|Ensuring close Stale Issue button on mattermost closes the stale Issue.
-	|Pre-Conditions| a) Bot has the BOTACCESS token to post messages on mattermost <br> b) Bot has GITHUBTOKEN to interact with the Github <br> c) Ensure user has a stale Issue. Issue which has had not activity in past 2 mins <br> d) User has received a stale issue message on mattermost, with the options to Close, Close All, Ignore All.|
-	|Input|No input necessary. User chooses Close Button.| 
-	|Process|User clicks on button Close.|
-	|Output|The issue is closed on GitHub. The user gets notification on mattermost ""|
+	|Pre-Conditions| a) Ensure tester has at least one stale Issue. <br> d) tester has received a stale issue message on mattermost, with option to `Close` (and possibly `Close All` and `Ignore All`, if there are multiple stale issues)|
+	|Process|User clicks on button `Close`|
+	|Output|The issue is closed on GitHub|
 
 	|3|Close all stale issues|
 	|:-----:|:---:|
