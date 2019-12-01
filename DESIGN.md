@@ -40,16 +40,20 @@ NoMatterBot can respond to occurence of events like creation of PR, merge of PR 
 ## Use case: Closing Stale Issues
 Preconditions: \
 Bot must have GitHub API token and a Mattermost access token. GithHub users must also have an account on Mattermost
-
+  
 Main flow: \
 Once every day, the bot will scan through all the open issues and ping assignees if they have any stale issues (issues which have had no activity in six months). The bot asks if assignee wants to close the stale issues. Assignee can select the issues to be closed or choose to ignore the request.
-
+  
 Sub-flows:\
 [S1] Bot scans through all the open issues \
 [S2] Bot filters out stale issues and simultaneously groups them by assignee\
 [S3] Bot pings the assignees to ask if their stale issues can be closed\
 [S4] Assignees can select the issues they want to close and hit 'Close Issue(s)' button. Bot closes the issues and acknowledges\
-[S5] Otherwise assignees can hit 'Ignore' button to ignore the issues for a day. Bot acknowledges it
+[S5] Otherwise assignees can hit 'Ignore' button to ignore the issues for a day. Bot acknowledges it\
+  
+Note: 
+- We assume that there can be a single assignee per Issue
+- If there is no assignee to an Issue, notifications will be sent to the Issue creator
 
 ## Use Case: Change Issue Status
 
@@ -68,7 +72,9 @@ Sub-flows: \
 Alternative Flows: \
 PR is not approved. Bot doesn't take any action.
 
-Note: By default, GitHub Issues supports only "open" and "closed" issue status. We introduce three new statuses "in progress", "in review" and "in test". The new statuses are represented using issue labels. While events PR creation/closure lead to issues being labelled "in review"/"in test", "in progress" has to be manually configured by the developer once they start the assigned task.
+Note: 
+- We assume that there can be a single assignee per Issue
+- By default, GitHub Issues supports only "open" and "closed" issue status. We introduce three new statuses "in progress", "in review" and "in test". The new statuses are represented using issue labels. While events PR creation/closure lead to issues being labelled "in review"/"in test", "in progress" has to be manually configured by the developer once they start the assigned task.
 
 The following table summarizes the effective status of the issue based on original status and label status:
 
@@ -91,7 +97,11 @@ Any change in GitHub issue status would create an event. The Bot captures the ev
 Sub-flows: \
 [S1] Bot identifies the issue status change event\
 [S2] Bot identifies the assignee of the issue\
-[S3] Bot notifies the assignee of the status change on Mattermost
+[S3] Bot notifies the assignee of the status change on Mattermost\
+
+Note: 
+- We assume that there can be a single assignee per Issue
+- If there is no assignee to an Issue, notifications will be sent to the Issue creator
 
 ## Use Case: Assignee Recommendation
 
@@ -115,6 +125,7 @@ Alternative flows:\
 If more than three developers have the same workload, a tie-breaking mechanism would be used to decide the top three.
 
 Note: 
++ We assume that there can be a single assignee per Issue
 + The skillset for each team member is listed below:
 
 |Team member| Skills|
