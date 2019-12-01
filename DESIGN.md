@@ -54,6 +54,8 @@ Sub-flows:\
 Note: 
 - We assume that there can be a single assignee per Issue
 - If there is no assignee to an Issue, notifications will be sent to the Issue creator
+- For the purpose of demonstration and testing, instead of finding stale issues per day, we are invoking the function to identify stale Issues every minute
+- For the purpose of demonstration and testing, an issue is recognized as stale issues if there is no activity on the issue in the past 2 minutes.
 
 ## Use Case: Change Issue Status
 
