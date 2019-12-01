@@ -26,61 +26,53 @@ Acceptance tests for the bot:
 
 	|1|Identify stale issues|
 	|:-----:|:---:|
-	|Purpose|Ensuring stale Issues( Issues which have had no activity on them in past 2 mins) are getting recognized and being Posted on Mattermost|
-	|Pre-Conditions|a) Bot account is the owner of the repository, the other users have been added as collaborators on the repository. b) Ensure that the users/colloborators have some Issues assigned to them or create the Issue and assign to the collaborators (not Bot Account)|
+	|Purpose|Ensuring stale Issues(demo: Issues which have had no activity on them in past 2 mins) are getting recognized and being Posted on Mattermost|
+	|Pre-Conditions|a) Bot account is the owner of the repository, the other users have been added as collaborators on the repository.<br> b) Ensure that the collaborators have some Issues assigned to them or create the Issue and assign to the collaborators (not Bot Account).<br> c) Bot has the BOTACCESS token to post messages on mattermost.<br> d) Bot has GITHUBTOKEN to interact with the Github.|
 	|Input|User need not provide any input. This activity is triggered from cron job every minute. As per the design.md, cron job is supposed to run every 24hours. This time is reduced to 1 minute for faster testing.|
 	|Process|User need not do any action.|
-	|Output|It takes 2 minutes for the Issue to get flagged as stale Issue. Cron Job runs every Minute. So after a max period of 3 minutes, the assignee of the Issue should get a message on Mattermost with Issue Name, Issue Number,  Repository name and Close, Close All/Ignore all options.|
+	|Output|It takes 2 minutes for the Issue to get flagged as stale Issue. Cron Job runs every Minute. So after a max period of 3 minutes, the assignee of the Issue should get a message on Mattermost with Issue Name, Issue Number,  Repository name and the options/buttons to Close, Close All Issues, Ignore all.|
 
 	|2|Close a stale issue|
 	|:-----:|:---:|
-	|Purpose||
-	|Pre-Conditions||
-	|Input||
-	|Process||
-	|Output||
+	|Purpose|Ensuring close Stale Issue button/option on mattermost closes the stale Issue.
+	|Pre-Conditions| a) Bot has the BOTACCESS token to post messages on mattermost <br> b) Bot has GITHUBTOKEN to interact with the Github <br> c) Ensure user has a stale Issue. Issue which has had not activity in past 2 mins <br> d) User has received a stale issue message on mattermost, with the options to Close, Close All, Ignore All.|
+	|Input|No input necessary. User chooses Close Button/option.| 
+	|Process|User clicks on button Close.|
+	|Output|The issue is closed on GitHub. The user gets notification on mattermost ""|
 
 	|3|Close all stale issues|
 	|:-----:|:---:|
-	|Purpose||
-	|Pre-Conditions||
-	|Input||
-	|Process||
-	|Output||
+	|Purpose|Ensuring Close All button/option on mattermost closes All the stale Issue.|
+	|Pre-Conditions|a) Bot has the BOTACCESS token to post messages on mattermost.<br> b) Bot has GITHUBTOKEN to interact with the Github. <br> c) User has received a stale issue message on mattermost, with the options to Close, Close All, Ignore All.|
+	|Input|No input necessary. User chooses Close All.|
+	|Process|User clicks on Close All.|
+	|Output|All the issues listed in the message are closed on the Github. User gets notification on Mattermost “”|
 
 	|4|Ignore all stale issues|
 	|:-----:|:---:|
-	|Purpose||
-	|Pre-Conditions||
-	|Input||
-	|Process||
-	|Output||
+	|Purpose|Ensuring Ignore All button on mattermost does not close any Issues and ignores the recognized stale issues.|
+	|Pre-Conditions|a) Bot has the BOTACCESS token to post messages on mattermost.<br> b) Bot has GITHUBTOKEN to interact with the Github.<br>c) User has received a stale issue message on mattermost, with the options to Close, Close All, Ignore All. |
+	|Input|No input necessary.User clicks on Ignore All.|
+	|Process| a) User receives a message on Mattermost showing the list of stale Issues. Option to close Individual stale Issues, Close All, Ignore All.<br> b) User clicks on Ignore All.|
+	|Output|All the issues listed in the message are ignored/not closed. User gets a message on Mattermost “ ”|
 
 - Change Issue status UAT:
-
-	|1|Label an issue as 'In progress'|
+	|2|Change issue status to 'In review'|
 	|:-----:|:---:|
-	|Purpose||
-	|Pre-Conditions||
-	|Input||
-	|Process||
-	|Output||
-	
-	|2|Change an issue label from 'In progress' to 'In review'|
-	|:-----:|:---:|
-	|Purpose|To Ensure that once a PR(Pull request) is created, the Issue status (label) is changed from in progress to in review.|
-	|Pre-Conditions|a) Ensure that webhooks are configured. b) Issue Number is present at the beginning of the PR. c) The Github has the labels: in review and in test. d) There is mapping for Github user to mattermost user. e) User has manually set the label in progress on the issue|
-	|Input|No-Input needed.|
-	|Process|Create a Pull request. Ensure that the title of the issue contains the Issue number and is of format example - PR title: "132 - Concurrency Bug"|
-	|Output|Issue Status label changes from in progress to in review once the Pull request is created. User receives a notification on mattermost: `The issue is in review`|
-
-	|3|Change an issue label from 'In review' to 'In test'|
-	|:-----:|:---:|
-	|Purpose|To ensure that once the PR is approved the Issue status label changes from in review  to in-test.|
-	|Pre-Conditions|a) Ensure that webhooks are configured. b) Ensure that there is an Issue in review status. c) Github has labels in review and in test. d) There is mapping for Github user to mattermost user.|
+	|Purpose|To Ensure that once a PR(Pull request) is created, the Issue status (label) changes to “in review”|
+	|Pre-Conditions|a) Ensure that GitHub webhooks are configured properly<br> b) Ensure that there is an open issue in the Repo<br> c)Ensure that all required status labels are configured| |Input|No-Input needed.|
 	|Input|No input|
-	|Process|Close a Pull request/ Approve a pull request on the Github.|
-	|Output|Issue Status label changes to in-test once the PR is closed/approved. User receives a notification on mattermost : `The issue is in test`|
+	|Process|Create a Pull request and reference the open Issue number in its title|
+	|Output|If not already present, “in review” label is added to the Issue. All other status labels will be deleted from the Issue, if there were any|
+	
+
+	|2|Change issue status to 'In test'|
+	|:-----:|:---:|
+	|Purpose|To ensure that once a Pull Request is approved the Issue status changes to “in test”|
+	|Pre-Conditions|a) Ensure that GitHub webhooks are configured properly <br> b) Ensure that there is a Pull Request referencing an open issue in the Repo <br> c) Ensure that all required status labels are configured|
+	|Input|No input|
+	|Process|Close Pull request by merging/rebasing it|
+	|Output|If not already present, “in-test” label is added to the Issue referenced in the PR. All other status labels will be deleted from the Issue, if there were any|
 
 - Notify change in an issue status UAT:
 
@@ -97,15 +89,15 @@ Acceptance tests for the bot:
 	|1|Get top 3 assignee recommendations|
 	|:-----:|:---:|
 	|Purpose|Ensure that Computation of top 3 assigness is working as expected.|
-	|Pre-Conditions|a) Github user has corresponding account on mattermost. b) The server has BotAccess token to post messages on mattermost. c) There is a mapping between Github User id and Mattermost user available. d) Github webhooks are configured.|
+	|Pre-Conditions|a) Github user has corresponding account on mattermost.<br> b) The server has BOTACCESSTOKEN to post messages on mattermost.<br> c) There is a mapping between Github User id and Mattermost user available.<br> d) Github webhooks are configured.|
 	|Input||
-	|Process|a) Create an issue on Github. b) Give comma separated skills required for the issue at the end of the issue body.c) DOn't assign it to anyone.|
+	|Process|a) Create an issue on Github. <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> c) Don't assign it to anyone.|
 	|Output|User/ creator receives a message with top 3 recommendations orderd by recommendation score calculated by the bot. (Note: The recommendation score is not displayed. If only three or less than three collaborators are available on the repo then only those will be shown. No 'Show more' button).|
 
 	|2|Show more assignee recommendations|
 	|:-----:|:---:|
 	|Purpose|More recommendations should be displayed if 'Show more' button is clicked|
-	|Pre-Conditions|a) Github user has corresponding account on mattermost. b) The server has BotAccess token to post messages on mattermost. c) There is a mapping between Github User id and Mattermost user available. d) There are more than three collaborators available on the repository e) The newly created issue is not assigned to anybody|
+	|Pre-Conditions|a) Github user has corresponding account on mattermost.<br> b) The server has BotAccess token to post messages on mattermost.<br> c) There is a mapping between Github User id and Mattermost user available. <br> d) There are more than three collaborators available on the repository. <br> e) The newly created issue is not assigned to anybody.|
 	|Input|Click on `Show more` button|
 	|Process|User clicks on the `Show more` button|
 	|Output|User receives a message with all the possible assignee recommendations for that issue.|
