@@ -108,7 +108,7 @@ describe('Recommend assignee using puppeteer', function () {
 
     await page.click(selector);
 
-    var ignore_msgId = await assignee_recommend.ignoreRecommendations(mockNewIssue.creator);
+    var ignore_msgId = await assignee_recommend.ignoreRecommendations(mockNewIssue.creator, msgId);
 
     var ignore_post = "postMessageText_" + ignore_msgId;
 
@@ -136,8 +136,8 @@ describe('Recommend assignee using puppeteer', function () {
     await page.keyboard.type(mockAssignee);
     await page.keyboard.enter;
 
-    var assign_msgId = await assignee_recommend.assign(mockNewIssue.creator, mockNewIssue.repo, mockNewIssue.issue_id, mockNewIssue.creator, mockAssignee);
-
+    var assign_msgId = await assignee_recommend.assign(mockNewIssue.creator, mockNewIssue.repo, mockNewIssue.issue_id, mockNewIssue.creator, mockAssignee, msgId);
+    
     var assign_post = "postMessageText_" + assign_msgId;
 
     const textEle = await page.$x(`//*[contains(@id, "${assign_post}")]/p`);
