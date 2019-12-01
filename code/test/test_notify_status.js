@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const notifier = require('../status_notify.js');
-const mockStatChange = require('../mock_statChange.json');
+const mockStatChange = require('./mock/mock_statChange.json');
 const chalk = require('chalk');
 
 const chai = require("chai");

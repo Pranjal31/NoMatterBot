@@ -7,9 +7,9 @@ const chai = require("chai");
 const expect = chai.expect;
 const nock = require("nock");
 
-const mockIssues = require('../mockIssues.json');
-const mockUser = require('../mockUser.json');	
-const mockRepos = require('../mockRepos.json');		
+const mockIssues = require('./mock/mockIssues.json');
+const mockUser = require('./mock/mockUser.json');	
+const mockRepos = require('./mock/mockRepos.json');		
 const mockAssignee = "psharma9";	
 
 const dbConnManager = require('../dbConnManager.js')
@@ -98,7 +98,7 @@ describe('Close or Ignore stale Issues', function () {
 
     await page.click(selector);
 
-    var ignore_msgId = await stale.ignoreAll(mockAssignee);	
+    var ignore_msgId = await stale.ignoreAll(mockAssignee, msgId);
 
     var ignore_post = "postMessageText_" + ignore_msgId;
 

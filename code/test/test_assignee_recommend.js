@@ -8,11 +8,11 @@ const chai = require("chai");
 const expect = chai.expect;
 const nock = require("nock");
 
-const mockRepos = require('../mockRepos.json');
-const mockIssues = require('../mockIssues.json');
-const mockUsers = require('../mockUsers.json');
-const mockGetIssue = require('../mockGetIssue.json');
-const mockNewIssue = require('../mockNewIssue.json');
+const mockRepos = require('./mock/mockRepos.json');
+const mockIssues = require('./mock/mockIssues.json');
+const mockUsers = require('./mock/mockUsers.json');
+const mockGetIssue = require('./mock/mockGetIssue.json');
+const mockNewIssue = require('./mock/mockNewIssue.json');
 const mockAssignee = "psharma9";
 
 const dbConnManager = require('../dbConnManager.js')
