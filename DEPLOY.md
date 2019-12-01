@@ -35,15 +35,15 @@ Acceptance tests for the bot:
 
 	|2|Close a stale issue|
 	|:-----:|:---:|
-	|Purpose|Ensuring close Stale Issue button/option on mattermost closes the stale Issue.
+	|Purpose|Ensuring close Stale Issue button on mattermost closes the stale Issue.
 	|Pre-Conditions| a) Bot has the BOTACCESS token to post messages on mattermost <br> b) Bot has GITHUBTOKEN to interact with the Github <br> c) Ensure user has a stale Issue. Issue which has had not activity in past 2 mins <br> d) User has received a stale issue message on mattermost, with the options to Close, Close All, Ignore All.|
-	|Input|No input necessary. User chooses Close Button/option.| 
+	|Input|No input necessary. User chooses Close Button.| 
 	|Process|User clicks on button Close.|
 	|Output|The issue is closed on GitHub. The user gets notification on mattermost ""|
 
 	|3|Close all stale issues|
 	|:-----:|:---:|
-	|Purpose|Ensuring Close All button/option on mattermost closes All the stale Issue.|
+	|Purpose|Ensuring Close All button on mattermost closes All the stale Issue.|
 	|Pre-Conditions|a) Bot has the BOTACCESS token to post messages on mattermost.<br> b) Bot has GITHUBTOKEN to interact with the Github. <br> c) User has received a stale issue message on mattermost, with the options to Close, Close All, Ignore All.|
 	|Input|No input necessary. User chooses Close All.|
 	|Process|User clicks on Close All.|
