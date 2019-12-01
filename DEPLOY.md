@@ -13,12 +13,14 @@ The bot is kept up and running using `forever`.
 ### Acceptance testing
 
 For acceptance testing, TA user accounts were created on Mattermost. The login credentials are:\
-Login username: Unity ID (yshi26, ffahid)\
+Login username: yshi26@ncsu.edu / ffahid@ncsu.edu\
 Password: @Bcde12345 (For both accounts).
 
-Also the TAs were added as collaborators on the test repo: `Enter test repo name`. This would enable them to perform various actions like creating an issue, updating issue labels, updating issues and closing the issues. Login to [Github](https://github.ncsu.edu/) using NCSU's unity ID credentials.\
-(Note: Do not remove `psharma9` from the collaborators' list, the bot is using that account's access token for Github. If the new repo is created for testing, add `psharma9` in the collaborators and update the webhook in settings to send all the notifications to `http://34.74.118.49:3000/events/`).
+The following three repos must be used for testing: `psharma9/test-repo-1`, `psharma9/test-repo-2` and `psharma9/test-repo-3`. TAs have been added as collaborators in each. This should enable the TAs to perform various actions like creating an issue, updating issue labels, updating issues and closing the issues.
 
+Note: 
++ This setup has been done NCSU enterprise GitHub (github.ncsu.edu)
++ `psharma9` represents the bot account (bot's actions actions would show up as psharma9's actions)
 
 Acceptance tests for the bot:
 
