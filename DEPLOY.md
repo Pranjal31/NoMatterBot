@@ -23,8 +23,7 @@ Note:
 + `psharma9` represents the bot account (bot's actions actions would show up as psharma9's actions)
 
 Acceptance tests for the bot:
-
-#### Stale Issues
+##### Stale Issues
 
 	|1|Identify stale issues|
 	|:-----:|:---:|
@@ -35,7 +34,7 @@ Acceptance tests for the bot:
 
 	|2|Close a stale issue|
 	|:-----:|:---:|
-	|Purpose|Ensuring close Stale Issue button on mattermost closes the stale Issue.
+	|Purpose|Ensuring close Stale Issue button on mattermost closes the stale Issue.|
 	|Pre-Conditions| a) Ensure tester has at least one stale Issue. <br> b) tester has received a stale issue message on mattermost, with option to `Close` (and possibly `Close All` and `Ignore All`, if there are multiple stale issues)|
 	|Process|Tester clicks on button `Close`|
 	|Output|The issue is closed on GitHub|
@@ -59,7 +58,7 @@ Acceptance tests for the bot:
 	|1|Change issue status to `in review`|
 	|:-----:|:---:|
 	|Purpose| Ensuring that PR (Pull Request) creation changes the issue status to `in review` (label addition/update)|
-	|Pre-Conditions| a) Ensure that there is an open issue in the repo <br>
+	|Pre-Conditions| a) Ensure that there is an open issue in the repo |
 	|Process| Create a Pull request and reference the open Issue number in its title. For e.g. `<Issue Number> - <PR Title> `|
 	|Output| The only status label on the issue should be `in review`|
 	
