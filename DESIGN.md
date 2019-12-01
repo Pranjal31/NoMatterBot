@@ -126,6 +126,7 @@ If more than three developers have the same workload, a tie-breaking mechanism w
 
 Note: 
 + We assume that there can be a single assignee per Issue
++ If there are only three or less than three collaborators on the repository, 'Show more' button is not displayed. 
 + The skillset for each team member is listed below:
 
 |Team member| Skills|
