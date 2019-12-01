@@ -123,7 +123,7 @@ app.post('/triggers/', function (req, res) {
       if(req_body.context.action === "CLOSE_ALL")
       {
         var data = req_body.context;
-        stale.closeStaleIssues(data.owner, data.issueData)
+        stale.closeStaleIssues(data.owner, data.issueData,req_body.post_id)
       }
       
       //if user chooses to close one stale issue
@@ -139,7 +139,7 @@ app.post('/triggers/', function (req, res) {
       if(req_body.context.action === "STALE_IGNORE")
       {
         var data = req_body.context;
-        stale.ignoreAll(data.recipient);
+        stale.ignoreAll(data.recipient,req_body.post_id);
       }
     }
 

@@ -229,7 +229,7 @@ function getIssues(){
 }
 
 //Function to send message to issue owner/assignee if (s)he ignores stale issues reminder
-async function ignoreAll(recipient)
+async function ignoreAll(recipient,postid)
 {
     var channel_id = await lib.createChannel(recipient);
     var data = {
@@ -237,14 +237,77 @@ async function ignoreAll(recipient)
 	 	"message": md.msg.stale_ignore
 
     }
+    await disableButtons(postid);
     var respBody = await lib.postMessage(data);
     return respBody.id;
 }
 
+async function disableButtons(postid)
+{
+    obj = JSON.parse(await lib.getMessage(postid));
+    message = [];
+    //Iterate for disabling close button
+    for(var i = 0; i < obj.props.attachments.length-1; i++) {
+
+        var body={
+            "text": obj.props.attachments[i].text,   
+            "actions": //message2
+            [
+                {
+                    "name": "Close",
+                    "integration": {
+                        "url":"",
+                        "context": {  
+                        }       
+                    } 
+                }   
+            ]
+        };
+        message.push(body);	
+    }
+//Disable the Close All Issues and Ignore All
+    var close_all={
+        "actions": //message2     
+        [
+            {
+                "name": "Close all Issues",
+                "integration": {
+                    "url":"",
+                    "context": {
+                    }
+                }
+            },
+            {
+                "name": "Ignore All",
+                "integration":{
+                    "url":"",
+                    "context":{
+                    }
+                }
+            }
+        ]
+    };
+    message.push(close_all)
+
+    //Update the message on Mattermost
+    var updated_body = {
+        "id": postid,
+        "message": md.msg.stale_message,
+        "props": {
+            "attachments": message
+        }
+    }
+    lib.updateMessage(postid,updated_body);
+}
+
 //Function to close stale issues belonging to a user across repos
-async function closeStaleIssues(owner, issueData)
+async function closeStaleIssues(owner, issueData,postid)
 {
     var success = true;
+    if(postid !== undefined)
+    {
+        await disableButtons(postid);
+    }
 
     for (var [repo, staleIssueNums] of Object.entries(issueData))
     {
