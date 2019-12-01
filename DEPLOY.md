@@ -57,10 +57,12 @@ Acceptance tests for the bot:
 	|Output|All the issues listed in the message are ignored/not closed. User gets a message on Mattermost “ ”|
 
 - Change Issue status UAT:
-	|2|Change issue status to 'In review'|
+
+
+	|1|Change issue status to 'In review'|
 	|:-----:|:---:|
 	|Purpose|To Ensure that once a PR(Pull request) is created, the Issue status (label) changes to “in review”|
-	|Pre-Conditions|a) Ensure that GitHub webhooks are configured properly<br> b) Ensure that there is an open issue in the Repo<br> c)Ensure that all required status labels are configured| |Input|No-Input needed.|
+	|Pre-Conditions|a) Ensure that GitHub webhooks are configured properly<br> b) Ensure that there is an open issue in the Repo<br> c)Ensure that all required status labels are configured|
 	|Input|No input|
 	|Process|Create a Pull request and reference the open Issue number in its title|
 	|Output|If not already present, “in review” label is added to the Issue. All other status labels will be deleted from the Issue, if there were any|
