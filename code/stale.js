@@ -297,7 +297,6 @@ async function disableButtons(postid)
 //Function to close stale issues belonging to a user across repos
 async function closeStaleIssues(owner, issueData,postid)
 {
-    var success = true;
     if(postid !== undefined)
     {
         await disableButtons(postid);

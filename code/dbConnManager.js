@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var chalk = require('chalk');
 
 var dbConfig = {}
 
