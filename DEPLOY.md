@@ -36,7 +36,7 @@ Acceptance tests for the bot:
 	|2|Close a stale issue|
 	|:-----:|:---:|
 	|Purpose|Ensuring close Stale Issue button on mattermost closes the stale Issue.
-	|Pre-Conditions| a) Ensure tester has at least one stale Issue. <br> d) tester has received a stale issue message on mattermost, with option to `Close` (and possibly `Close All` and `Ignore All`, if there are multiple stale issues)|
+	|Pre-Conditions| a) Ensure tester has at least one stale Issue. <br> b) tester has received a stale issue message on mattermost, with option to `Close` (and possibly `Close All` and `Ignore All`, if there are multiple stale issues)|
 	|Process|User clicks on button `Close`|
 	|Output|The issue is closed on GitHub|
 
