@@ -126,6 +126,8 @@ If more than three developers have the same workload, a tie-breaking mechanism w
 
 Note: 
 + We assume that there can be a single assignee per Issue
++ To receive the recommendations, a newly created issue must not be assigned to anybody manually. 
++ If there are no collaborators other than the repository owner, recommendations are not sent. 
 + If there are only three or less than three collaborators on the repository, 'Show more' button is not displayed. 
 + The skillset for each team member is listed below:
 
