@@ -1,7 +1,6 @@
 const puppeteer = require('puppeteer')
 const assignee_recommend = require('../assignee_recommend.js')
 const lib = require('../lib.js');
-const mockStatChange = require('../mock_statChange.json')
 const chalk = require('chalk');
 
 const chai = require("chai");
