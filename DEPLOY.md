@@ -17,8 +17,8 @@ The screencast demonstrating deployment can be found [here](https://drive.google
 For acceptance testing, TA user accounts have been created on Mattermost. The login details are as given below:\
 
 Login can be done [here](http://35.231.138.79:8065/login)\
-username: yshi26@ncsu.edu / ffahid@ncsu.edu\
-Password: @Bcde12345 (For both accounts).
+Username: yshi26@ncsu.edu / ffahid@ncsu.edu\
+Password for TA accounts have been shared over email.
 
 The following three repos must be used for testing: `psharma9/test-repo-1`, `psharma9/test-repo-2` and `psharma9/test-repo-3`. TAs have been added as collaborators in each.  
 These three test repos have been configured to allow the TAs to run Acceptance and Exploratory tests without worrying about repo-specific settings. GitHub hooks on these repos have been set up and the repos have been configured to send Issue related events to the bot server hosted on GCP. All the team members and TAs have been added as collaborators to these repos. `psharma9/test-repo-3` is a private repo while the other two are public, therefore, allowing test cases that can cover both repository types offered by GitHub. For all these reasons, we recommend using the above mentioned repos for testing.
