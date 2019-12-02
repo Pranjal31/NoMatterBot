@@ -49,13 +49,13 @@ Sub-flows:\
 [S2] Bot filters out stale issues and simultaneously groups them by assignee\
 [S3] Bot pings the assignees to ask if their stale issues can be closed\
 [S4] Assignees can select the issues they want to close and hit 'Close Issue(s)' button. Bot closes the issues and acknowledges\
-[S5] Otherwise assignees can hit 'Ignore' button to ignore the issues for a day. Bot acknowledges it\
+[S5] Otherwise assignees can hit 'Ignore' button to ignore the issues for a day. Bot acknowledges it.
   
 Note: 
 - We assume that there can be a single assignee per Issue
 - If there is no assignee to an Issue, notifications will be sent to the Issue creator
 - For the purpose of demonstration and testing, instead of finding stale issues per day, we are invoking the function to identify stale Issues every minute
-- For the purpose of demonstration and testing, an issue is recognized as stale issues if there is no activity on the issue in the past 2 minutes.
+- For the purpose of demonstration and testing, an issue is recognized as stale issue if there is no activity on the issue in the past 2 minutes.
 
 ## Use Case: Change Issue Status
 
