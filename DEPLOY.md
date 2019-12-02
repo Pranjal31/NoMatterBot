@@ -106,10 +106,9 @@ Acceptance tests for the bot:
 
 |1|Notify Change in Issue Status|
 |:-----:|:---:|
-|Purpose|Ensure that the changes on an Issue status (including status label changes) are getting posted to the issue assignee (or owner, if no assignee) on mattermost|
-|Pre-Conditions|a) Github user has corresponding account on mattermost|
-|Process|Close an Issue on Github.|
-|Output| Tester receives the Message: `Issue Number is closed`|	
+|Purpose|Ensure that the changes in an Issue status (including status label changes) are getting posted to the issue assignee (or owner, if no assignee) on mattermost|
+|Pre-Conditions|a) Ensure that there is an open Issue in one of the test repos with the tester as Issue creator or Issue assignee|
+|Process|The tester should receive a message on Mattermost specifying the Issue number, title, the repo in which Issue was created and its new status. The new status will be based on added/updated label if tester has manually added the label (or it will be closed if the Issue is closed)|	
 
 ### Exploratory testing and final code
 
