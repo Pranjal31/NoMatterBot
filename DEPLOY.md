@@ -10,10 +10,11 @@ When this playbook is run using `ansible-playbook main.yml -i inventory`, it pro
 
 The bot is kept up and running using `forever`.
 
-## Acceptance testing
+## User Acceptance testing
 
-For acceptance testing, TA user accounts were created on Mattermost. The login credentials are:\
-Login username: yshi26@ncsu.edu / ffahid@ncsu.edu\
+For acceptance testing, TA user accounts have been created on Mattermost. The login details are:\
+Login can be done [here](http://35.231.138.79:8065/login)
+username: yshi26@ncsu.edu / ffahid@ncsu.edu\
 Password: @Bcde12345 (For both accounts).
 
 The following three repos must be used for testing: `psharma9/test-repo-1`, `psharma9/test-repo-2` and `psharma9/test-repo-3`. TAs have been added as collaborators in each. This should enable the TAs to perform various actions like creating an issue, updating issue labels, updating issues and closing the issues.
@@ -23,12 +24,43 @@ Note:
 + `psharma9` represents the bot account (bot's actions actions would show up as psharma9's actions)
 
 Acceptance tests for the bot:
+
+### Assignee Recommendations
+
+|1|Get top 3 assignee recommendations|
+|:-----:|:---:|
+|Purpose|Ensure that Computation of `top 3` assignee recommendations is working as expected|
+|Pre-Conditions| None |
+|Process|a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation |
+|Output| Issue creator receives a message with `top 3` recommendations in the order of their recommendation scores (for details of recommendation score computation, DESIGN.md can be referred) <br> Note: The recommendation score is not displayed. If only three or less than three collaborators are available on the repo then only those will be shown. `Show more` button will not be displayed|
+
+|2|Show more assignee recommendations|
+|:-----:|:---:|
+|Purpose|More recommendations should be displayed if 'Show more' button is clicked|
+|Pre-Conditions| None|
+|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator clicks on the `Show more` button |
+|Output| Issue creator receives a message with all collaborators in the test repo as recommendations |
+
+|3|Assign an issue|
+|:-----:|:---:|
+|Purpose|The issue should be assigned to the collaborator selected from the recommendations|
+|Pre-Conditions| None |
+|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator selects an assignee from the recommendation drop-down |
+|Output|The issue is assigned to the selected collaborator, issue creator receives the message `Done and dusted!`|
+
+|4|Ignore the recommendations|
+|:-----:|:---:|
+|Purpose|If the user clicks ignore, the issue is not assigned to anyone|
+|Pre-Conditions| None |
+|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator clicks on the `Ignore` button|
+|Output| Issue Creator receives the message `All those CPU cycles wasted for nothing? Okay :(`|
+
 ### Stale Issues
 
 |1|Identify stale issues|
 |:-----:|:---:|
  |Purpose|Ensuring stale Issues(for the demo purpose, these represent the issues which have had no activity on them in past 2 mins) are getting recognized and being posted on Mattermost|
-|Pre-Conditions| a) For the tester who expects to see stale issues, there must be some Issues assigned to them on the mentioned test repos. (one can create Issues and assign to one of the testers)|
+|Pre-Conditions| For the tester who expects to see stale issues, there must be some Issues assigned to them on the mentioned test repos. (one can create Issues and assign to one of the testers)|
 |Process|Tester need not take any action. This activity is triggered from cron job every minute. As per the design, the cron job is supposed to run every 24hours. However, this time has been reduced to 1 minute for ease of demonstration.|
 |Output|It takes 2 minutes for the issue(s) to get flagged as stale. Cron Job runs every Minute. So after a max period of 3 minutes, the assignee of issue(s) should get a message on Mattermost with stale issue details with an option to close issue (options to `Ignore all` and `Close all` issues will also be provided if there is more than one stale issue)|
 
@@ -78,36 +110,6 @@ Acceptance tests for the bot:
 |Pre-Conditions|a) Github user has corresponding account on mattermost|
 |Process|Close an Issue on Github.|
 |Output| Tester receives the Message: `Issue Number is closed`|	
-
-### Assignee Recommendations
-
-|1|Get top 3 assignee recommendations|
-|:-----:|:---:|
-|Purpose|Ensure that Computation of `top 3` assignee recommendations is working as expected|
-|Pre-Conditions| None |
-|Process|a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation |
-|Output| Issue creator receives a message with `top 3` recommendations in the order of their recommendation scores (for details of recommendation score computation, DESIGN.md can be referred) <br> Note: The recommendation score is not displayed. If only three or less than three collaborators are available on the repo then only those will be shown. `Show more` button will not be displayed|
-
-|2|Show more assignee recommendations|
-|:-----:|:---:|
-|Purpose|More recommendations should be displayed if 'Show more' button is clicked|
-|Pre-Conditions| None|
-|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator clicks on the `Show more` button |
-|Output| Issue creator receives a message with all collaborators in the test repo as recommendations |
-
-|3|Assign an issue|
-|:-----:|:---:|
-|Purpose|The issue should be assigned to the collaborator selected from the recommendations|
-|Pre-Conditions| None |
-|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator selects an assignee from the recommendation drop-down |
-|Output|The issue is assigned to the selected collaborator, issue creator receives the message `Done and dusted!`|
-
-|4|Ignore the recommendations|
-|:-----:|:---:|
-|Purpose|If the user clicks ignore, the issue is not assigned to anyone|
-|Pre-Conditions| None |
-|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator clicks on the `Ignore` button|
-|Output| Issue Creator receives the message `All those CPU cycles wasted for nothing? Okay :(`|
 
 ### Exploratory testing and final code
 
