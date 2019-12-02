@@ -2,13 +2,15 @@
 
 ## Deployment scripts
 
-The bot is hosted on Google Cloud Platform. We are using two Ubuntu Virtual Machines (VM), one hosts the Mattermost server and the other machine hosts NoMatterBot and database that the bot needs. The server is configured to accept all the traffic of interest from Github.
+The bot is hosted on Google Cloud Platform (GCP). We are using two Ubuntu Virtual Machines (VM), one hosts the Mattermost server and the other machine hosts NoMatterBot and database that the bot needs. The server is configured to accept all the traffic of interest from Github.
 
-To deploy and run this bot, numerous packages need to be installed, the latest code for the bot needs to be cloned from Github and a number of environment variables need to be set on the remote machine. All these tasks are automated using ansible scripts [main.yml](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/main.yml). The inventory file for the same can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/inventory).
+To deploy and run this bot, numerous tasks are needed which are automated using ansible. The ansible playbook can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/main.yml). The inventory file for the same can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/inventory).
 
-When this script is run using `ansible-playbook main.yml -i inventory`, it prompts the user to provide the values of environment variables. The playbook ensures that the VM hosting the bot has all the necessary environment variables set. It also clones the latest code from the the bot's repository, installs all the necessary packages, installs (if not already installed) and configures the MySQL server and runs the bot software. 
+The playbook can be run from any machine which can connect to GCP instance using ssh. When the playbook is run using `ansible-playbook -i inventory main.yml`, it prompts the user to provide values for certain variables needed for deployment and setup. The playbook ensures that the VM hosting the bot has all the necessary environment variables set. It also clones the latest code from the the bot's repository, installs all the necessary packages, installs (if not already installed) and configures the MySQL server and runs the bot app. 
 
 The bot is kept up and running using `forever`.
+
+The screencast demonstrating deployment can be found [here](https://drive.google.com/file/d/1WfuhSx52t4QCqpAmt5ifNq3G0N1tgrXW/view).
 
 ## User Acceptance testing
 
@@ -17,8 +19,8 @@ Login can be done [here](http://35.231.138.79:8065/login)
 username: yshi26@ncsu.edu / ffahid@ncsu.edu\
 Password: @Bcde12345 (For both accounts).
 
-The following three repos must be used for testing: `psharma9/test-repo-1`, `psharma9/test-repo-2` and `psharma9/test-repo-3`. TAs have been added as collaborators in each. This should enable the TAs to perform various actions like creating an issue, updating issue labels, updating issues and closing the issues.  
-These three test repos have been configured to allow the TAs to run Acceptance and Exploratory tests without worrying about different configurations. GitHub hooks on these repos have been updated and the repos have been configured to send Issue related events to our hosted server on GCP. All our team members and both TAs have been added as collaborators to these repos. `psharma9/test-repo-3` is a private repo while the other two are public, therefore, allowing test cases that can cover both repository types offered by GitHub. For all these reasons, we believe this sets up a right environment that enables broad and rapid testing of our system.  
+The following three repos must be used for testing: `psharma9/test-repo-1`, `psharma9/test-repo-2` and `psharma9/test-repo-3`. TAs have been added as collaborators in each.  
+These three test repos have been configured to allow the TAs to run Acceptance and Exploratory tests without worrying about repo-specific settings. GitHub hooks on these repos have been set up and the repos have been configured to send Issue related events to the bot server hosted on GCP. All the team members and TAs have been added as collaborators to these repos. `psharma9/test-repo-3` is a private repo while the other two are public, therefore, allowing test cases that can cover both repository types offered by GitHub. For all these reasons, we recommend using the above mentioned repos for testing.
 
 Note: 
 + This setup has been done on NCSU enterprise GitHub (github.ncsu.edu)
@@ -111,19 +113,23 @@ Note:
 |Pre-Conditions|a) Ensure that there is an open Issue in one of the test repos with the tester as Issue creator or Issue assignee|
 |Process|The tester should receive a message on Mattermost specifying the Issue number, title, the repo in which Issue was created and its new status. The new status will be based on added/updated label if tester has manually added the label (or it will be closed if the Issue is closed)|	
 
-### Exploratory testing and final code
+### Final code
 
-+ Github webhooks are configured to receive any real time event data about issues from Github. All the mockups have been removed.
-+ The messages that are being displayed to the users on Mattermost are kept separate in a file. 
-+ Access token for the bot, github user name and password, database username and password are entered via command line when the app is deployed.
-+ Github username to mattermost user mapping is saved in the database and fetched in real time. Similarly, user skills for assignee recommendations are also saved in database and fetched in real time whenever needed.
+The architecture of the bot is entirely event-based. For all use cases, NoMatterBot is the one who initiates conversations. Furthermore, users can provide input to NoMatterBot only through interactive messages (like buttons, dropdown). 
 
-The architecture of this project is entirely event-based. NoMatterBot does not accept any textual input from the user and the conversation is always initiated by the bot based on the events. 
+The bot follows a layered software architecture. The layers are described below:
++ Layer 1: When an event occurs (e.g. an issue is created on github), NoMatterBot server captures the event. 
++ layer 2: Server component then invokes a function specific to the use case to handle the event. 
++ Layer 3: The use-case specific methods might rely on helper methods defined in `lib.js` to perform the required task
 
-NoMatterBot follows 'call and return' model. When an event occurs(issue is created on github or time to show stale issue has occured), the server of the NoMatterBot is notified [Layer 1]. This component then invokes a function specific to the event that has occured[Layer 2]. To complete the processing some general-purpose methods defined in `lib.js` may be called by the use-case function [Layer 3]. 
-
-By using a mixture of the above mentioned patterns, we could process real-time event based data and make our software resusable and scalable.
-
+There's another layer of database functionality that could be invoked by Layer 3 methods to handle DB queries. The DB holds the following data mapping:
+    + GitHub username to Mattermost user id  -  Helps identify correct message recipients
+    + Github username to user's skills  -  Helps compute recommendation score for potential assignees
+    
+Misc: 
++ Mock data is used only for Integration Testing. Github webhooks are configured to receive any real time event data about issues from Github. 
++ The interaction messages used by the bot are kept together in a single file. 
++ We rely on environment variables to store secrets.
 
 ### Continuous Integration (CI) Server
 
@@ -132,4 +138,4 @@ By using a mixture of the above mentioned patterns, we could process real-time e
     + It uses SCM polling insead of SCM-initiated triggers (because of insufficient privileges on the repo to create webhooks) and checks for commits once every minute. It starts a build job on detecting a commit.
     + A build task was added which installs all dependencies and runs the integration tests
 
-The screencast for CI can be found [here](https://drive.google.com/file/d/1Kc6uXSV_dJ3QLiZ17DVmN0x6nZSFQGby/view).
+The screencast for CI can be found [here](https://drive.google.com/file/d/1Kc6uXSV_dJ3QLiZ17DVmN0x6nZSFQGby/view)
