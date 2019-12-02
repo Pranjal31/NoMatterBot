@@ -2,11 +2,11 @@
 
 ## Deployment scripts
 
-The bot is hosted on Google Cloud Platform. We are using two Ubuntu VM instances for the deployment one of which is used for Mattermost server and the other one is hosting NoMatterBot and the database that the bot needs. The server is configured to accepts all the incoming traffic from Github.
+The bot is hosted on Google Cloud Platform. We are using two Ubuntu VM instances for the deployment, one hosts the Mattermost server and the other machine hosts NoMatterBot and database that the bot needs. The server is configured to accept all the traffic of interest from Github.
 
-To deploy and run this bot, numerous packages need to be installed, the latest code for the bot needs to cloned from Github and some environment variables need to be set. All these tasks are automated using an ansible playbook [main.yml](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/main.yml). The inventory file for the same could be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/inventory).
+To deploy and run this bot, numerous packages need to be installed, the latest code for the bot needs to be cloned from Github and a number of environment variables need to be set on the remote machine. All these tasks are automated using ansible scripts [main.yml](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/main.yml). The inventory file for the same can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/inventory).
 
-When this playbook is run using `ansible-playbook main.yml -i inventory`, it prompts the user to set the environment variables. The playbook ensures that all the variables are set and then installs all the necessary packages. It also clones the latest code from the master branch of the bot's repository and installs (if not already installed) and configures the MySQL database.
+When this script is run using `ansible-playbook main.yml -i inventory`, it prompts the user to set the environment variables. The playbook ensures that all the variables are set and then installs all the necessary packages. It also clones the latest code from the master branch of the bot's repository and installs (if not already installed) and configures the MySQL database.
 
 The bot is kept up and running using `forever`.
 
@@ -17,7 +17,8 @@ Login can be done [here](http://35.231.138.79:8065/login)
 username: yshi26@ncsu.edu / ffahid@ncsu.edu\
 Password: @Bcde12345 (For both accounts).
 
-The following three repos must be used for testing: `psharma9/test-repo-1`, `psharma9/test-repo-2` and `psharma9/test-repo-3`. TAs have been added as collaborators in each. This should enable the TAs to perform various actions like creating an issue, updating issue labels, updating issues and closing the issues.
+The following three repos must be used for testing: `psharma9/test-repo-1`, `psharma9/test-repo-2` and `psharma9/test-repo-3`. TAs have been added as collaborators in each. This should enable the TAs to perform various actions like creating an issue, updating issue labels, updating issues and closing the issues.  
+These three test repos have been configured to allow the TAs to run Acceptance and Exploratory tests without worrying about different configurations. GitHub hooks on these repos have been updated and the repos have been configured to send Issue related events to our hosted server on GCP. All our team members and both TAs have been added as collaborators to these repos. `psharma9/test-repo-3` is a private repo while the other two are public, therefore, allowing test cases that can cover both repository types offered by GitHub. For all these reasons, we believe this sets up a right environment that enables broad and rapid testing of our system.  
 
 Note: 
 + This setup has been done NCSU enterprise GitHub (github.ncsu.edu)
@@ -115,7 +116,7 @@ Acceptance tests for the bot:
 + Github webhooks are configured to receive any real time event data about issues from Github. All the mockups have been removed.
 + The messages that are being displayed to the users on Mattermost are kept separate in a file. 
 + Access token for the bot, github user name and password, database username and password are entered via command line when the app is deployed.
-+ Github username to mattermost user mapping is saved in the database and fetched in real time. Simillaryly user skills for assignee recommendations are also saved in database and fetched in real time whenever needed.
++ Github username to mattermost user mapping is saved in the database and fetched in real time. Similarly, user skills for assignee recommendations are also saved in database and fetched in real time whenever needed.
 
 The architecture of this project is entirely event-based. NoMatterBot does not accept any textual input from the user and the conversation is always initiated by the bot based on the events. 
 
