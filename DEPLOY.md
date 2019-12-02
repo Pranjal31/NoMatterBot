@@ -15,7 +15,8 @@ The screencast demonstrating deployment can be found [here](https://drive.google
 ## User Acceptance testing
 
 For acceptance testing, TA user accounts have been created on Mattermost. The login details are as given below:\
-Login can be done [here](http://35.231.138.79:8065/login)
+
+Login can be done [here](http://35.231.138.79:8065/login)\
 username: yshi26@ncsu.edu / ffahid@ncsu.edu\
 Password: @Bcde12345 (For both accounts).
 
