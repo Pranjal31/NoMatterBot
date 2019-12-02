@@ -2,17 +2,17 @@
 
 ## Deployment scripts
 
-The bot is hosted on Google Cloud Platform. We are using two Ubuntu VM instances for the deployment, one hosts the Mattermost server and the other machine hosts NoMatterBot and database that the bot needs. The server is configured to accept all the traffic of interest from Github.
+The bot is hosted on Google Cloud Platform. We are using two Ubuntu Virtual Machines (VM), one hosts the Mattermost server and the other machine hosts NoMatterBot and database that the bot needs. The server is configured to accept all the traffic of interest from Github.
 
 To deploy and run this bot, numerous packages need to be installed, the latest code for the bot needs to be cloned from Github and a number of environment variables need to be set on the remote machine. All these tasks are automated using ansible scripts [main.yml](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/main.yml). The inventory file for the same can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/inventory).
 
-When this script is run using `ansible-playbook main.yml -i inventory`, it prompts the user to set the environment variables. The playbook ensures that all the variables are set and then installs all the necessary packages. It also clones the latest code from the master branch of the bot's repository and installs (if not already installed) and configures the MySQL database.
+When this script is run using `ansible-playbook main.yml -i inventory`, it prompts the user to provide the values of environment variables. The playbook ensures that the VM hosting the bot has all the necessary environment variables set. It also clones the latest code from the the bot's repository, installs all the necessary packages, installs (if not already installed) and configures the MySQL server and runs the bot software. 
 
 The bot is kept up and running using `forever`.
 
 ## User Acceptance testing
 
-For acceptance testing, TA user accounts have been created on Mattermost. The login details are:\
+For acceptance testing, TA user accounts have been created on Mattermost. The login details are as given below:\
 Login can be done [here](http://35.231.138.79:8065/login)
 username: yshi26@ncsu.edu / ffahid@ncsu.edu\
 Password: @Bcde12345 (For both accounts).
@@ -21,10 +21,10 @@ The following three repos must be used for testing: `psharma9/test-repo-1`, `psh
 These three test repos have been configured to allow the TAs to run Acceptance and Exploratory tests without worrying about different configurations. GitHub hooks on these repos have been updated and the repos have been configured to send Issue related events to our hosted server on GCP. All our team members and both TAs have been added as collaborators to these repos. `psharma9/test-repo-3` is a private repo while the other two are public, therefore, allowing test cases that can cover both repository types offered by GitHub. For all these reasons, we believe this sets up a right environment that enables broad and rapid testing of our system.  
 
 Note: 
-+ This setup has been done NCSU enterprise GitHub (github.ncsu.edu)
-+ `psharma9` represents the bot account (bot's actions actions would show up as psharma9's actions)
++ This setup has been done on NCSU enterprise GitHub (github.ncsu.edu)
++ `psharma9` represents the bot account (bot's actions would show up as psharma9's actions)
 
-Acceptance tests for the bot:
+## Acceptance tests to evaluate the Use Cases's of the Bot
 
 ### Assignee Recommendations
 
@@ -122,7 +122,7 @@ The architecture of this project is entirely event-based. NoMatterBot does not a
 
 NoMatterBot follows 'call and return' model. When an event occurs(issue is created on github or time to show stale issue has occured), the server of the NoMatterBot is notified [Layer 1]. This component then invokes a function specific to the event that has occured[Layer 2]. To complete the processing some general-purpose methods defined in `lib.js` may be called by the use-case function [Layer 3]. 
 
-By using the mixture of the two above-mentioned patterns, we could process real-time event based data and make our software resusable and scalable.
+By using a mixture of the above mentioned patterns, we could process real-time event based data and make our software resusable and scalable.
 
 
 ### Continuous Integration (CI) Server
