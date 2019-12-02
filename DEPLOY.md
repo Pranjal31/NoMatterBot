@@ -27,7 +27,7 @@ Note:
 + This setup has been done on NCSU enterprise GitHub (github.ncsu.edu)
 + `psharma9` represents the bot account (bot's actions would show up as psharma9's actions)
 
-## Acceptance tests to evaluate the Use Cases's of the Bot
+## Acceptance tests to evaluate the Use Cases of the Bot
 
 ### Assignee Recommendations
 
@@ -35,7 +35,7 @@ Note:
 |:-----:|:---:|
 |Purpose|Ensure that Computation of `top 3` assignee recommendations is working as expected|
 |Pre-Conditions| None |
-|Process|a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation |
+|Process|a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. <br> c) to receive recommendations, it is necessary that no assignee is selected during issue creation |
 |Output| Issue creator receives a message with `top 3` recommendations in the order of their recommendation scores (for details of recommendation score computation, DESIGN.md can be referred) <br> Note: The recommendation score is not displayed. If only three or less than three collaborators are available on the repo then only those will be shown. `Show more` button will not be displayed|
 
 |2|Show more assignee recommendations|
