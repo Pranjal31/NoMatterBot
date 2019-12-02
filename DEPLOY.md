@@ -42,21 +42,21 @@ Note:
 |:-----:|:---:|
 |Purpose|More recommendations should be displayed if 'Show more' button is clicked|
 |Pre-Conditions| None|
-|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator clicks on the `Show more` button |
+|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md.<br> c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator clicks on the `Show more` button |
 |Output| Issue creator receives a message with all collaborators in the test repo as recommendations |
 
 |3|Assign an issue|
 |:-----:|:---:|
 |Purpose|The issue should be assigned to the collaborator selected from the recommendations|
 |Pre-Conditions| None |
-|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator selects an assignee from the recommendation drop-down |
+|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. <br> c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator selects an assignee from the recommendation drop-down |
 |Output|The issue is assigned to the selected collaborator, issue creator receives the message `Done and dusted!`|
 
 |4|Ignore the recommendations|
 |:-----:|:---:|
 |Purpose|If the user clicks ignore, the issue is not assigned to anyone|
 |Pre-Conditions| None |
-|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator clicks on the `Ignore` button|
+|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. <br> c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator clicks on the `Ignore` button|
 |Output| Issue Creator receives the message `All those CPU cycles wasted for nothing? Okay :(`|
 
 ### Stale Issues
