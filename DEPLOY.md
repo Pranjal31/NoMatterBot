@@ -127,7 +127,9 @@ There's another layer of database functionality that could be invoked by Layer 3
     + GitHub username to Mattermost user id  -  Helps identify correct message recipients
     + Github username to user's skills  -  Helps compute recommendation score for potential assignees
     
-Misc: 
+Although we are using forever to ensure bot is up and running all the time, we also take care of other system resources to ensure that the infrastructure does not go down and affect the bot's uptime. We use nodejs mysql module’s connection pools for Database connections. This provides a robust interface to make concurrent connections with the DB by leveraging reusable connection threads. We also make use of  nodejs runtime’s event loops to achieve gracious shutdowns. If the bot is killed inadvertantly, it closes all database connections before exiting, thus avoiding idle connections with the DB.  
+    
+Miscellaneous: 
 + Mock data is used only for Integration Testing. Github webhooks are configured to receive any real time event data about issues from Github. 
 + The interaction messages used by the bot are kept together in a single file. 
 + We rely on environment variables to store secrets.
