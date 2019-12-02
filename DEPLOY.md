@@ -126,3 +126,10 @@ By using a mixture of the above mentioned patterns, we could process real-time e
 
 
 ### Continuous Integration (CI) Server
+
++ A jenkins server was setup on a local VM. The files necessary for VM creation (baker.yml) and Jenkins setup (roles.yml, main.yml, inventory and templates/jenkins_script.groovy) are present in `ci/` directory. 
++ The build job configuration details are present in CI.xml
+    + It uses SCM polling insead of SCM-initiated triggers (because of insufficient privileges on the repo to create webhooks) and checks for commits once every minute. It starts a build job on detecting a commit.
+    + A build task was added which installs all dependencies and runs the integration tests
+
+The screencast for CI can be found [here](https://drive.google.com/file/d/1Kc6uXSV_dJ3QLiZ17DVmN0x6nZSFQGby/view).
