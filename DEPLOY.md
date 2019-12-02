@@ -2,17 +2,17 @@
 
 ## Deployment scripts
 
-The bot is hosted on Google Cloud Platform. We are using two Ubuntu VM instances for the deployment one of which is used for Mattermost server and the other one is hosting NoMatterBot and the database that the bot needs. The server is configured to accepts all the incoming traffic from Github.
+The bot is hosted on Google Cloud Platform. We are using two Ubuntu Virtual Machine(VM) instances for the deployment, one of which is used for Mattermost server and the other VM is being used to host NoMatterBot and the database required by the bot. The server is configured to accept all the incoming traffic from Github.
 
 To deploy and run this bot, numerous packages need to be installed, the latest code for the bot needs to cloned from Github and some environment variables need to be set. All these tasks are automated using an ansible playbook [main.yml](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/main.yml). The inventory file for the same could be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/inventory).
 
-When this playbook is run using `ansible-playbook main.yml -i inventory`, it prompts the user to set the environment variables. The playbook ensures that all the variables are set and then installs all the necessary packages. It also clones the latest code from the master branch of the bot's repository and installs (if not already installed) and configures the MySQL database.
+When this playbook is run using `ansible-playbook main.yml -i inventory`, it prompts the user to provide the values of environment variables. The playbook ensures that the VM hosting the bot has all the necessary environment variables set and then installs all the necessary packages. It also clones the latest code from the master branch of the bot's repository and installs (if not already installed) and configures the MySQL database.
 
 The bot is kept up and running using `forever`.
 
 ## User Acceptance testing
 
-For acceptance testing, TA user accounts have been created on Mattermost. The login details are:\
+For acceptance testing, TA user accounts have been created on Mattermost. The login details are as given below:\
 Login can be done [here](http://35.231.138.79:8065/login)
 username: yshi26@ncsu.edu / ffahid@ncsu.edu\
 Password: @Bcde12345 (For both accounts).
@@ -20,10 +20,10 @@ Password: @Bcde12345 (For both accounts).
 The following three repos must be used for testing: `psharma9/test-repo-1`, `psharma9/test-repo-2` and `psharma9/test-repo-3`. TAs have been added as collaborators in each. This should enable the TAs to perform various actions like creating an issue, updating issue labels, updating issues and closing the issues.
 
 Note: 
-+ This setup has been done NCSU enterprise GitHub (github.ncsu.edu)
-+ `psharma9` represents the bot account (bot's actions actions would show up as psharma9's actions)
++ This setup has been done on NCSU enterprise GitHub (github.ncsu.edu)
++ `psharma9` represents the bot account (bot's actions would show up as psharma9's actions)
 
-Acceptance tests for the bot:
+## Acceptance tests to evaluate the Use Cases's of the Bot
 
 ### Assignee Recommendations
 
