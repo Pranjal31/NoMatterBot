@@ -59,8 +59,8 @@ Acceptance tests for the bot:
 |:-----:|:---:|
 |Purpose| Ensuring that PR (Pull Request) creation changes the issue status to `in review` (label addition/update)|
 |Pre-Conditions| a) Ensure that there is an open issue in the repo |
-|Process| Create a Pull request and reference the open Issue number in its title. For e.g. `<Issue Number> - <PR Title> `|
-|Output| The only status label on the issue should be `in review`|
+|Process| Create a Pull request and reference the open Issue number in its title.  <br> For e.g. `<Issue Number> - <PR Title> `|
+|Output| The only status label on the referenced issue should be `in review`|
 	
 
 |2|Change issue status to `in test`|
@@ -68,50 +68,46 @@ Acceptance tests for the bot:
 |Purpose| Ensuring that PR approval changes the issue status to `in test` (label addition/update)|
 |Pre-Conditions|a) Ensure that there is a Pull Request referencing an open issue in the Repo <br>|
 |Process|Close Pull request by merging it|
-|Output|The only status label on the issue should be `in test`|
+|Output|The only status label on the referenced issue should be `in test`|
 
 ### Issue Status Change Notification:
 
 |1|Notify Change in Issue Status|
 |:-----:|:---:|
-|Purpose|Ensure that the changes on an Issue status are getting posted to the issue assignee (or issue owner, if there is no assignee) on mattermost.|
-|Pre-Conditions|a) Github user has corresponding account on mattermost. <br> b) Ensure that there is an open Issue in the repo with the tester as Issue creator or Issue assignee|
-|Process|Add/update status label (`in progress`, `in review` or `in test`) to the Issue (or Close the Issue on Github)|
-|Output| The tester should receive a message on Mattermost specifying the Issue number, title, the repo in which Issue was created and its new status. The new status will be based on added/updated label if tester has manually added the label (or it will be closed if the Issue is closed)|	
+|Purpose|Ensure that the changes on an Issue status (including status label changes) are getting posted to the issue assignee (or owner, if no assignee) on mattermost|
+|Pre-Conditions|a) Github user has corresponding account on mattermost|
+|Process|Close an Issue on Github.|
+|Output| Tester receives the Message: `Issue Number is closed`|	
 
-### Assignee recommendations for newly created issues UAT:
+### Assignee Recommendations
 
 |1|Get top 3 assignee recommendations|
 |:-----:|:---:|
-|Purpose|Ensure that Computation of top 3 assigness is working as expected.|
-|Pre-Conditions|a) Github user has corresponding account on mattermost.<br> b) The server has BOTACCESSTOKEN to post messages on mattermost.<br> c) There is a mapping between Github User id and Mattermost user available.<br> d) Github webhooks are configured.|
-|Input||
-|Process|a) Create an issue on Github. <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> c) Don't assign it to anyone.|
-|Output| Tester / creator receives a message with top 3 recommendations orderd by recommendation score calculated by the bot. (Note: The recommendation score is not displayed. If only three or less than three collaborators are available on the repo then only those will be shown. No 'Show more' button).|
+|Purpose|Ensure that Computation of `top 3` assignee recommendations is working as expected|
+|Pre-Conditions| None |
+|Process|a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation |
+|Output| Issue creator receives a message with `top 3` recommendations in the order of their recommendation scores (for details of recommendation score computation, DESIGN.md can be referred) <br> Note: The recommendation score is not displayed. If only three or less than three collaborators are available on the repo then only those will be shown. `Show more` button will not be displayed|
 
 |2|Show more assignee recommendations|
 |:-----:|:---:|
 |Purpose|More recommendations should be displayed if 'Show more' button is clicked|
-|Pre-Conditions|a) Github user has corresponding account on mattermost.<br> b) The server has BotAccess token to post messages on mattermost.<br> c) There is a mapping between Github User id and Mattermost user available. <br> d) There are more than three collaborators available on the repository. <br> e) The newly created issue is not assigned to anybody.|
-|Input|Click on `Show more` button|
-|Process| Tester clicks on the `Show more` button|
-|Output|User receives a message with all the possible assignee recommendations for that issue.|
+|Pre-Conditions| None|
+|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator clicks on the `Show more` button |
+|Output| Issue creator receives a message with all collaborators in the test repo as recommendations |
 
 |3|Assign an issue|
 |:-----:|:---:|
-|Purpose|The issue should be assigned to the assignee user selects from the recommendations made by the bot|
-|Pre-Conditions|a) Github user has corresponding account on mattermost. b) The server has BotAccess token to post messages on mattermost. c) There is a mapping between Github User id and Mattermost user available. d) Bot has github access to assign an issue to a collaborator|
-|Input|Select an assignee from the recommendations.|
-|Process| Tester selects an assignee from the recommendation drop-down box (Note: There is no `Assign` button. Just select one assignee)|
-|Output|The issue is assigned to the selected assignee, user receives a message `Done and dusted!`.|
+|Purpose|The issue should be assigned to the collaborator selected from the recommendations|
+|Pre-Conditions| None |
+|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator selects an assignee from the recommendation drop-down |
+|Output|The issue is assigned to the selected collaborator, issue creator receives the message `Done and dusted!`|
 
 |4|Ignore the recommendations|
 |:-----:|:---:|
-|Purpose|If the user clicks ignore, the assignee recommendations are ignored. The issue is not assigned to anybody and all the buttons are disabled.|
-|Pre-Conditions|The server has BotAccess token to post messages on mattermost.|
-|Input|Click on `Ignore` button|
-|Process| Tester clicks on the `Ignore` button|
-|Output| Tester receives the message `All those CPU cycles wasted for nothing? Okay :(`|
+|Purpose|If the user clicks ignore, the issue is not assigned to anyone|
+|Pre-Conditions| None |
+|Process| a) Create an issue on one of the test repos <br> b) Give comma separated skills required for the issue at the end of the issue body.<br> For e.g. `skills: <skill1>, <skill2>`. A comprehensive mapping of user and their skills is present in DESIGN.md. c) to receive recommendations, it is necessary that no assignee is selected during issue creation <br> d) Issue creator clicks on the `Ignore` button|
+|Output| Issue Creator receives the message `All those CPU cycles wasted for nothing? Okay :(`|
 
 ### Exploratory testing and final code
 
