@@ -40,6 +40,8 @@ The following screen captures depict Stale Issue Management
   - The User may click on `Close All` Issues to close all the issues displayed in the message. The bot closes all the issues and displays the following message.
   ![Close All Issues](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-close-all.png)
   
+  - The stale issues are closed and can be seen on the Github as follows:
+  ![closed_git](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale_closed_git.png)
   
  ### Assignee Recommendation
  
@@ -60,6 +62,9 @@ The screen captures below depicts the assignee recommendation message received o
   
   - Once the issue creator selects a candidate, the bot assigns the issue to that candidate. The following message is then received on Mattermost.
   ![Assigned](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assigned.png)
+  
+  - Also, the change is reflected on Github as follows:
+  ![Assigned_git](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assigneed_reco.png)
  
  
  ###  Automatic Issue Status change
