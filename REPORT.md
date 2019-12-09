@@ -76,11 +76,20 @@ Issue status gets updated automatically based on some Pull Request(PR) events. W
 
 For each issue status change, a notification is sent to the assignee (or the issue creator, if there is no assignee) on Mattermost. 
 
-- Issue status changes (in this case, issue status changes to closed. This is just one of many possible examples)
-![Closed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close.png)
+- Issue status changes (status change notification messages can be triggered due to automatic status change usecase as well as due to manual change) 
+    - The notifications generated due to Automatic Status Change usecase can be seen below:
+        PR creation:
+        ![notify-ir](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-ir.png)
 
-- Status Change Notification is sent to assignee/issue creator
-![Closed message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close-msg.png)
+        PR merge:
+        ![notify-it](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-it.png)
+
+    - The notifications generated due to manual Status Change usecase can be seen below:
+        Issue being closed:
+        ![Closed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close.png)
+
+        Status Change Notification is sent to assignee/issue creator
+        ![Closed message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close-msg.png)
 
 ## Our reflection on the development process and project
  - We followed many software design processes and testing methodologies during the course of the project which helped ensure efficient and stream-lined flow of our work. 
