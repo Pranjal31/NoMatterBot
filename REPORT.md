@@ -5,13 +5,13 @@ Issue Tracking Software like JIRA and Github Issues allow users to create issues
 
 Some problems that are prevalent with issue management are:
 
-Closing Stale Issues: Some issues are created and kept on hold because of lack of resources among other things. Over time, these issues become stale and continue to remain in the open issues list. Manually following up on these issues can prove to be burdensome.
+**Stale Issue Management:** Some issues are created and kept on hold because of lack of resources among other things. Over time, these issues become stale and continue to remain in the open issues list. Manually following up on these issues can prove to be burdensome.
 
-Assignee Recommendation: For assigning a new issue to someone, one has to manually go through potential assignees' current load (e.g. number of issues currently being worked upon) or talk to them directly to get some idea about their current workload. To make good a good assignment, skillset of potential assignees must also be considered. Figuring out the best assignee could take up a some time.
+**Assignee Recommendation:** For assigning a new issue to someone, one has to manually go through potential assignees' current load (e.g. number of issues currently being worked upon) or talk to them directly to get some idea about their current workload. To make good a good assignment, skillset of potential assignees must also be considered. Figuring out the best assignee could take up a some time.
 
-Changing Issue Status: An assignee / manager / scrum master has to manually change an issue’s status from one state to another. For example, if a Pull Request (PR) related to an issue has been approved, merged, and closed, the status must be changed to "in test".
+**Changing Issue Status:** An assignee / manager / scrum master has to manually change an issue’s status from one state to another. For example, if a Pull Request (PR) related to an issue has been approved, merged, and closed, the status must be changed to "in test".
 
-Status Change Notifications: Most of the issue tracking systems either do not notify watchers about changes in issue status or send it over email which is not very convenient.
+**Status Change Notifications:** Most of the issue tracking systems either do not notify watchers about changes in issue status or send it over email which is not very convenient.
 
 All the tasks mentioned above are repetitive and mundane. A team's valuable time can be freed up if the above tasks are offloaded to another entity. **Enter: NoMatterBot** - A ChatDevBot designed for efficient management of issues on GitHub by automating mundane tasks.
 
