@@ -25,5 +25,4 @@ The details related to deployment, User Acceptance Testing (UAT), final code, an
 
 ## Report
 
-The project report, screen captures for the use cases and final project presentation video can be found [here] 
-(https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/REPORT.md)
+The project report, screen captures for the use cases and final project presentation video can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/REPORT.md)
