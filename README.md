@@ -22,3 +22,8 @@ The details related to Process and Practices followed while implementing NoMatte
 ## Deploy
 
 The details related to deployment, User Acceptance Testing (UAT), final code, and Continous Integration can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DEPLOY.md)
+
+## Report
+
+The project report, screen captures for the use cases and final project presentation video can be found [here] 
+(https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/REPORT.md)
