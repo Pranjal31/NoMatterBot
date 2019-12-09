@@ -1,9 +1,7 @@
 This document provides final report for our project - NoMatterBot.
 
 ## The Problem solved by the Bot
-Issue Tracking Software like JIRA and Github Issues allow users to create issues for managing tasks and bugs in software engineering projects. However, most of the time managing issues itself becomes a taxing task. Considerable amount of a team's time is spent on issue management activities like following up on issues, finding the team member with the right skillset and bandwidth to take up the issue and maintaining the issue. 
-
-Some problems that are prevalent with issue management are:
+Issue Tracking Software like JIRA and Github Issues allow users to create issues for managing tasks and bugs in software engineering projects. However, most of the time managing issues itself becomes a taxing task. A considerable amount of a team's time is spent on the following issue management tasks: 
 
 **Stale Issue Management:** Some issues are created and kept on hold because of lack of resources among other things. Over time, these issues become stale and continue to remain in the open issues list. Manually following up on these issues can prove to be burdensome.
 
