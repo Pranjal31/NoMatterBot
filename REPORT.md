@@ -109,13 +109,13 @@ For each issue status change, a notification is sent to the assignee (or the iss
         ![Closed message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close-msg.png)
 
 ## Our reflection on the development process and project
- - We followed many software design processes and testing methodologies during the course of the project which helped ensure efficient and streamlined flow of our work. 
- - Integration testing and mocking framework helped us visualize the overall working and flow of Bot software. 
- - We utilized this as the base to fill in the missing parts and make it work in real time.
- - We followed Scrum framework and Kanban workflow practice during the development phase of the project. 
- - Breaking down the whole project into small user stories helped us deliver small and deliver often. This allowed us to keep adding value to the bot software. It also helped us distribute workload equally among ourselves. 
- - Since Kanban stories focus on value addition to the user, we used these stories as metrics to gauge our use cases. This helped us improve upon our use cases and provide better user experience with NoMatterBot. 
- - Meeting with team-mates frequently for collaboration, reporting our work and future plan ensured that we made steady progress developing NoMatterBot.
+ - We followed many software design processes and testing methodologies during the course of the project which helped ensure efficient and streamlined flow of our work
+ - Integration testing and mocking framework helped us visualize the overall working and flow of the Bot's software 
+ - We utilized this as the base to fill in the missing parts and make it work in real time
+ - We followed Scrum framework and Kanban workflow practice during the development phase of the project 
+ - Breaking down the whole project into small user stories helped us deliver small and deliver often. This allowed us to keep adding value to the bot software. It also helped us distribute workload equally among ourselves 
+ - Since Kanban stories focus on value addition to the user, we used these stories as metrics to gauge our use cases. This helped us improve upon our use cases and provide better user experience with NoMatterBot 
+ - Meeting with team-mates frequently for collaboration, reporting our work and future plan ensured that we made steady progress developing NoMatterBot
  - Most of the things we learnt during the development of this project are suitable to be used in future projects as well. This project gave us very good exposure to many technical skills as well as software processes like Scrumban. Overall, it was an engaging project, with lots of new things to learn. The project also provided ample opportunities to implement and use our learnings as we designed, developed, tested and deployed NoMatterBot.
 
 The final presentation video can be found [here](https://www.youtube.com/watch?v=qvxAgteq4dg)
