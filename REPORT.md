@@ -1,4 +1,4 @@
-This document provides final report for our project - NoMatterBot.
+This document serves as the final report for our project - NoMatterBot.
 
 ## The Problem solved by the Bot
 Issue Tracking Software like JIRA and Github Issues allow users to create issues for managing tasks and bugs in software engineering projects. However, most of the time managing issues itself becomes a taxing task. A considerable amount of a team's time is spent on the following issue management tasks: 
