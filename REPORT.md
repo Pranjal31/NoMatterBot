@@ -53,7 +53,23 @@ Clearly the above tasks are repeatative and mundane. The managers valuable time 
  
  
  ###  Automatic Issue Status change
- 
+
+Issue status gets updated automatically based on some Pull Request(PR) events. When a new PR is created referencing an existing issue on GitHub, the status of that issue gets changed to "in review". This is done by addition/update of status label on the issue. Similarly, if a PR referencing an issue gets merged, the status of the corresponding issue gets changed to "in test".
+
+- A new issue is created
+![New Issue](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stat-change-new-issue.png)
+
+- A new PR is created that references the issue
+![New PR](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stat-change-pr-create.png)
+
+- Issue status changes to "in review"
+![In review](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stat-changed-ir.png)
+
+- The PR is merged
+![PR merged](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stat-change-pr-merge.png)
+
+- Issue status changes to "in test"
+![In test](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stat-changed-ir.png)
  ### Issue Status Change Notification
  
 
