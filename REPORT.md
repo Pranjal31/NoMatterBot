@@ -1,8 +1,38 @@
 This document provides the report of our project.
 
 ## The Problem solved by the Bot
+Considerable amount of Managers time is spent in issue management activities like: follow up on issues, finding the developer with right skillset and bandwidth to takeup issues, tracking of issue. 
+
+Clearly the above tasks are repeatative and mundane. The managers valuable time can be freed up if the above tasks could be offloaded. In our Project NoMatter Bot performs all the above tasks so that the manager can focus on other tasks.
 
 ## Primary features and screenshots
+
+ Following are the features of the bot. The detailed explaination, artchitecture, Main and Subflows of the bot can be found in our design [document](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DESIGN.md)
+ ### Stale Issue Management
+  The bot is configured with a cron job which runs every day and finds the Stale Issues (Issues which have had no activity on them in the last 6 months) and presents it to the assignees/creator on mattermost with the option to Close the individual Issues, Close All Issues and Ignore All issues.
+  
+  Note: To simplify the testing process, the cron job is scheduled to run every minute and if there is no activity on an issue for more than 2 minutes, the Issue is considered as stale issue.
+  
+  The following screen captures depicts the feature of Stale Issue Management
+  - Stale Issue Message Posted on Mattermost, depicting all the stale Issues with Issue Name,Number and the repository with the option to close, Close All, Ignore All. 
+  ![Stale Issue Message on Mattermost](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stale-1.png)
+  
+  - The User may click on `close` to close Individual Issues, the screen capture below depics the response received from bot upon closing a stale Issue.
+  ![Close and Individual Issue](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stale-single-close.png)
+  
+  - The User may click on `Ignore All` to Ignore the stale Issue Message. The screen capture below depicts the response received from the bot on clicking `Ignore All`.
+  ![Ignore All](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stale-ignore.png)
+  
+  - The User may click on `Close All Issues` to close all the Issues displayed in the message. The bot closes all the Issues and displays the following message.
+  ![Close All Issues](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stale-close-all.png)
+  
+  
+ ### Assignee Recommendation
+ 
+ ###  Automatic Issue Status change
+ 
+ ### Issue Status Change Notification
+ 
 
 ## Our reflection on the development process and project
  - We followed many software design processes and testing methodologies during the course of the project which helped ensure efficient and stream-lined flow of our work. 
@@ -17,6 +47,17 @@ This document provides the report of our project.
 
 
 ## Any limitations and future work
+ The following are the limitations observed in the bot:
+ - Addition of a new User to the bot's database and the Github repository. The new user cannot be added in real time.
+ - Addition of new skills for a user to the database.
+ - Removal of User and his skill sets once the User moves to a different project or leaves the organization.
+ 
+The above limiattions can be addressed in the upcoming Future work as decribed below:
+- Create API to add new Users to the database. 
+- Create API to update the skills of the User.
+- Create API to remove the User and Skill set once the User leaves the project/ organization.
+
+
 
 
 The link for the final presentation video can be found [here]. 
