@@ -58,7 +58,7 @@ The screen captures below depicts the assignee recommendation message received o
   - The dropdown lists all the assignees for the Issue.
   ![All Assignee listed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assign-all.png)
   
-  - Once the issue creator selects a candidate, the bot assigns the issue to that candidat. The following message is then received on Mattermost.
+  - Once the issue creator selects a candidate, the bot assigns the issue to that candidate. The following message is then received on Mattermost.
   ![Assigned](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assigned.png)
  
  
