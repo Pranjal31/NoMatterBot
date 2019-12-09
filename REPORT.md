@@ -19,16 +19,16 @@ Clearly the above tasks are repeatative and mundane. The managers valuable time 
   
   The following screen captures depicts the feature of Stale Issue Management
   - Stale Issue Message Posted on Mattermost, depicting all the stale Issues with Issue Name,Number and the repository with the option to close, Close All, Ignore All. 
-  ![Stale Issue Message on Mattermost](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stale-1.png)
+  ![Stale Issue Message on Mattermost](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-1.png)
   
   - The User may click on `close` to close Individual Issues, the screen capture below depics the response received from bot upon closing a stale Issue.
-  ![Close and Individual Issue](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stale-single-close.png)
+  ![Close and Individual Issue](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-single-close.png)
   
   - The User may click on `Ignore All` to Ignore the stale Issue Message. The screen capture below depicts the response received from the bot on clicking `Ignore All`.
-  ![Ignore All](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stale-ignore.png)
+  ![Ignore All](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-ignore.png)
   
   - The User may click on `Close All Issues` to close all the Issues displayed in the message. The bot closes all the Issues and displays the following message.
-  ![Close All Issues](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stale-close-all.png)
+  ![Close All Issues](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-close-all.png)
   
   
  ### Assignee Recommendation
@@ -37,19 +37,19 @@ Clearly the above tasks are repeatative and mundane. The managers valuable time 
   The screen captures below depicts the assignee recommendation message received on mattermost upon issue creation
   
   - Assignee Recommendation message on mattermost, the drop down contains the list of assignees.
-  ![Assignee Recommend Message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/assignee-recom-1.png)
+  ![Assignee Recommend Message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assignee-recom-1.png)
   
   - The dropdown showing the top 3 assignee recommendation
-  ![Assignees in Assignee Recommend Message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/assignee-recom-2.png)
+  ![Assignees in Assignee Recommend Message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assignee-recom-2.png)
   
   - The User may click on `Show More` upon which the following message is received on mattermost.
-  ![Show All message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/show-all-message.png)
+  ![Show All message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/show-all-message.png)
   
   - The drop down lists all the assignees for the Issue.
-  ![All Assignee listed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/assign-all.png)
+  ![All Assignee listed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assign-all.png)
   
   - Once the user clicks on an assignee, the bot assigns the issue to assignee and the user receives the following message on masttermost.
-  ![Assigned](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/assigned.png)
+  ![Assigned](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assigned.png)
  
  
  ###  Automatic Issue Status change
@@ -57,19 +57,19 @@ Clearly the above tasks are repeatative and mundane. The managers valuable time 
 Issue status gets updated automatically based on some Pull Request(PR) events. When a new PR is created referencing an existing issue on GitHub, the status of that issue gets changed to "in review". This is done by addition/update of status label on the issue. Similarly, if a PR referencing an issue gets merged, the status of the corresponding issue gets changed to "in test".
 
 - A new issue is created
-![New Issue](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stat-change-new-issue.png)
+![New Issue](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-change-new-issue.png)
 
 - A new PR is created that references the issue
-![New PR](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stat-change-pr-create.png)
+![New PR](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-change-pr-create.png)
 
 - Issue status changes to "in review"
-![In review](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stat-changed-ir.png)
+![In review](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-changed-ir.png)
 
 - The PR is merged
-![PR merged](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stat-change-pr-merge.png)
+![PR merged](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-change-pr-merge.png)
 
 - Issue status changes to "in test"
-![In test](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/stat-changed-ir.png)
+![In test](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-changed-ir.png)
 
 
 ### Issue Status Change Notification
@@ -77,10 +77,10 @@ Issue status gets updated automatically based on some Pull Request(PR) events. W
 For each issue status change, a notification is sent to the assignee (or the issue creator, if there is no assignee) on Mattermost. 
 
 - Issue status changes (in this case, issue status changes to closed. This is just one of many possible examples)
-![Closed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/notify-close.png)
+![Closed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close.png)
 
 - Status Change Notification is sent to assignee/issue creator
-![Closed message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/notify-close-msg.png)
+![Closed message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close-msg.png)
 
 ## Our reflection on the development process and project
  - We followed many software design processes and testing methodologies during the course of the project which helped ensure efficient and stream-lined flow of our work. 
