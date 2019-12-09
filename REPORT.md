@@ -1,54 +1,66 @@
-This document provides the report of our project.
+This document provides final report for our project - NoMatterBot.
 
 ## The Problem solved by the Bot
-Considerable amount of Managers time is spent in issue management activities like: follow up on issues, finding the developer with right skillset and bandwidth to takeup issues, tracking of issue. 
+Issue Tracking Software like JIRA and Github Issues allow users to create issues for managing tasks and bugs in software engineering projects. However, most of the time managing issues itself becomes a taxing task. Considerable amount of a team's time is spent on issue management activities like following up on issues, finding the team member with the right skillset and bandwidth to take up the issue and maintaining the issue. 
 
-Clearly the above tasks are repeatative and mundane. The managers valuable time can be freed up if the above tasks could be offloaded. In our Project NoMatter Bot performs all the above tasks so that the manager can focus on other tasks.
+Some problems that are prevalent with issue management are:
+
+Closing Stale Issues: Some issues are created and kept on hold because of lack of resources among other things. Over time, these issues become stale and continue to remain in the open issues list. Manually following up on these issues can prove to be burdensome.
+
+Assignee Recommendation: For assigning a new issue to someone, one has to manually go through potential assignees' current load (e.g. number of issues currently being worked upon) or talk to them directly to get some idea about their current workload. To make good a good assignment, skillset of potential assignees must also be considered. Figuring out the best assignee could take up a some time.
+
+Changing Issue Status: An assignee / manager / scrum master has to manually change an issue’s status from one state to another. For example, if a Pull Request (PR) related to an issue has been approved, merged, and closed, the status must be changed to "in test".
+
+Status Change Notifications: Most of the issue tracking systems either do not notify watchers about changes in issue status or send it over email which is not very convenient.
+
+All the tasks mentioned above are repetitive and mundane. A team's valuable time can be freed up if the above tasks are offloaded to another entity. **Enter: NoMatterBot** - A ChatDevBot designed for efficient management of issues on GitHub by automating mundane tasks.
 
 ## Primary features and screenshots
 
- Following are the features of the bot. The detailed explaination, artchitecture, Main and Subflows of the bot can be found in our design [document](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DESIGN.md).
+The detailed explaination related to the design of the bot and usecases can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DESIGN.md).
  
- For in detail steps to test each Use case and the acceptance criteria for the same, please refer the deploy [document](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DEPLOY.md).
+Furthermore, details related to acceptance testing for each usecase can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DEPLOY.md).
  
- The final project presentation video demonstrates all the below Primary features, the video can be found [here].
- ### Stale Issue Management
-  The bot is configured with a cron job which runs every day and finds the Stale Issues (Issues which have had no activity on them in the last 6 months) and presents it to the assignees/creator on mattermost with the option to Close the individual Issues, Close All Issues and Ignore All issues.
+The primary features of NoMatterBot are as follows:
+
+### Stale Issue Management
+ 
+The bot is configured with a cron job which runs every day and finds the Stale Issues (Issues which have had no activity on them in the last 6 months) and presents it to the assignees/creator on mattermost with the option to Close the individual Issues, Close All Issues and Ignore All issues.
   
-  Note: To simplify the testing process, the cron job is scheduled to run every minute and if there is no activity on an issue for more than 2 minutes, the Issue is considered as stale issue.
+Note: To simplify the testing process, the cron job is scheduled to run every minute and if there is no activity on an issue for more than 2 minutes, the Issue is considered as a stale issue.
   
-  The following screen captures depicts the feature of Stale Issue Management
-  - Stale Issue Message Posted on Mattermost, depicting all the stale Issues with Issue Name,Number and the repository with the option to close, Close All, Ignore All. 
+The following screen captures depict Stale Issue Management
+  - Stale Issue Message Posted on Mattermost, depicting all the stale Issues with Issue Name, Issue Number and the repository with the option to `Close`, `Close All`, `Ignore All`. 
   ![Stale Issue Message on Mattermost](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-1.png)
   
-  - The User may click on `close` to close Individual Issues, the screen capture below depics the response received from bot upon closing a stale Issue.
+  - The user may click on `Close` to close individual issues, the screen capture below depics the response received from bot upon closing a stale Issue.
   ![Close and Individual Issue](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-single-close.png)
   
-  - The User may click on `Ignore All` to Ignore the stale Issue Message. The screen capture below depicts the response received from the bot on clicking `Ignore All`.
+  - The User may click on `Ignore All` to ignore the stale issue Message. The screen capture below depicts the response received from the bot on clicking `Ignore All`.
   ![Ignore All](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-ignore.png)
   
-  - The User may click on `Close All Issues` to close all the Issues displayed in the message. The bot closes all the Issues and displays the following message.
+  - The User may click on `Close All Issues` to close all the issues displayed in the message. The bot closes all the issues and displays the following message.
   ![Close All Issues](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-close-all.png)
   
   
  ### Assignee Recommendation
-  Upon Issue creation the bot takes in to account, the Skills mentioned in issue body if any, the workload of the users and suggests the assignees for the issue.
+ 
+Upon Issue creation the bot takes in to account 1) skills required for the issue (mentioned in issue body) and the skillset of assignment candidates and 2) workload of candidates and provides top recommendations to the issue creator
   
-  The screen captures below depicts the assignee recommendation message received on mattermost upon issue creation
-  
-  - Assignee Recommendation message on mattermost, the drop down contains the list of assignees.
+The screen captures below depicts the assignee recommendation message received on Mattermost upon issue creation
+  - Assignee Recommendation message on Mattermost, the dropdown contains the list of recommendations.
   ![Assignee Recommend Message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assignee-recom-1.png)
   
-  - The dropdown showing the top 3 assignee recommendation
+  - The dropdown showing top 3 assignee recommendations
   ![Assignees in Assignee Recommend Message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assignee-recom-2.png)
   
-  - The User may click on `Show More` upon which the following message is received on mattermost.
+  - The issue creator may click on `Show More` upon which the following message is received on Mattermost.
   ![Show All message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/show-all-message.png)
   
-  - The drop down lists all the assignees for the Issue.
+  - The dropdown lists all the assignees for the Issue.
   ![All Assignee listed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assign-all.png)
   
-  - Once the user clicks on an assignee, the bot assigns the issue to assignee and the user receives the following message on masttermost.
+  - Once the issue creator selects a candidate, the bot assigns the issue to that candidat. The following message is then received on Mattermost.
   ![Assigned](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assigned.png)
  
  
@@ -100,8 +112,6 @@ For each issue status change, a notification is sent to the assignee (or the iss
  - Since Kanban stories focus on value addition to the user, we used these stories as metrics to gauge our use cases. This helped us improve upon our use-cases and provide for better user experience with NoMatterBot. 
  - Meeting with team-mates every day, reporting our work and future plan ensure that we made steady progress developing NoMatterBot software.
  - Most of the things we learnt during the development of this project are suitable to be used in our future projects as well. This project gave us a very good exposure to many technical as well as Software development cycle practices like Agile etc.   Overall, it was an engaging project, with lots of new things to learn and many opportunities to implement and use them as we designed, built, tested and deployed NoMatterBot.
-
-
 
 ## Any limitations and future work
  The following are the limitations observed in the bot:
