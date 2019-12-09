@@ -7,7 +7,11 @@ Clearly the above tasks are repeatative and mundane. The managers valuable time 
 
 ## Primary features and screenshots
 
- Following are the features of the bot. The detailed explaination, artchitecture, Main and Subflows of the bot can be found in our design [document](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DESIGN.md)
+ Following are the features of the bot. The detailed explaination, artchitecture, Main and Subflows of the bot can be found in our design [document](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DESIGN.md).
+ 
+ For in detail steps to test each Use case and the acceptance criteria for the same, please refer the deploy [document](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DEPLOY.md).
+ 
+ The final project presentation video demonstrates all the below Primary features, the video can be found [here].
  ### Stale Issue Management
   The bot is configured with a cron job which runs every day and finds the Stale Issues (Issues which have had no activity on them in the last 6 months) and presents it to the assignees/creator on mattermost with the option to Close the individual Issues, Close All Issues and Ignore All issues.
   
@@ -28,6 +32,25 @@ Clearly the above tasks are repeatative and mundane. The managers valuable time 
   
   
  ### Assignee Recommendation
+  Upon Issue creation the bot takes in to account, the Skills mentioned in issue body if any, the workload of the users and suggests the assignees for the issue.
+  
+  The screen captures below depicts the assignee recommendation message received on mattermost upon issue creation
+  
+  - Assignee Recommendation message on mattermost, the drop down contains the list of assignees.
+  ![Assignee Recommend Message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/assignee-recom-1.png)
+  
+  - The dropdown showing the top 3 assignee recommendation
+  ![Assignees in Assignee Recommend Message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/assignee-recom-2.png)
+  
+  - The User may click on `Show More` upon which the following message is received on mattermost.
+  ![Show All message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/show-all-message.png)
+  
+  - The drop down lists all the assignees for the Issue.
+  ![All Assignee listed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/assign-all.png)
+  
+  - Once the user clicks on an assignee, the bot assigns the issue to assignee and the user receives the following message on masttermost.
+  ![Assigned](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/report-images/assigned.png)
+ 
  
  ###  Automatic Issue Status change
  
@@ -51,11 +74,13 @@ Clearly the above tasks are repeatative and mundane. The managers valuable time 
  - Addition of a new User to the bot's database and the Github repository. The new user cannot be added in real time.
  - Addition of new skills for a user to the database.
  - Removal of User and his skill sets once the User moves to a different project or leaves the organization.
+ - We have assumed in our use cases that there is always a single assignee per issue. The cases of multiples assignees per issue in case of stale issues management and assigning a single Issue to multiple assignees havent been covered.
  
 The above limiattions can be addressed in the upcoming Future work as decribed below:
 - Create API to add new Users to the database. 
 - Create API to update the skills of the User.
 - Create API to remove the User and Skill set once the User leaves the project/ organization.
+- Update the API's and implement the code to handle the cases for multiple assignees per issue.
 
 
 
