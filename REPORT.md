@@ -37,7 +37,7 @@ The following screen captures depict Stale Issue Management
   - The User may click on `Ignore All` to ignore the stale issue Message. The screen capture below depicts the response received from the bot on clicking `Ignore All`.
   ![Ignore All](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-ignore.png)
   
-  - The User may click on `Close All Issues` to close all the issues displayed in the message. The bot closes all the issues and displays the following message.
+  - The User may click on `Close All` Issues to close all the issues displayed in the message. The bot closes all the issues and displays the following message.
   ![Close All Issues](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-close-all.png)
   
   
@@ -102,28 +102,26 @@ For each issue status change, a notification is sent to the assignee (or the iss
         ![Closed message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close-msg.png)
 
 ## Our reflection on the development process and project
- - We followed many software design processes and testing methodologies during the course of the project which helped ensure efficient and stream-lined flow of our work. 
- - The Integration testing and mocking frame-work we created, helped us to visualize the overall working and flow of the Bot’s software. 
- - We utilized this as the base to fill-in the missing parts of our software and make it work in real time.
+ - We followed many software design processes and testing methodologies during the course of the project which helped ensure efficient and streamlined flow of our work. 
+ - Integration testing and mocking framework helped us visualize the overall working and flow of Bot software. 
+ - We utilized this as the base to fill in the missing parts and make it work in real time.
  - We followed Scrum framework and Kanban workflow practice during the development phase of the project. 
- - Breaking down the whole project into smaller chunks in the form of short user stories made our work plan oriented and manageable. It also helped us distribute work-load equally among ourselves. 
- - Since Kanban stories focus on value addition to the user, we used these stories as metrics to gauge our use cases. This helped us improve upon our use-cases and provide for better user experience with NoMatterBot. 
- - Meeting with team-mates every day, reporting our work and future plan ensure that we made steady progress developing NoMatterBot software.
- - Most of the things we learnt during the development of this project are suitable to be used in our future projects as well. This project gave us a very good exposure to many technical as well as Software development cycle practices like Agile etc.   Overall, it was an engaging project, with lots of new things to learn and many opportunities to implement and use them as we designed, built, tested and deployed NoMatterBot.
+ - Breaking down the whole project into small user stories helped us deliver small and deliver often. This allowed us to keep adding value to the bot software. It also helped us distribute workload equally among ourselves. 
+ - Since Kanban stories focus on value addition to the user, we used these stories as metrics to gauge our use cases. This helped us improve upon our use cases and provide better user experience with NoMatterBot. 
+ - Meeting with team-mates frequently for collaboration, reporting our work and future plan ensured that we made steady progress developing NoMatterBot.
+ - Most of the things we learnt during the development of this project are suitable to be used in future projects as well. This project gave us very good exposure to many technical skills as well as software processes like Scrumban. Overall, it was an engaging project, with lots of new things to learn. The project also provided ample opportunities to implement and use our learnings as we designed, developed, tested and deployed NoMatterBot.
+
+The link for the final presentation video can be found [here](https://www.youtube.com/watch?v=qvxAgteq4dg)
 
 ## Any limitations and future work
- The following are the limitations observed in the bot:
- - Addition of a new User to the bot's database and the Github repository. The new user cannot be added in real time.
- - Addition of new skills for a user to the database.
- - Removal of User and his skill sets once the User moves to a different project or leaves the organization.
- - We have assumed in our use cases that there is always a single assignee per issue. The cases of multiples assignees per issue in case of stale issues management and assigning a single Issue to multiple assignees havent been covered.
+The following are  some of the limitations observed in NoMatterBot:
+ - Addition of a new User to the bot's database and the Github repository. There is no user interface to add new developers (manual changes have to be made in Database)
+ - New skills for a user have to be manually added to the database
+ - Removal of a user along with skillset (moving to a different project or leaving the organization) is manual
+ - We have assumed in our use cases that there is always a single assignee per issue. The cases of multiples assignees per issue in case of stale issues management and assigning a single issue to multiple assignees havent been covered.
  
-The above limiattions can be addressed in the upcoming Future work as decribed below:
-- Create API to add new Users to the database. 
-- Create API to update the skills of the User.
-- Create API to remove the User and Skill set once the User leaves the project/ organization.
-- Update the API's and implement the code to handle the cases for multiple assignees per issue.
-
-The link for the final presentation video can be found [here]. 
-
-[here]:https://www.youtube.com/watch?v=qvxAgteq4dg
+The above limitations can be addressed in future as described below:
+- Create API to add new Users to the database (using a message sent to NoMatterBot)
+- Create API to update the skills of the User (using a message sent to NoMatterBot)
+- Create API to remove the User and skillset once the user leaves the project/organization (using a message sent to NoMatterBot)
+- Update the APIs and implement code to handle multiple assignees per issue.
