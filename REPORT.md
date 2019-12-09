@@ -79,7 +79,7 @@ Issue status gets updated automatically based on some Pull Request(PR) events. W
 ![PR merged](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-change-pr-merge.png)
 
 - Issue status changes to "in test"
-![In test](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-changed-ir.png)
+![In test](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-changed-it.png)
 
 
 ### Issue Status Change Notification
@@ -88,17 +88,19 @@ For each issue status change, a notification is sent to the assignee (or the iss
 
 - Issue status changes (status change notification messages can be triggered due to automatic status change usecase as well as due to manual change) 
     - The notifications generated due to Automatic Status Change usecase can be seen below:
+    
         PR creation:
         ![notify-ir](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-ir.png)
 
         PR merge:
         ![notify-it](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-it.png)
 
-    - The notifications generated due to manual Status Change usecase can be seen below:
+    - The notifications generated due to manual Status Change can be seen below:
+    
         Issue being closed:
         ![Closed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close.png)
 
-        Status Change Notification is sent to assignee/issue creator
+        Status Change Notification is sent to assignee/issue creator:
         ![Closed message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close-msg.png)
 
 ## Our reflection on the development process and project
