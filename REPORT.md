@@ -113,7 +113,7 @@ For each issue status change, a notification is sent to the assignee (or the iss
  - Meeting with team-mates frequently for collaboration, reporting our work and future plan ensured that we made steady progress developing NoMatterBot.
  - Most of the things we learnt during the development of this project are suitable to be used in future projects as well. This project gave us very good exposure to many technical skills as well as software processes like Scrumban. Overall, it was an engaging project, with lots of new things to learn. The project also provided ample opportunities to implement and use our learnings as we designed, developed, tested and deployed NoMatterBot.
 
-The link for the final presentation video can be found [here](https://www.youtube.com/watch?v=qvxAgteq4dg)
+The final presentation video can be found [here](https://www.youtube.com/watch?v=qvxAgteq4dg)
 
 ## Any limitations and future work
 The following are  some of the limitations observed in NoMatterBot:
