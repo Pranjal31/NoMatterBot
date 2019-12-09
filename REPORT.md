@@ -100,7 +100,7 @@ For each issue status change, a notification is sent to the assignee (or the iss
         Issue being closed:
         ![Closed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close.png)
 
-        Status Change Notification is sent to assignee/issue creator:
+
         ![Closed message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close-msg.png)
 
 ## Our reflection on the development process and project
