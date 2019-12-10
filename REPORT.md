@@ -120,7 +120,7 @@ For each issue status change, a notification is sent to the assignee (or the iss
 
 The final presentation video can be found [here](https://www.youtube.com/watch?v=qvxAgteq4dg)
 
-## Any limitations and future work
+## Limitations and future work
 The following are  some of the limitations observed in NoMatterBot:
  - Addition of a new User to the bot's database and the Github repository. There is no user interface to add new developers (manual changes have to be made in Database)
  - New skills for a user have to be manually added to the database
