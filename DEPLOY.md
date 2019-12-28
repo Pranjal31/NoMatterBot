@@ -4,7 +4,7 @@
 
 The bot is hosted on Google Cloud Platform (GCP). We are using two Ubuntu Virtual Machines (VM), one hosts the Mattermost server and the other machine hosts NoMatterBot and database that the bot needs. The server is configured to accept all the traffic of interest from Github.
 
-To deploy and run this bot, numerous tasks are needed which are automated using ansible. The ansible playbook can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/main.yml). The inventory file for the same can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/deploy/inventory).
+To deploy and run this bot, numerous tasks are needed which are automated using ansible. The ansible playbook can be found [here](https://github.com/Pranjal31/NoMatterBot/blob/master/deploy/main.yml). The inventory file for the same can be found [here](https://github.com/Pranjal31/NoMatterBot/blob/master/deploy/inventory).
 
 The playbook can be run from any machine which can connect to GCP instance using ssh. When the playbook is run using `ansible-playbook -i inventory main.yml`, it prompts the user to provide values for certain variables needed for deployment and setup. The playbook ensures that the VM hosting the bot has all the necessary environment variables set. It also clones the latest code from the the bot's repository, installs all the necessary packages, installs (if not already installed) and configures the MySQL server and runs the bot app. 
 
