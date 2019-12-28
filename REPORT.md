@@ -15,9 +15,9 @@ All the tasks mentioned above are repetitive and mundane. A team's valuable time
 
 ## Primary features and screenshots
 
-The detailed explaination related to the design of the bot and usecases can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DESIGN.md).
+The detailed explaination related to the design of the bot and usecases can be found [here](https://github.com/Pranjal31/NoMatterBot/blob/master/DESIGN.md).
  
-Furthermore, details related to acceptance testing for each usecase can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DEPLOY.md).
+Furthermore, details related to acceptance testing for each usecase can be found [here](https://github.com/Pranjal31/NoMatterBot/blob/master/DEPLOY.md).
  
 The primary features of NoMatterBot are as follows:
 
@@ -29,19 +29,19 @@ Note: To simplify the testing process, the cron job is scheduled to run every mi
   
 The following screen captures depict Stale Issue Management
   - Stale Issue Message Posted on Mattermost, depicting all the stale Issues with Issue Name, Issue Number and the repository with the option to `Close`, `Close All`, `Ignore All`. 
-  ![Stale Issue Message on Mattermost](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-1.png)
+  ![Stale Issue Message on Mattermost](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/stale-1.png)
   
   - The user may click on `Close` to close individual issues, the screen capture below depics the response received from bot upon closing a stale Issue.
-  ![Close and Individual Issue](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-single-close.png)
+  ![Close and Individual Issue](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/stale-single-close.png)
   
   - The User may click on `Ignore All` to ignore the stale issue Message. The screen capture below depicts the response received from the bot on clicking `Ignore All`.
-  ![Ignore All](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-ignore.png)
+  ![Ignore All](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/stale-ignore.png)
   
   - The User may click on `Close All` Issues to close all the issues displayed in the message. The bot closes all the issues and displays the following message.
-  ![Close All Issues](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale-close-all.png)
+  ![Close All Issues](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/stale-close-all.png)
   
   - The stale issues are closed and can be seen on the Github as follows:
-  ![closed_git](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stale_closed_git.png)
+  ![closed_git](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/stale_closed_git.png)
   
  ### Assignee Recommendation
  
@@ -49,22 +49,22 @@ Upon Issue creation the bot takes in to account 1) skills required for the issue
   
 The screen captures below depicts the assignee recommendation message received on Mattermost upon issue creation
   - Assignee Recommendation message on Mattermost, the dropdown contains the list of recommendations.
-  ![Assignee Recommend Message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assignee-recom-1.png)
+  ![Assignee Recommend Message](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/assignee-recom-1.png)
   
   - The dropdown showing top 3 assignee recommendations
-  ![Assignees in Assignee Recommend Message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assignee-recom-2.png)
+  ![Assignees in Assignee Recommend Message](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/assignee-recom-2.png)
   
   - The issue creator may click on `Show More` upon which the following message is received on Mattermost.
-  ![Show All message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/show-all-message.png)
+  ![Show All message](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/show-all-message.png)
   
   - The dropdown lists all the assignees for the Issue.
-  ![All Assignee listed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assign-all.png)
+  ![All Assignee listed](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/assign-all.png)
   
   - Once the issue creator selects a candidate, the bot assigns the issue to that candidate. The following message is then received on Mattermost.
-  ![Assigned](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assigned.png)
+  ![Assigned](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/assigned.png)
   
   - Also, the change is reflected on Github as follows:
-  ![Assigned_git](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/assigneed_reco.png)
+  ![Assigned_git](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/assigneed_reco.png)
  
  
  ###  Automatic Issue Status change
@@ -72,19 +72,19 @@ The screen captures below depicts the assignee recommendation message received o
 Issue status gets updated automatically based on some Pull Request(PR) events. When a new PR is created referencing an existing issue on GitHub, the status of that issue gets changed to "in review". This is done by addition/update of status label on the issue. Similarly, if a PR referencing an issue gets merged, the status of the corresponding issue gets changed to "in test".
 
 - A new issue is created
-![New Issue](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-change-new-issue.png)
+![New Issue](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/stat-change-new-issue.png)
 
 - A new PR is created that references the issue
-![New PR](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-change-pr-create.png)
+![New PR](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/stat-change-pr-create.png)
 
 - Issue status changes to "in review"
-![In review](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-changed-ir.png)
+![In review](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/stat-changed-ir.png)
 
 - The PR is merged
-![PR merged](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-change-pr-merge.png)
+![PR merged](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/stat-change-pr-merge.png)
 
 - Issue status changes to "in test"
-![In test](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/stat-changed-it.png)
+![In test](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/stat-changed-it.png)
 
 
 ### Issue Status Change Notification
@@ -95,18 +95,18 @@ For each issue status change, a notification is sent to the assignee (or the iss
     - The notifications generated due to Automatic Status Change usecase can be seen below:
     
         PR creation:
-        ![notify-ir](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-ir.png)
+        ![notify-ir](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/notify-ir.png)
 
         PR merge:
-        ![notify-it](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-it.png)
+        ![notify-it](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/notify-it.png)
 
     - The notifications generated due to manual Status Change can be seen below:
     
         Issue being closed:
-        ![Closed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close.png)
+        ![Closed](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/notify-close.png)
 
 
-        ![Closed message](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/report-images/notify-close-msg.png)
+        ![Closed message](https://github.com/Pranjal31/NoMatterBot/blob/master/img/report-images/notify-close-msg.png)
 
 ## Our reflection on the development process and project
  - We followed many software design practices and testing methodologies during the course of the project which helped ensure efficient and streamlined flow of our work
