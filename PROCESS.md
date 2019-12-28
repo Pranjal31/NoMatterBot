@@ -8,7 +8,7 @@ We have two sprints for developing our bot:
 + Sat Nov 2 -- Fri Nov 8th
 
 Before beginning of first iterations the state of the kanban board was 
-![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration1/start.png)
+![ ](https://github.com/Pranjal31/NoMatterBot/blob/dev/scrumban/Iteration1/start.png)
 
 ##### Iteration 1 (Wed Oct 23 -- Fri Nov 1)
 The stories created and worked on during this iteration are:
@@ -40,15 +40,15 @@ The stories created and worked on during this iteration are:
    Story points: 1
 
 When assignees start working on their stories, they move the cards to "In progress" column. The kanban board status:\
-![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration1/Process-26_10.png)
+![ ](https://github.com/Pranjal31/NoMatterBot/blob/dev/scrumban/Iteration1/Process-26_10.png)
 
 Once the assignees have finished developing and testing the stories on their local machines, they create a pull request to merge their respective branches in the dev branch. Other developers from the team review their code and approve the merge request or recommend changes if needed. During this phase the story cards are moved from "In progress" to "In review" column, our kanban board status was:\
-![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration1/Process_Sprint_1_In_Review.png)
+![ ](https://github.com/Pranjal31/NoMatterBot/blob/dev/scrumban/Iteration1/Process_Sprint_1_In_Review.png)
 
 If the changes are recommended on the pull request, the assignee keeps working on them until the pull request is approved. Once it is approved, the story cards move from "In review" to "Done" column. 
 
 The final state of the kanban board at the end of the iteration 1:\
-![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration1/Process_Sprint_1_Done.png)
+![ ](https://github.com/Pranjal31/NoMatterBot/blob/dev/scrumban/Iteration1/Process_Sprint_1_Done.png)
 
 ##### Iteration 2 (Sat Nov 2 -- Fri Nov 8th)
 The stories created and worked on during this iteration are:
@@ -77,13 +77,13 @@ The stories created and worked on during this iteration are:
    Story points: 3
 
 In the beginning, when all the story cards of this iteration were moved to "In progress" column, the kanban board status was:\
-![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration2/Process_Sprint_2_In_Progress.png)
+![ ](https://github.com/Pranjal31/NoMatterBot/blob/dev/scrumban/Iteration2/Process_Sprint_2_In_Progress.png)
 
 When the developers finished working on their stories and created a pull request, all the respective cards were moved to "In review" column on the kanban board:\
-![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration2/Process_Sprint_2_In_Review.png)
+![ ](https://github.com/Pranjal31/NoMatterBot/blob/dev/scrumban/Iteration2/Process_Sprint_2_In_Review.png)
 
 Once all the pull requests were merged, the cards were moved to "Done" column of the kanban board. \
-![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration2/Process_Srint_2_Done.png)
+![ ](https://github.com/Pranjal31/NoMatterBot/blob/dev/scrumban/Iteration2/Process_Srint_2_Done.png)
 
 In summary, each one of us were assigned following stories with associated story points:
 
@@ -141,7 +141,7 @@ Our team of 4 developers picked up the stories with the following point distribu
 
 Daily standup meeting were conducted to discuss the progress and the road blocks of the stories being worked upon.
 The meeting notes for the same can be found
-[here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration1/scrum-notes-iter1.txt).
+[here](https://github.com/Pranjal31/NoMatterBot/blob/dev/scrumban/Iteration1/scrum-notes-iter1.txt).
 
 In the 2nd Sprint, the remaining stories were picked up, the point distribution for the same as shown below:
 
@@ -151,7 +151,7 @@ In the 2nd Sprint, the remaining stories were picked up, the point distribution 
 * Vaishakh: 1 story of 3 points (Toatal Points: 3)
 
 The daily standup meeting notes for the Sprint 2 can be found 
-[here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/dev/scrumban/Iteration2/scrum-notes-iter2.txt).
+[here](https://github.com/Pranjal31/NoMatterBot/blob/dev/scrumban/Iteration2/scrum-notes-iter2.txt).
 
 The screen captures of the story board during the various stages of sprint 1 and srint 2 can be seen in Process and Practices section.
 
