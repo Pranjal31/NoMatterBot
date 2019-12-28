@@ -9,20 +9,20 @@
 
 ## Design
 
-The design document for NoMatterBot can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DESIGN.md)
+The design document for NoMatterBot can be found [here](https://github.com/Pranjal31/NoMatterBot/blob/master/DESIGN.md)
 
 ## Bot  
 
-Details regarding the intial implementation of Use cases (using Mock data) and the Selenium tests for the same can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/BOT.md) 
+Details regarding the intial implementation of Use cases (using Mock data) and the Selenium tests for the same can be found [here](https://github.com/Pranjal31/NoMatterBot/blob/master/BOT.md) 
 
 ## Process
 
-The details related to Process and Practices followed while implementing NoMatterBot can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/PROCESS.md)
+The details related to Process and Practices followed while implementing NoMatterBot can be found [here](https://github.com/Pranjal31/NoMatterBot/blob/master/PROCESS.md)
 
 ## Deploy
 
-The details related to deployment, User Acceptance Testing (UAT), final code, and Continous Integration can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/DEPLOY.md)
+The details related to deployment, User Acceptance Testing (UAT), final code, and Continous Integration can be found [here](https://github.com/Pranjal31/NoMatterBot/blob/master/DEPLOY.md)
 
 ## Report
 
-The project report, screen captures for the use cases and final project presentation video can be found [here](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/REPORT.md)
+The project report, screen captures for the use cases and final project presentation video can be found [here](https://github.com/Pranjal31/NoMatterBot/blob/master/REPORT.md)
