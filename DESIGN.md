@@ -154,27 +154,27 @@ Note:
 
 ## Wireframe Mockups
 ### Welcome
-![welcome](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Welcome.png)
+![welcome](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Welcome.png)
 
 ### Stale Issues
-![stale issues closed](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Stale%20Issues%20-%20Close.png) 
+![stale issues closed](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Stale%20Issues%20-%20Close.png) 
 
-![stale issues ignored](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Stale%20Issues%20-%20Ignore.png)
+![stale issues ignored](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Stale%20Issues%20-%20Ignore.png)
 
 ### Status Change Notifications
-![status change notification](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Status%20Change%20Notifications.png)
+![status change notification](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Status%20Change%20Notifications.png)
 
 ### Assignee Recommendations
-![assignee recommendation accepted](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Assignee%20Recommendations%20-%20Assigned.png) 
+![assignee recommendation accepted](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Assignee%20Recommendations%20-%20Assigned.png) 
 
-![assignee recommendation ignored](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Assignee%20Recommendations%20-%20Ignored.png)
+![assignee recommendation ignored](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Assignee%20Recommendations%20-%20Ignored.png)
 
 ## Storyboard
 Storyboard represents a flow in the different sections of a software. Here are the different primary tasks user undergoes with NoMatterBot:
 
 
 <div style = "float: left, width: 300"> 
-	<img src="https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/mattermost_welcome.png" width="300">
+	<img src="https://github.com/Pranjal31/NoMatterBot/blob/master/img/mattermost_welcome.png" width="300">
 	<br>Note: Welcome message sent to the user when added to a repository
 </div>
 
@@ -183,7 +183,7 @@ Use case to close stale issues:
 
 | Scene-Stale Issues | Scene-Close Issues | Scene-Ignore |
 | --- | --- | -- |
-| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Close_stale_issue_done.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Ignore_stale_issues.png)|
+| ![ ](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Close_stale_issue.png) | ![ ](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Close_stale_issue_done.png) | ![ ](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Ignore_stale_issues.png)|
 | Note: Everyday NoMatterBot will send a list of stale issue with options to close or ignore | Note: Note: If the user selects some issues and clicks on "close issues", an acknowledgement will be send to the user | Note: If the user selects ignore, an acknowledgement will be sent.|
 
 \
@@ -192,7 +192,7 @@ Use case to recommend assignees for newly created issue:
 
 | Scene-Assignee Recommendation| Scene-Select and Assign | Scene-Ignore |
 | --- | --- | -- |
-| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Suggest_assignee.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/assigned.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/assignee_ignored.png)|
+| ![ ](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Suggest_assignee.png) | ![ ](https://github.com/Pranjal31/NoMatterBot/blob/master/img/assigned.png) | ![ ](https://github.com/Pranjal31/NoMatterBot/blob/master/img/assignee_ignored.png)|
 | Note: Every time a new issue is created, NoMatterBot will recommend a list of assignees with options to assign or ignore | Note:If the user selects some assignee and clicks on "assign", an acknowledgement will be send to the user| Note: If the user selects ignore, an acknowledgement will be sent.|
 
 \
@@ -201,9 +201,9 @@ Use case to get notifications based on event on issues:
 
 | Scene-Status change on github| Scene-Getting notification | 
 | --- | --- | 
-| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/status_change_github.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/review_update.png) | 
+| ![ ](https://github.com/Pranjal31/NoMatterBot/blob/master/img/status_change_github.png) | ![ ](https://github.com/Pranjal31/NoMatterBot/blob/master/img/review_update.png) | 
 | Note: When the status or label of the issue is changed, a notification will be sent to the user | Note: A notification should contain the status details| 
-| ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/github_closed.png) | ![ ](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/closed_update.png) | 
+| ![ ](https://github.com/Pranjal31/NoMatterBot/blob/master/img/github_closed.png) | ![ ](https://github.com/Pranjal31/NoMatterBot/blob/master/img/closed_update.png) | 
 | Note: When an issue is closed a notification will be sent to the assignee| Note: A notification should contain the status details| 
 
 
@@ -219,13 +219,13 @@ One other major component relates to handling Mattermost Events. Mattermost prov
 \
 For clarity, we show the work-flow of our design for all three test cases below. We have numbered the interactions so that if you follow the arrows in numerical order you can see the pieces of the puzzle coming together!
 
-![Arch1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Architecture.png)
-![Arch1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Basic.png)
+![Arch1](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Architecture.png)
+![Arch1](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Basic.png)
 
-![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%201.png)
-![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%202.png)
-![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%203.png)
-![UC1](https://github.ncsu.edu/csc510-fall2019/CSC510-12/blob/master/img/Use%20case%204.png)
+![UC1](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Use%20case%201.png)
+![UC1](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Use%20case%202.png)
+![UC1](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Use%20case%203.png)
+![UC1](https://github.com/Pranjal31/NoMatterBot/blob/master/img/Use%20case%204.png)
 
 There are several constraints and feature dependencies that we stick to, to be in-line with the working of our design. We assume that there can be a single assignee per Issue to simplify Mattermost message interaction. We also create several custom status labels that our Bot uses to track Issue progress. NoMatterBot cannot open or close an Issue. They are done by a team member and a tester respectively.
 
